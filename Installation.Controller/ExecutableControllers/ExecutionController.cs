@@ -1,0 +1,136 @@
+﻿using Installation.Models;
+using Installation.Models.Interfaces;
+using Installation.Models.Executables;
+using Installation.Logger;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Serilog;
+
+namespace Installation.Controller.ExecutableControllers
+{
+    public class ExecutionController
+    {
+        public delegate Task ExecutionCompleted(Job job);
+        public event ExecutionCompleted OnCompleted;
+
+        public Dictionary<Guid, Executable> executables;
+
+        private ConcurrentQueue<Job> jobsQueue;
+
+        public ExecutionController(Dictionary<Guid, Executable> executables, ConcurrentQueue<Job> jobsQueue)
+        {
+            this.executables = executables;
+            this.jobsQueue = jobsQueue;
+        }
+        public async Task RunController(CancellationToken cancellationToken)
+        {
+            while(true)
+            {
+                if(cancellationToken.IsCancellationRequested)
+                    return;
+                if(jobsQueue.Count > 0)
+                {
+                    Job job;
+                    if(jobsQueue.TryDequeue(out job))
+                    {
+                        try
+                        {
+                            await runJob(job, cancellationToken).ConfigureAwait(false);
+                        }
+                        catch(Exception ex)
+                        {
+                            Log.Error(ex, "Could't run the job {jid}", job.JobID);
+                        }
+                        
+                    }
+                }
+                await Task.Delay(500).ConfigureAwait(false);
+            }
+        }
+        private async Task runJob(Job job, CancellationToken cancellationToken)
+        {
+            Log.Verbose("Execute job with job id {jid} and executable id {eid} and installation state {state}", job.JobID, job.ExecutableID, job.ExecutionState);
+            if (job == null)
+            {
+                Log.Debug("Job is null");
+                return;
+            }
+
+            if(executables.Count == 0)
+            {
+                Log.Error("Executables empty");
+                return;
+            }
+            var executable = executables[job.ExecutableID];
+            
+
+            if (executable == null)
+            {
+                Log.Debug("No executable with id: {eid}", job.ExecutableID);
+                return;
+            }
+
+            if (job.ExecutionState == ExecutionState.Started)
+            {
+                try
+                {
+                    if (job.Action == ExecuteAction.Install && executable is IInstalable)
+                    {
+                        Log.Verbose("Install {id} with name {name}", executable.Id, executable.Name);
+                        await (executable as IInstalable).InstallAsync(cancellationToken);
+                    }
+                    else if (job.Action == ExecuteAction.Reinstall && executable is IReinstallable)
+                    {
+                        Log.Verbose("Reinstall {id} with name {name}", executable.Id, executable.Name);
+                        await (executable as IReinstallable).ReinstallAsync(cancellationToken);
+                    }
+                    else if (job.Action == ExecuteAction.Uninstall && executable is IUninstallable)
+                    {
+                        Log.Verbose("Uninstall {id} with name {name}", executable.Id, executable.Name);
+                        await (executable as IUninstallable).UninstallAsync(cancellationToken);
+                    }
+                    else if (job.Action == ExecuteAction.Run && executable is IRunnable)
+                    {
+                        Log.Verbose("RunAsync {id} with name {name}", executable.Id, executable.Name);
+                        (StatusState state, string message) = await (executable as IRunnable).RunAsync(cancellationToken);
+                        await executionCompleted(job, state, message);
+                    }
+                    else
+                    {
+                        Log.Error("Executable {name} has no {state} execution state", executable.Name, job.Action);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Executable could't be executed");
+                }
+                
+            }
+            
+        }
+        async Task executionCompleted(Job job, StatusState state, string message)
+        {
+            job.StatusState = state;
+            if (state == StatusState.Success)
+            {
+                Log.Information(message);
+            }
+            else if(state == StatusState.Warning)
+            {
+                Log.Warning(message);
+            }
+            else if(state == StatusState.Error)
+            {
+                Log.Error(message);
+                job.ExecutionState = ExecutionState.Stopped;
+            }
+            await OnCompleted(job);
+            
+        }
+    }
+}
