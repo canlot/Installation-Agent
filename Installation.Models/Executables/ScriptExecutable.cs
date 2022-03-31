@@ -30,7 +30,10 @@ namespace Installation.Models.Executables
             (bool success, string errorMessage) executionStatement = await executor.ExecuteAsync(RunFilePath, ExecutableDirectory, cancellationToken);
             
             if(executionStatement.success)
+            {
+                Runned = true;
                 return (StatusState.Success, executionStatement.errorMessage);
+            }
             else
                 return (StatusState.Error, executionStatement.errorMessage);
             

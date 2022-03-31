@@ -37,7 +37,7 @@ namespace Installation.Storage.StateStorage
                 (executable as IUninstallable).UnInstalled = stateStorageProvider.GetStateValue(uninstalledKey, executable.Id.ToString());
         }
 
-        public void saveExecutableState(Executable executable)
+        public void SaveExecutableState(Executable executable)
         {
             if (executable is IInstalable)
                 stateStorageProvider.SaveStateValue(installedKey, executable.Id.ToString(), (executable as IInstalable).Installed);

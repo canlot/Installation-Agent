@@ -95,7 +95,7 @@ namespace Installation.Storage.StateStorage
             }
         }
 
-        public void SaveStateValue(string keyName, string executableID, bool value)
+        public void SaveStateValue(string keyName, string executableID, bool value) //TODO: need full path not only the guid 
         {
             IsExecutableExists(executableID);
             try

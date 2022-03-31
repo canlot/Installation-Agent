@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Serilog;
+using Installation.Storage.StateStorage;
 
 namespace Installation.Controller.ExecutableControllers
 {
@@ -104,6 +105,8 @@ namespace Installation.Controller.ExecutableControllers
                     {
                         Log.Error("Executable {name} has no {state} execution state", executable.Name, job.Action);
                     }
+                    var executionStateSettings = new ExecutionStateSettings();
+                    executionStateSettings.SaveExecutableState(executable);
                 }
                 catch (Exception ex)
                 {
