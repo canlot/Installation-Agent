@@ -49,6 +49,8 @@ namespace Installation.Storage.ExecutableStorage
                         {
                             Log.Debug(ex, "Exception occured in folder {folder}", directory);
                         }
+                        if(executable != null)
+                            executable.ExecutableDirectory = directory;
                     }
                 }
                 catch (Exception ex)
@@ -57,7 +59,10 @@ namespace Installation.Storage.ExecutableStorage
                 }
             }
             if (executable != null)
+            {
                 yield return executable;
+            }
+                
         }
         private bool searchForSettingFile(string directory)
         {

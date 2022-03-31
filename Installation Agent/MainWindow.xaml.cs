@@ -37,9 +37,6 @@ namespace Installation_Agent
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            List<string> versions = new List<string>();
-            versions.Add("12");
-            versions.Add("13");
             viewController.Apps.Add(new Job
             {
                 

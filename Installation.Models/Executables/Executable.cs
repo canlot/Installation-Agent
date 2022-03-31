@@ -13,6 +13,7 @@ namespace Installation.Models.Executables
         private string name;
         private string version;
         private Guid id;
+        private string executableDirectory;
 
         private StatusState statusState;
         private string category;
@@ -22,6 +23,7 @@ namespace Installation.Models.Executables
         public string Version { get => version; set => version = value; }
         //public InstallationState InstallationState { get => installationState; set => installationState = value; }
         public StatusState StatusState { get => statusState; set => statusState = value; }
+        public string ExecutableDirectory { get => executableDirectory; set => executableDirectory = value; }
         public string Category { get => category; set => category = value; }
 
         public Executable()

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Installation.Models.Interfaces;
+using Installation.Executors;
 using Serilog;
 
 namespace Installation.Models.Executables
@@ -22,31 +23,17 @@ namespace Installation.Models.Executables
         }
         public async Task<(StatusState, string)> RunAsync(CancellationToken cancellationToken)
         {
-            Log.Debug("Running Script {file}", RunFilePath);
-            var processinfo = new ProcessStartInfo()
-            {
-                FileName = "powershell.exe",
-                Arguments = $"-NoProfile -ExecutionPolicy bypass -File {RunFilePath}",
-                UseShellExecute = false
-            };
-            processinfo.RedirectStandardOutput = true;
-            processinfo.RedirectStandardError = true;
+            Log.Debug("Running Script {file} from {dir}", RunFilePath, ExecutableDirectory);
 
-            Process process = new Process();
-            process.StartInfo = processinfo;
+            var executor = new ScriptExecutor();
 
-            await Task.Run(() =>
-            {
-                process.Start();
-                cancellationToken.Register(() => process.Kill());
-                process.WaitForExit();
-            });
-            Log.Debug("Return code: {code}", process.ExitCode);
-
-            if (process.ExitCode == 0)
-                return (StatusState.Success, "Success");
+            (bool success, string errorMessage) executionStatement = await executor.ExecuteAsync(RunFilePath, ExecutableDirectory, cancellationToken);
+            
+            if(executionStatement.success)
+                return (StatusState.Success, executionStatement.errorMessage);
             else
-                return (StatusState.Error, process.StandardError.ReadToEnd());
+                return (StatusState.Error, executionStatement.errorMessage);
+            
         }
     }
 }
