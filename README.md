@@ -2,7 +2,7 @@
 
 Simple Installation Agent with UI for user and service running in background and installating the software that user choses.
 
-In development.
+**In development**
 
 
 Features
