@@ -10,15 +10,15 @@ namespace Installation.Storage.StateStorage
 {
     class ExecutableStateRegistryStorageProvider : IExecutableStateStorageProvider
     {
-        string softwareName = "Installation Agent";
-        string softwarePath;
-        string rootPath = "SOFTWARE";
+        private string softwareName = "Installation Agent";
+        private string softwarePath;
+        private string rootPath = "SOFTWARE";
         public ExecutableStateRegistryStorageProvider()
         {
             this.softwarePath = "SOFTWARE" + @"\" + softwareName;
             createRegistryPathIfNotExists();
         }
-        public void createRegistryPathIfNotExists()
+        private void createRegistryPathIfNotExists()
         {
             try
             {
@@ -95,14 +95,22 @@ namespace Installation.Storage.StateStorage
             }
         }
 
-        public void SaveStateValue(string keyName, string executableID, bool value) //TODO: need full path not only the guid 
+        public void SaveStateValue(string keyName, string executableID, bool value) 
         {
             IsExecutableExists(executableID);
+            string registryPath = softwarePath + @"\" + executableID;
             try
             {
-                using(var key = Registry.LocalMachine.OpenSubKey(executableID, true))
+                using(var key = Registry.LocalMachine.OpenSubKey(registryPath, true))
                 {
-                    key.SetValue(keyName, value, RegistryValueKind.DWord);
+                    Log.Debug("Write property {keyName} with value of {value} in registry path {path}", keyName, value, registryPath);
+                    if(key != null)
+                        key.SetValue(keyName, value, RegistryValueKind.DWord);
+                    else
+                    {
+                        Log.Error("Key {registry} is null", registryPath);
+                        throw new Exception();
+                    }    
                 }
             }
             catch (Exception ex)
