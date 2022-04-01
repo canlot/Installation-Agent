@@ -55,7 +55,7 @@ namespace Installation.Controller.ExecutableControllers
         }
         private async Task runJob(Job job, CancellationToken cancellationToken)
         {
-            Log.Verbose("Execute job with job id {jid} and executable id {eid} and installation state {state}", job.JobID, job.ExecutableID, job.ExecutionState);
+            Log.Debug("Execute job with job id {jid} and executable id {eid} and installation state {state}", job.JobID, job.ExecutableID, job.ExecutionState);
             if (job == null)
             {
                 Log.Debug("Job is null");
@@ -97,7 +97,7 @@ namespace Installation.Controller.ExecutableControllers
                     }
                     else if (job.Action == ExecuteAction.Run && executable is IRunnable)
                     {
-                        Log.Verbose("RunAsync {id} with name {name}", executable.Id, executable.Name);
+                        Log.Debug("RunAsync {id} with name {name}", executable.Id, executable.Name);
                         (StatusState state, string message) = await (executable as IRunnable).RunAsync(cancellationToken);
                         await executionCompleted(job, state, message);
                     }
@@ -121,7 +121,7 @@ namespace Installation.Controller.ExecutableControllers
             job.StatusState = state;
             if (state == StatusState.Success)
             {
-                Log.Information(message);
+                Log.Information("Job {jid} with excutable {eid} successfully executed", job.JobID, job.ExecutableID);
             }
             else if(state == StatusState.Warning)
             {

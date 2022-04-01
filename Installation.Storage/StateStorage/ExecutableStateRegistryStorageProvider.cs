@@ -53,7 +53,7 @@ namespace Installation.Storage.StateStorage
             {
                 using(var key = Registry.LocalMachine.OpenSubKey(softwarePath, true))
                 {
-                    if(key.GetValue(executableID) == null)
+                    if(key.OpenSubKey(executableID) == null)
                     {
                         key.CreateSubKey(executableID);
                         return false;
@@ -74,23 +74,28 @@ namespace Installation.Storage.StateStorage
         {
             if(!IsExecutableExists(executableID))
                 return false;
+            string registryPath = softwarePath + @"\" + executableID;
             try
             {
-                using (var key = Registry.LocalMachine.OpenSubKey(executableID))
+                using (var key = Registry.LocalMachine.OpenSubKey(registryPath))
                 {
                     var result = key.GetValue(keyName);
                     if(result == null)
                     {
+                        Log.Debug("Could not get key {key} value for {executable} from registry path {path}", keyName, executableID, registryPath);
                         return false;
+
                     }
                     else
                     {
-                        return (bool)result;
+                        Log.Debug("Got key {name} with value {key}", keyName, result);
+                        return Convert.ToBoolean(result);
                     }
                 }
             }
             catch (Exception ex)
             {
+                Log.Error(ex, "Could not get state value from registry");
                 throw ex;
             }
         }

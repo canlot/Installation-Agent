@@ -38,7 +38,7 @@ namespace Installation.Controller
         {
             
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
+                .MinimumLevel.Information()
                 .WriteTo.Console(Serilog.Events.LogEventLevel.Verbose)
                 .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
                 .CreateLogger();
