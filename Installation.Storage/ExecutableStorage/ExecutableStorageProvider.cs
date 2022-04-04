@@ -28,10 +28,18 @@ namespace Installation.Storage.ExecutableStorage
             Executable executable = null;
             foreach (var path in executablePaths)
             {
+                string[] directories = new string[0];
                 try
                 {
-                    string[] directories = Directory.GetDirectories(path);
-                    foreach (var directory in directories)
+                    directories = Directory.GetDirectories(path);
+                    Log.Debug("{dir} folders found", directories.Length);
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug(ex, "Exception occured by searching in {folder}", path);
+                }
+
+                foreach (var directory in directories)
                     {   
                         
                         try
@@ -49,18 +57,15 @@ namespace Installation.Storage.ExecutableStorage
                         {
                             Log.Debug(ex, "Exception occured in folder {folder}", directory);
                         }
-                        if(executable != null)
+                        if (executable != null)
+                        {
                             executable.ExecutableDirectory = directory;
+                            yield return executable;
+                        }    
+                        else
+                            Log.Debug("settings could not be parsed from {dir}", directory);
                     }
-                }
-                catch (Exception ex)
-                {
-                    Log.Debug(ex, "Exception occured by searching in {folder}", path);
-                }
-            }
-            if (executable != null)
-            {
-                yield return executable;
+                
             }
                 
         }
@@ -68,7 +73,7 @@ namespace Installation.Storage.ExecutableStorage
         {
             string[] files = Directory.GetFiles(directory, executableSettingsFileName);
             if (files.Length > 1)
-                CommonLogger.LogEvent($"More then one {executableSettingsFileName} found in {directory}", LogType.Info);
+                Log.Information("More then one {executableSettingsFileName} found in {directory}", executableSettingsFileName, directory);
             if (files.Length == 1)
             {
                 return true;

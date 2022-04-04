@@ -39,7 +39,6 @@ namespace Installation.Controller.ExecutableFinders
                     ExecutionStateSettings executionStateSettings = new ExecutionStateSettings();
                     executionStateSettings.LoadExecutableState(executable);
                     executables.Add(executable.Id, executable);
-                    //Log.Debug("Following executable added: id: {id}, name: {name}, version: {version}, category: {category}, type: {type}", executable.Id, executable.Name, executable.Version, executable.Category, executable.GetType());
                     Log.Debug("Executable added {@executable}", executable);
                 }
             }

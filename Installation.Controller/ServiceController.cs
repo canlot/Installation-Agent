@@ -84,19 +84,25 @@ namespace Installation.Controller
         }
         public async Task TestItWithFire()
         {
-            Console.WriteLine("Guid: ");
-            var guidString = Console.ReadLine();
-            Guid guid;
-            if(Guid.TryParse(guidString, out guid))
+            while (true)
             {
-                Job job = new Job()
+                Console.WriteLine("Guid: ");
+                var input = Console.ReadLine();
+                if (input == "exit")
+                    break;
+                Guid guid;
+                if (Guid.TryParse(input, out guid))
                 {
-                    Action = ExecuteAction.Run,
-                    ExecutableID = guid,
-                    ExecutionState = ExecutionState.Started
-                }.WithNewGuiD();
-                await newJob(job);
+                    Job job = new Job()
+                    {
+                        Action = ExecuteAction.Run,
+                        ExecutableID = guid,
+                        ExecutionState = ExecutionState.Started
+                    }.WithNewGuiD();
+                    await newJob(job);
+                }
             }
+            
         }
         public void Stop()
         {
