@@ -31,7 +31,19 @@ namespace Installation.Executors
             await Task.Run(() =>
             {
                 process.Start();
-                cancellationToken.Register(() => process.Kill());
+                cancellationToken.Register(
+                    () =>
+                    {
+                        try
+                        {
+                            process.Kill();
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+                    }
+                    );
                 process.WaitForExit();
             });
 

@@ -81,6 +81,7 @@ namespace Installation.Controller
             Log.Verbose("Waiting for all task to finish");
 
             Task.WaitAll(communicatorTask, executionTask, fire);
+            Log.CloseAndFlush();
         }
         public async Task TestItWithFire()
         {
@@ -89,7 +90,10 @@ namespace Installation.Controller
                 Console.WriteLine("Guid: ");
                 var input = Console.ReadLine();
                 if (input == "exit")
+                {
+                    Stop();
                     break;
+                }
                 Guid guid;
                 if (Guid.TryParse(input, out guid))
                 {
@@ -106,8 +110,8 @@ namespace Installation.Controller
         }
         public void Stop()
         {
-            Log.CloseAndFlush();
             cancellationTokenSource.Cancel();
+            
         }
         private async Task newJob(Job job)
         {

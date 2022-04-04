@@ -12,7 +12,9 @@ namespace Installation.BackgroundAgent
         static void Main(string[] args)
         {
             ServiceController controller = new ServiceController();
+            Console.WriteLine("------PROGRAM STARTED------");
             controller.Start();
+            Console.WriteLine("------PROGRAM ENDED------");
             Console.Read();
         }
     }

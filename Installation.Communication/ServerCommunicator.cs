@@ -4,6 +4,7 @@ using System.IO.Pipes;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Installation.Communication
 {
@@ -17,7 +18,15 @@ namespace Installation.Communication
         {
             using (pipeStream = new NamedPipeServerStream(pipeName, PipeDirection.InOut, 254, PipeTransmissionMode.Byte, PipeOptions.Asynchronous))
             {
-                await (pipeStream as NamedPipeServerStream).WaitForConnectionAsync();
+                try
+                {
+                    await (pipeStream as NamedPipeServerStream).WaitForConnectionAsync(cancellationToken);
+                }
+                catch (Exception ex)
+                {
+                    Log.Information(ex, "Waiting for connections aborted");
+                }
+                
                 await ReadAsync();
             }
             

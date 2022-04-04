@@ -35,8 +35,10 @@ namespace Installation.Models.Executables
                 return (StatusState.Success, executionStatement.errorMessage);
             }
             else
+            {
+                Runned = false;
                 return (StatusState.Error, executionStatement.errorMessage);
-            
+            }
         }
     }
 }
