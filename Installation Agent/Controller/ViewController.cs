@@ -24,9 +24,9 @@ namespace Installation_Agent.Controller
             transport.OnNewJob += OnNewJob;
             transport.Listen(cancellationToken);
         }
-        public void OnNewJob(Job job)
+        private async Task newJob(Job job)
         {
-           
+
         }
         public void SendJob(Job job)
         {
