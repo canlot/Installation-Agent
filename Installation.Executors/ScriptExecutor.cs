@@ -40,7 +40,7 @@ namespace Installation.Executors
                         }
                         catch (Exception ex)
                         {
-
+                            Log.Debug(ex, "Execution aborted (error expected)");
                         }
                     }
                     );

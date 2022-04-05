@@ -52,7 +52,7 @@ namespace Installation.Controller
         
         public void Start()
         {
-            Log.Verbose("Started App");
+            Log.Information("------PROGRAM STARTED------");
             try
             {
                 globalSettings.LoadSettings();
@@ -81,6 +81,7 @@ namespace Installation.Controller
             Log.Verbose("Waiting for all task to finish");
 
             Task.WaitAll(communicatorTask, executionTask, fire);
+            Log.Information("------PROGRAM ENDED------ \n\n");
             Log.CloseAndFlush();
         }
         public async Task TestItWithFire()
