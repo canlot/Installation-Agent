@@ -24,7 +24,7 @@ namespace Installation.Communication
                 }
                 catch (Exception ex)
                 {
-                    Log.Information(ex, "Waiting for connections aborted");
+                    Log.Debug(ex, "Waiting for connections aborted (error expected)");
                 }
                 
                 await ReadAsync();
