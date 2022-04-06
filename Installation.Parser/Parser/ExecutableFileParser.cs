@@ -44,9 +44,9 @@ namespace Installation.Parser
             try
             {
                 executable.Id = helper.GetSettingGuid(nameof(Executable.Id));
-                executable.Name = helper.GetSetting(nameof(Executable.Name));
-                executable.Version = helper.GetSetting(nameof(Executable.Version));
-                
+                executable.Name = helper.GetSetting(nameof(Executable.Name)).Replace("\"", "");
+                executable.Version = helper.GetSetting(nameof(Executable.Version)).Replace("\"", "");
+
 
             }
             catch

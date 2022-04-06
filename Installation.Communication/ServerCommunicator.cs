@@ -21,6 +21,11 @@ namespace Installation.Communication
                 try
                 {
                     await (pipeStream as NamedPipeServerStream).WaitForConnectionAsync(cancellationToken);
+                    if(pipeStream != null)
+                    {
+                        if (pipeStream.IsConnected)
+                            Log.Debug("Client connected to Pipe");
+                    }
                 }
                 catch (Exception ex)
                 {

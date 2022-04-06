@@ -38,7 +38,7 @@ namespace Installation.Controller
         {
             
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
+                .MinimumLevel.Verbose()
                 .WriteTo.Console(Serilog.Events.LogEventLevel.Verbose)
                 .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
                 .CreateLogger();
@@ -67,6 +67,7 @@ namespace Installation.Controller
 
             serverCommunicator = new ServerCommunicator(cancellationTokenSource.Token);
             serverCommunicator.OnJobReceived += newJob;
+            serverCommunicator.OnCommandReceived += newCommand;
 
             jobsQueue = new ConcurrentQueue<Job>();
 
@@ -76,11 +77,11 @@ namespace Installation.Controller
 
             var communicatorTask = Task.Run(() => serverCommunicator.ListenAsync());
             var executionTask = Task.Run(() => executionController.RunController(cancellationTokenSource.Token));
-            var fire = Task.Run(() => TestItWithFire());
+            //var fire = Task.Run(() => TestItWithFire());
 
             Log.Verbose("Waiting for all task to finish");
 
-            Task.WaitAll(communicatorTask, executionTask, fire);
+            Task.WaitAll(communicatorTask, executionTask);
             Log.Information("------PROGRAM ENDED------ \n\n");
             Log.CloseAndFlush();
         }
@@ -122,7 +123,18 @@ namespace Installation.Controller
         private async Task executionCompleted(Job job)
         {
             Log.Debug("send job with job id: {jid}", job.JobID);
-            await serverCommunicator.SendJob(job).ConfigureAwait(false);
+            await serverCommunicator.SendJobAsync(job).ConfigureAwait(false);
+        }
+        private async Task newCommand(Command command)
+        {
+            Log.Debug("Command received {command}", command);
+            if(command == Command.SendExecutables)
+            {
+                foreach(var executable in Executables)
+                {
+                    await serverCommunicator.SendExecutableAsync(executable.Value);
+                }
+            }
         }
 
     }

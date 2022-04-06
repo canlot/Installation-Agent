@@ -13,13 +13,17 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ui:NavigationView Grid.Column="0" PaneDisplayMode="Left">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <ui:NavigationView Grid.Column="0" Grid.Row="0" PaneDisplayMode="Left">
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem Content="Apps"/>
                 <ui:NavigationViewItem Content="Scripts"/>
             </ui:NavigationView.MenuItems>
         </ui:NavigationView>
-        <ListBox Grid.Column="1" x:Name="ListBoxJobs" ItemsSource="{Binding Apps}">
+        <ListBox Grid.Column="1" Grid.Row="0" x:Name="ListBoxJobs" ItemsSource="{Binding Scripts}">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment"
@@ -44,7 +48,7 @@
                             <Image Source="delete-bin-5-line.png" Height="20" Width="20" Stretch="Uniform"/>
                         </Button>
                         <Label Grid.Column="2" Margin="15" Content="{Binding Name}" VerticalContentAlignment="Center" x:Name="LabelExecutableName" />
-                        <ComboBox Grid.Column="3" Margin="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ComboBoxVersions" ItemsSource="{Binding Versions}"/>
+                        <!--<ComboBox Grid.Column="3" Margin="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ComboBoxVersions" ItemsSource="{Binding Versions}"/>-->
                         <ui:ProgressRing Grid.Column="4" IsActive="False" />
                         <Image Grid.Column="5"></Image>
                     </Grid>
