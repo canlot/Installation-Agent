@@ -38,8 +38,15 @@ namespace Installation.Controller.ExecutableFinders
                 {
                     ExecutionStateSettings executionStateSettings = new ExecutionStateSettings();
                     executionStateSettings.LoadExecutableState(executable);
-                    executables.Add(executable.Id, executable);
-                    Log.Debug("Executable added {@executable}", executable);
+                    if(executables.ContainsKey(executable.Id))
+                    {
+                        Log.Error("Executable {name} with the id {id} alreade exist, executable not added",executable.Name, executable.Id);
+                    }
+                    else
+                    {
+                        executables.Add(executable.Id, executable);
+                        Log.Debug("Executable added {@executable}", executable);
+                    }
                 }
             }
             else

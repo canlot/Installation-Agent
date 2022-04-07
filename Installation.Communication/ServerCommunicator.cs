@@ -16,25 +16,32 @@ namespace Installation.Communication
         }
         public async Task ListenAsync()
         {
-            using (pipeStream = new NamedPipeServerStream(pipeName, PipeDirection.InOut, 254, PipeTransmissionMode.Byte, PipeOptions.Asynchronous))
+            while (true)
             {
-                try
+                if (cancellationToken.IsCancellationRequested)
+                    break;
+                using (pipeStream = new NamedPipeServerStream(pipeName, PipeDirection.InOut, 254, PipeTransmissionMode.Byte, PipeOptions.Asynchronous))
                 {
-                    await (pipeStream as NamedPipeServerStream).WaitForConnectionAsync(cancellationToken);
-                    if(pipeStream != null)
-                    {
-                        if (pipeStream.IsConnected)
-                            Log.Debug("Client connected to Pipe");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.Debug(ex, "Waiting for connections aborted (error expected)");
-                }
                 
-                await ReadAsync();
+                        try
+                        {
+                            await (pipeStream as NamedPipeServerStream).WaitForConnectionAsync(cancellationToken);
+                            if (pipeStream != null)
+                            {
+                                if (pipeStream.IsConnected)
+                                    Log.Debug("Client connected to Pipe");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Debug(ex, "Waiting for connections aborted (error expected)");
+                        }
+
+                        await ReadAsync();
+                
+                }
             }
-            
+
         }
     }
 }
