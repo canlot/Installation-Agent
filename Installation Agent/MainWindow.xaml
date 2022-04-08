@@ -17,12 +17,22 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <ui:NavigationView Grid.Column="0" Grid.Row="0" PaneDisplayMode="Left">
-            <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem Content="Apps"/>
-                <ui:NavigationViewItem Content="Scripts"/>
-            </ui:NavigationView.MenuItems>
-        </ui:NavigationView>
+        <Grid Grid.Column="0" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <ui:AutoSuggestBox PlaceholderText="Search" QueryIcon="Find" Margin="12">
+                
+            </ui:AutoSuggestBox>
+            <ui:NavigationView Grid.Row="1" PaneDisplayMode="Left" ui:IsBackButtonVisible="Collapsed" ui:IsPaneToggleButtonVisible="False">
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem Content="Apps"/>
+                    <ui:NavigationViewItem Content="Scripts"/>
+                </ui:NavigationView.MenuItems>
+            </ui:NavigationView>
+        </Grid>
+        
         <ListBox Grid.Column="1" Grid.Row="0" x:Name="ListBoxJobs" ItemsSource="{Binding Scripts}">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
@@ -32,7 +42,7 @@
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
+                    <Grid Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
