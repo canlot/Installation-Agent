@@ -23,7 +23,7 @@ namespace Installation_Agent
                 switch (value)
                 {
                     case StatusState.NotExecuted:
-                        return new SolidColorBrush(Brushes.Azure.Color);
+                        return new SolidColorBrush(Brushes.SkyBlue.Color);
                     case StatusState.Success:
                         return new SolidColorBrush(Brushes.Green.Color);
                     case StatusState.Warning:
@@ -31,7 +31,7 @@ namespace Installation_Agent
                     case StatusState.Error:
                         return new SolidColorBrush(Brushes.Red.Color);
                     default:
-                        return new SolidColorBrush(Brushes.Azure.Color);
+                        return new SolidColorBrush(Brushes.SkyBlue.Color);
                 }
             }
             else

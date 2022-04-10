@@ -71,8 +71,8 @@
                             <StackPanel Margin="2" Orientation="Horizontal" HorizontalAlignment="Stretch">
                                 <Button Margin="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ButtonRunScript" Click="ButtonRunScript_Click">
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="/play_512px.png" Height="20" Width="20" Margin="3"/>
-                                        <Label Content="Ausführen" Height="20"  Margin="3"/>
+                                        <Image Source="/play_512px.png" Height="16" Width="15" Margin="2"/>
+                                        <Label Content="Ausführen" Height="16"  Margin="2"/>
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
@@ -86,6 +86,7 @@
                             <RowDefinition Height="1*"/>
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0" Orientation="Horizontal">
+                            <Ellipse Fill="{Binding StatusState, Converter={StaticResource StatusStateToColorConverter}}" Width="10" Height="10" Margin="5"/>
                             <Label FontSize="20" Margin="5">
                                 <Label.Content>
                                     <AccessText>
@@ -96,28 +97,27 @@
                                     </AccessText>
                                 </Label.Content>
                             </Label>
-                            <ui:ProgressRing Name = "ProgressRing" Margin="5">
-                                
+                            <ui:ProgressRing Name = "ProgressRing" Margin="5" IsActive="{Binding CurrentlyRunning, Mode=TwoWay }">
                             </ui:ProgressRing>
                         </StackPanel>
                         <Border Grid.Row="1" HorizontalAlignment="Left"  MinWidth="200">
                             <StackPanel Margin="2" Orientation="Horizontal" HorizontalAlignment="Stretch" >
                                 <Button Margin="2,1,2,1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ButtonInstallApplication" Click="ButtonInstallApplication_Click">
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="/installing_512px.png" Height="20" Width="20" Margin="3"/>
-                                        <Label Content="Installieren" Height="20"  Margin="3"/>
+                                        <Image Source="/installing_512px.png" Height="16" Width="16" Margin="2"/>
+                                        <Label Content="Installieren" Height="16"  Margin="2"/>
                                     </StackPanel>
                                 </Button>
                                 <Button Margin="2,1,2,1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ButtonReinstallApplication" Click="ButtonReinstallApplication_Click">
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="/reboot_512px.png" Height="20" Width="20" Margin="3"/>
-                                        <Label Content="Neuinstallieren" Height="20"  Margin="3"/>
+                                        <Image Source="/reboot_512px.png" Height="16" Width="16" Margin="2"/>
+                                        <Label Content="Neuinstallieren" Height="16"  Margin="2"/>
                                     </StackPanel>
                                 </Button>
                                 <Button Margin="2,1,2,1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ButtonUninstallApplication" Click="ButtonUninstallApplication_Click">
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="/Remove_512px.png" Height="20" Width="20" Margin="3"/>
-                                        <Label Content="Deinstallieren" Height="20"  Margin="3"/>
+                                        <Image Source="/Remove_512px.png" Height="16" Width="16" Margin="2"/>
+                                        <Label Content="Deinstallieren" Height="16"  Margin="2"/>
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
