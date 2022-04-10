@@ -6,8 +6,12 @@
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
         xmlns:local="clr-namespace:Installation_Agent"
+        xmlns:models="clr-namespace:Installation.Models.Executables;assembly=Installation.Models"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="1000" Closing="Window_Closing" Loaded="Window_Loaded">
+    <Window.Resources>
+        <local:StatusStateToColorConverter x:Key="StatusStateToColorConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -32,38 +36,96 @@
                 </ui:NavigationView.MenuItems>
             </ui:NavigationView>
         </Grid>
-        
-        <ListBox Grid.Column="1" Grid.Row="0" x:Name="ListBoxJobs" ItemsSource="{Binding Scripts}">
+
+        <ListBox Grid.Column="1" Grid.Row="0" x:Name="ListBoxJobs">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment"
                         Value="Stretch"/>
                 </Style>
             </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="5*"/>
-                            <ColumnDefinition Width="3*"/>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="1*"/>
-                        </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Margin="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ButtonInstallSoftware" Click="ButtonInstallSoftware_Click"  >
-                            <Image Source="install-line.png" Height="20" Width="20" Stretch="Uniform"/>
-                        </Button>
-                        <Button Grid.Column="1" Margin="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ButtonUninstallSoftware">
-                            <Image Source="delete-bin-5-line.png" Height="20" Width="20" Stretch="Uniform"/>
-                        </Button>
-                        <Label Grid.Column="2" Margin="15" Content="{Binding Name}" VerticalContentAlignment="Center" x:Name="LabelExecutableName" />
-                        <!--<ComboBox Grid.Column="3" Margin="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ComboBoxVersions" ItemsSource="{Binding Versions}"/>-->
-                        <ui:ProgressRing Grid.Column="4" IsActive="False" />
-                        <Image Grid.Column="5"></Image>
+            <ListBox.Resources>
+                <DataTemplate DataType="{x:Type models:ScriptExecutable}">
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                            <Ellipse Fill="{Binding StatusState, Converter={StaticResource StatusStateToColorConverter}}" Width="10" Height="10" Margin="5"/>
+                            <Label FontSize="20" Margin="5">
+                                <Label.Content>
+                                    <AccessText>
+                                        <MultiBinding StringFormat="{}{0} {1}">
+                                            <Binding Path="Name"/>
+                                            <Binding Path="Version"/>
+                                        </MultiBinding>
+                                    </AccessText>
+                                </Label.Content>
+                            </Label>
+                            <ui:ProgressRing Name = "ProgressRing" Margin="5" IsActive="{Binding CurrentlyRunning, Mode=TwoWay }">
+                            </ui:ProgressRing>
+                        </StackPanel>
+                        
+                        <Border Grid.Row="1" HorizontalAlignment="Left"  MinWidth="200">
+                            <StackPanel Margin="2" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                <Button Margin="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ButtonRunScript" Click="ButtonRunScript_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="/play_512px.png" Height="20" Width="20" Margin="3"/>
+                                        <Label Content="Ausführen" Height="20"  Margin="3"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </Border>
                     </Grid>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type models:ApplicationExecutable}">
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                            <Label FontSize="20" Margin="5">
+                                <Label.Content>
+                                    <AccessText>
+                                        <MultiBinding StringFormat="{}{0} {1}">
+                                            <Binding Path="Name"/>
+                                            <Binding Path="Version"/>
+                                        </MultiBinding>
+                                    </AccessText>
+                                </Label.Content>
+                            </Label>
+                            <ui:ProgressRing Name = "ProgressRing" Margin="5">
+                                
+                            </ui:ProgressRing>
+                        </StackPanel>
+                        <Border Grid.Row="1" HorizontalAlignment="Left"  MinWidth="200">
+                            <StackPanel Margin="2" Orientation="Horizontal" HorizontalAlignment="Stretch" >
+                                <Button Margin="2,1,2,1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ButtonInstallApplication" Click="ButtonInstallApplication_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="/installing_512px.png" Height="20" Width="20" Margin="3"/>
+                                        <Label Content="Installieren" Height="20"  Margin="3"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Margin="2,1,2,1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ButtonReinstallApplication" Click="ButtonReinstallApplication_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="/reboot_512px.png" Height="20" Width="20" Margin="3"/>
+                                        <Label Content="Neuinstallieren" Height="20"  Margin="3"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Margin="2,1,2,1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ButtonUninstallApplication" Click="ButtonUninstallApplication_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="/Remove_512px.png" Height="20" Width="20" Margin="3"/>
+                                        <Label Content="Deinstallieren" Height="20"  Margin="3"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.Resources>
+            
         </ListBox>
     </Grid>
 </Window>

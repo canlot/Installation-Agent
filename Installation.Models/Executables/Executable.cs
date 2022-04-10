@@ -1,28 +1,34 @@
 ﻿using Installation.Models.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Installation.Models.Executables
 {
-    public class Executable
+    public class Executable : INotifyPropertyChanged
     {
-
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
         private string name;
         private string version;
         private Guid id;
         private string executableDirectory;
 
         private StatusState statusState;
+        private bool currentlyRunning;
         private string category;
 
         public Guid Id { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
         public string Version { get => version; set => version = value; }
-        //public InstallationState InstallationState { get => installationState; set => installationState = value; }
-        public StatusState StatusState { get => statusState; set => statusState = value; }
+        public bool CurrentlyRunning { get => currentlyRunning; set { currentlyRunning = value; OnPropertyChanged("CurrentlyRunning"); } }
+        public StatusState StatusState { get => statusState; set { statusState = value; OnPropertyChanged("StatusState"); } }
         public string ExecutableDirectory { get => executableDirectory; set => executableDirectory = value; }
         public string Category { get => category; set => category = value; }
 

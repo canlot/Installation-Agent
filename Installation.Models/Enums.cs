@@ -11,6 +11,7 @@ namespace Installation.Models
 {
     public enum StatusState
     {
+        NotExecuted,
         Success,
         Warning,
         Error

@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Installation.Models.Executables;
+using Serilog;
 
 namespace Installation_Agent
 {
@@ -25,13 +26,13 @@ namespace Installation_Agent
     public partial class MainWindow : Window
     {
 
-        public ViewController viewController;
+        public ViewController viewController = new ViewController();
         public MainWindow()
         {
-            InitializeComponent();
-            viewController = new ViewController();
-            this.DataContext = viewController;
             
+            InitializeComponent();
+            this.DataContext = viewController;
+            ListBoxJobs.ItemsSource = viewController.Executables;
             
         }
         
@@ -44,7 +45,7 @@ namespace Installation_Agent
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             await viewController.RunAsync();
-            ListBoxJobs.ItemsSource = viewController.Scripts;
+            //
             //DebugBox.Text = "Test";
             ////viewController.Apps.Add(new Job
             ////{
@@ -68,6 +69,40 @@ namespace Installation_Agent
             ScriptExecutable scriptExecutable = (ScriptExecutable)item.DataContext;
             //Job job = (Job)item.DataContext;
             await viewController.RunJob(scriptExecutable);
+        }
+
+        private async void ButtonRunScript_Click(object sender, RoutedEventArgs e)
+        {
+            var button = (Button)sender;
+            var script = (ScriptExecutable)button.DataContext;
+            script.CurrentlyRunning = true;
+            await viewController.RunJob(script);
+            /*
+            DependencyObject parent = VisualTreeHelper.GetParent((DependencyObject)sender);
+            DependencyObject parentparent = VisualTreeHelper.GetParent((DependencyObject)parent);
+            DependencyObject parentparentparent = VisualTreeHelper.GetParent((DependencyObject)parentparent);
+            DependencyObject parentparentparentparent = VisualTreeHelper.GetParent((DependencyObject)parentparentparent);
+            ListBoxItem item = (ListBoxItem)parentparentparentparent;
+            ScriptExecutable scriptExecutable = (ScriptExecutable)item.DataContext;
+            scriptExecutable.CurrentlyRunning = true;
+            //Job job = (Job)item.DataContext;
+            await viewController.RunJob(scriptExecutable);
+            */
+        }
+
+        private void ButtonInstallApplication_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ButtonReinstallApplication_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ButtonUninstallApplication_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

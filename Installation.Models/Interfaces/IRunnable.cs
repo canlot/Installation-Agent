@@ -13,7 +13,7 @@ namespace Installation.Models.Interfaces
         bool Runned { get; set; }
         string RunFilePath { get; set; }
 
-        (StatusState, string) Run();
-        Task<(StatusState, string)> RunAsync(CancellationToken cancellationToken);
+        string Run();
+        Task<string> RunAsync(CancellationToken cancellationToken);
     }
 }

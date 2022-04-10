@@ -112,6 +112,7 @@ namespace Installation.Communication
         }
         private object deserializeObject(string dataString)
         {
+            Log.Verbose(dataString);
             var deserializedObject = JsonConvert.DeserializeObject(dataString, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All

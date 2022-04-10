@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums.cs" />
+    <Compile Include="Executables\ApplicationExecutable.cs" />
     <Compile Include="Executables\Executable.cs" />
     <Compile Include="Executables\ScriptExecutable.cs" />
     <Compile Include="Interfaces\IInstalable.cs" />

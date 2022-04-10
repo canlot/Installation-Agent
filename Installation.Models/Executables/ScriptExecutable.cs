@@ -17,11 +17,11 @@ namespace Installation.Models.Executables
         private bool runned;
         public bool Runned { get => runned; set => runned = value; }
 
-        public (StatusState, string) Run()
+        public string Run()
         {
             throw new NotImplementedException();
         }
-        public async Task<(StatusState, string)> RunAsync(CancellationToken cancellationToken)
+        public async Task<string> RunAsync(CancellationToken cancellationToken)
         {
             Log.Debug("Running Script {file} from {dir}", RunFilePath, ExecutableDirectory);
 
@@ -32,12 +32,14 @@ namespace Installation.Models.Executables
             if(executionStatement.success)
             {
                 Runned = true;
-                return (StatusState.Success, executionStatement.errorMessage);
+                StatusState = StatusState.Success;
+                return executionStatement.errorMessage;
             }
             else
             {
                 Runned = false;
-                return (StatusState.Error, executionStatement.errorMessage);
+                StatusState = StatusState.Error;
+                return executionStatement.errorMessage;
             }
         }
     }

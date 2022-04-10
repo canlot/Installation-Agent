@@ -78,6 +78,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="StatusStateToColorConverter.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -119,12 +120,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="install-line.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="delete-bin-5-line.png" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="ModernWpfUI">
       <Version>0.9.4</Version>
     </PackageReference>
@@ -147,6 +142,31 @@
       <Project>{cc707c57-86e0-47eb-b86c-06a0ad5a772a}</Project>
       <Name>Installation.Models</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="runscript.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\installing_512px.png" />
+    <Resource Include="Icons\Remove_512px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\play_512px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\reboot_512px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="installing_512px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="reboot_512px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Remove_512px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="play_512px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

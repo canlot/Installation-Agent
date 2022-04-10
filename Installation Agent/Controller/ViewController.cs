@@ -17,24 +17,30 @@ namespace Installation_Agent.Controller
 {
     public class ViewController
     {
-        public ObservableCollection<Executable> Apps = new ObservableCollection<Executable>();
-        public ObservableCollection<ScriptExecutable> Scripts = new ObservableCollection<ScriptExecutable>();
+        public ObservableCollection<Executable> Executables = new ObservableCollection<Executable>();
+        
         ClientCommunicator clientCommunicator;
         CancellationTokenSource cancellationTokenSource;
         Task runningNamedPipe;
         private readonly object _lock = new object();
         public ViewController()
         {
-            BindingOperations.EnableCollectionSynchronization(Scripts, _lock);
+            BindingOperations.EnableCollectionSynchronization(Executables, _lock);
             cancellationTokenSource = new CancellationTokenSource();
             clientCommunicator = new ClientCommunicator(cancellationTokenSource.Token);
             clientCommunicator.OnExecutableReceived += newExecutableReceivedAsync;
+            clientCommunicator.OnJobReceived += newJobReceivedAsync;
             
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
                 .CreateLogger();
+            Executables.Add(new ApplicationExecutable()
+            {
+                Name = "Vlc",
+                Version = "14.5",
 
+            });
         }
 
         public async Task RunAsync()
@@ -47,23 +53,32 @@ namespace Installation_Agent.Controller
             cancellationTokenSource.Cancel();
             await runningNamedPipe;
         }
-        private async Task newJob(Job job)
+        private async Task newJobReceivedAsync(Job job)
         {
+            Log.Debug("New job recieved {@job}", job);
+            try
+            {
+                foreach(var executable in Executables)
+                {
+                    if(executable.Id == job.ExecutableID)
+                    {
+                        executable.StatusState = job.StatusState;
+                        executable.CurrentlyRunning = false;
 
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "No job");
+            }
         }
         private async Task newExecutableReceivedAsync(Executable executable)
         {
             Log.Debug("Executable received {id}", executable.Id);
             if(executable != null)
             {
-                if (executable is IRunnable)
-                {
-                    Log.Verbose("Executable is Script");
-                    Scripts.Add((ScriptExecutable)executable);
-                    
-                }
-                else
-                    Apps.Add(executable);
+                Executables.Add(executable);
             }
         }
         public void SendJob(Job job)

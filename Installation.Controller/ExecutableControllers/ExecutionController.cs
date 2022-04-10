@@ -98,8 +98,8 @@ namespace Installation.Controller.ExecutableControllers
                     else if (job.Action == ExecuteAction.Run && executable is IRunnable)
                     {
                         Log.Debug("RunAsync {id} with name {name}", executable.Id, executable.Name);
-                        (StatusState state, string message) = await (executable as IRunnable).RunAsync(cancellationToken);
-                        await executionCompleted(job, state, message);
+                        string message = await (executable as IRunnable).RunAsync(cancellationToken);
+                        await executionCompleted(job, executable.StatusState, message);
                     }
                     else
                     {
