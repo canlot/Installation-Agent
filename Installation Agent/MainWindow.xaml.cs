@@ -32,8 +32,9 @@ namespace Installation_Agent
             
             InitializeComponent();
             this.DataContext = viewController;
-            ListBoxJobs.ItemsSource = viewController.Executables;
-            
+            ListBoxJobs.ItemsSource = viewController.ExecutableCollection;
+
+
         }
         
 
@@ -103,6 +104,12 @@ namespace Installation_Agent
         private void ButtonUninstallApplication_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void AutoSuggestBoxSearchExecutables_TextChanged(ModernWpf.Controls.AutoSuggestBox sender, ModernWpf.Controls.AutoSuggestBoxTextChangedEventArgs args)
+        {
+            viewController.SearchText = sender.Text;
+            viewController.ExecutableCollection.Refresh();
         }
     }
 }

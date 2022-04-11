@@ -14,30 +14,16 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Column="0" Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <ui:AutoSuggestBox PlaceholderText="Search" QueryIcon="Find" Margin="12">
-                
-            </ui:AutoSuggestBox>
-            <ui:NavigationView Grid.Row="1" PaneDisplayMode="Left" ui:IsBackButtonVisible="Collapsed" ui:IsPaneToggleButtonVisible="False">
-                <ui:NavigationView.MenuItems>
-                    <ui:NavigationViewItem Content="Apps"/>
-                    <ui:NavigationViewItem Content="Scripts"/>
-                </ui:NavigationView.MenuItems>
-            </ui:NavigationView>
-        </Grid>
+        <ui:AutoSuggestBox x:Name="AutoSuggestBoxSearchExecutables" Grid.Row="0" PlaceholderText="Search" QueryIcon="Find" Margin="12" Background="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" TextChanged="AutoSuggestBoxSearchExecutables_TextChanged" >
 
-        <ListBox Grid.Column="1" Grid.Row="0" x:Name="ListBoxJobs">
+        </ui:AutoSuggestBox>
+        <ListBox  Grid.Row="1" x:Name="ListBoxJobs">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment"
