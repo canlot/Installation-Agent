@@ -66,17 +66,13 @@
                             <ui:ProgressRing Name = "ProgressRing" Margin="5" IsActive="{Binding CurrentlyRunning, Mode=TwoWay }">
                             </ui:ProgressRing>
                         </StackPanel>
-                        
-                        <Border Grid.Row="1" HorizontalAlignment="Left"  MinWidth="200">
-                            <StackPanel Margin="2" Orientation="Horizontal" HorizontalAlignment="Stretch">
-                                <Button Margin="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ButtonRunScript" Click="ButtonRunScript_Click">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source="/play_512px.png" Height="16" Width="15" Margin="2"/>
-                                        <Label Content="Ausführen" Height="16"  Margin="2"/>
-                                    </StackPanel>
-                                </Button>
-                            </StackPanel>
-                        </Border>
+                        <ui:CommandBar Grid.Row="1" HorizontalAlignment="Left">
+                            <ui:AppBarButton Label="Ausführen" Click="ButtonRunScript_Click">>
+                                <ui:AppBarButton.Icon>
+                                    <ui:BitmapIcon UriSource="/play_512px.png"/>
+                                </ui:AppBarButton.Icon>
+                            </ui:AppBarButton>
+                        </ui:CommandBar>
                     </Grid>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type models:ApplicationExecutable}">
@@ -100,28 +96,24 @@
                             <ui:ProgressRing Name = "ProgressRing" Margin="5" IsActive="{Binding CurrentlyRunning, Mode=TwoWay }">
                             </ui:ProgressRing>
                         </StackPanel>
-                        <Border Grid.Row="1" HorizontalAlignment="Left"  MinWidth="200">
-                            <StackPanel Margin="2" Orientation="Horizontal" HorizontalAlignment="Stretch" >
-                                <Button Margin="2,1,2,1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ButtonInstallApplication" Click="ButtonInstallApplication_Click">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source="/installing_512px.png" Height="16" Width="16" Margin="2"/>
-                                        <Label Content="Installieren" Height="16"  Margin="2"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Margin="2,1,2,1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ButtonReinstallApplication" Click="ButtonReinstallApplication_Click">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source="/reboot_512px.png" Height="16" Width="16" Margin="2"/>
-                                        <Label Content="Neuinstallieren" Height="16"  Margin="2"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Margin="2,1,2,1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="ButtonUninstallApplication" Click="ButtonUninstallApplication_Click">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Source="/Remove_512px.png" Height="16" Width="16" Margin="2"/>
-                                        <Label Content="Deinstallieren" Height="16"  Margin="2"/>
-                                    </StackPanel>
-                                </Button>
-                            </StackPanel>
-                        </Border>
+                        <ui:CommandBar Grid.Row="1" HorizontalAlignment="Left">
+                            <ui:AppBarButton Label="Installieren" Click="ButtonInstallApplication_Click">
+                                <ui:AppBarButton.Icon>
+                                    <ui:BitmapIcon UriSource="/installing_512px.png"/>
+                                </ui:AppBarButton.Icon>
+                            </ui:AppBarButton>
+                            <ui:AppBarButton Label="Neuinstallieren" Click="ButtonReinstallApplication_Click">
+                                <ui:AppBarButton.Icon>
+                                    <ui:BitmapIcon UriSource="/reboot_512px.png"/>
+                                </ui:AppBarButton.Icon>
+                            </ui:AppBarButton>
+
+                            <ui:AppBarButton Label="Deinstallieren" Click="ButtonUninstallApplication_Click">
+                                <ui:AppBarButton.Icon>
+                                    <ui:BitmapIcon UriSource="/Remove_512px.png"/>
+                                </ui:AppBarButton.Icon>
+                            </ui:AppBarButton>
+                        </ui:CommandBar>
                     </Grid>
                 </DataTemplate>
             </ListBox.Resources>
