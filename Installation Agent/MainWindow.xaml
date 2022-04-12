@@ -8,11 +8,12 @@
         xmlns:local="clr-namespace:Installation_Agent"
         xmlns:models="clr-namespace:Installation.Models.Executables;assembly=Installation.Models"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="1000" Closing="Window_Closing" Loaded="Window_Loaded">
+        Background="#FFF2F2F2"
+        Title="MainWindow" Height="450" Width="1000" Closing="Window_Closing" Loaded="Window_Loaded" >
     <Window.Resources>
         <local:StatusStateToColorConverter x:Key="StatusStateToColorConverter" />
     </Window.Resources>
-    <Grid>
+    <Grid Background="#FFF2F2F2" Margin="30">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -20,10 +21,11 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ui:AutoSuggestBox x:Name="AutoSuggestBoxSearchExecutables" Grid.Row="0" PlaceholderText="Search" QueryIcon="Find" Margin="12" Background="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" TextChanged="AutoSuggestBoxSearchExecutables_TextChanged" >
+        <ui:AutoSuggestBox x:Name="AutoSuggestBoxSearchExecutables" Grid.Row="0" PlaceholderText="Search" QueryIcon="Find" Margin="5,10" Background="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" TextChanged="AutoSuggestBoxSearchExecutables_TextChanged" >
 
         </ui:AutoSuggestBox>
-        <ListBox  Grid.Row="1" x:Name="ListBoxJobs">
+
+        <ListBox  x:Name="ListBoxJobs" Grid.Row="1" >
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment"
@@ -32,7 +34,7 @@
             </ListBox.ItemContainerStyle>
             <ListBox.Resources>
                 <DataTemplate DataType="{x:Type models:ScriptExecutable}">
-                    <Grid Margin="10">
+                    <Grid Margin="5,10,5,10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*"/>
                             <RowDefinition Height="1*"/>
@@ -52,7 +54,7 @@
                             <ui:ProgressRing Name = "ProgressRing" Margin="5" IsActive="{Binding CurrentlyRunning, Mode=TwoWay }">
                             </ui:ProgressRing>
                         </StackPanel>
-                        <ui:CommandBar Grid.Row="1" HorizontalAlignment="Left">
+                        <ui:CommandBar Grid.Row="1" HorizontalAlignment="Left" >
                             <ui:AppBarButton Label="Ausführen" Click="ButtonRunScript_Click">>
                                 <ui:AppBarButton.Icon>
                                     <ui:BitmapIcon UriSource="/play_512px.png"/>
@@ -62,7 +64,7 @@
                     </Grid>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type models:ApplicationExecutable}">
-                    <Grid Margin="10">
+                    <Grid Margin="5,10,5,10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*"/>
                             <RowDefinition Height="1*"/>
@@ -82,7 +84,7 @@
                             <ui:ProgressRing Name = "ProgressRing" Margin="5" IsActive="{Binding CurrentlyRunning, Mode=TwoWay }">
                             </ui:ProgressRing>
                         </StackPanel>
-                        <ui:CommandBar Grid.Row="1" HorizontalAlignment="Left">
+                        <ui:CommandBar Grid.Row="1" HorizontalAlignment="Left" >
                             <ui:AppBarButton Label="Installieren" Click="ButtonInstallApplication_Click">
                                 <ui:AppBarButton.Icon>
                                     <ui:BitmapIcon UriSource="/installing_512px.png"/>
@@ -103,7 +105,7 @@
                     </Grid>
                 </DataTemplate>
             </ListBox.Resources>
-            
+
         </ListBox>
     </Grid>
 </Window>
