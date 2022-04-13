@@ -1,9 +1,9 @@
-﻿using Installation.Logger;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Installation.Parser.Exceptions
 {
@@ -11,8 +11,7 @@ namespace Installation.Parser.Exceptions
     {
         public ExecutableBrokenException(string settingsFilePath) : base()
         {
-            string message = $"Executable settings file is broken {settingsFilePath}";
-            CommonLogger.LogEvent(message, LogType.Error);
+            Log.Error("Executable settings file is broken {settingsFilePath}",settingsFilePath);
         }
     }
 }

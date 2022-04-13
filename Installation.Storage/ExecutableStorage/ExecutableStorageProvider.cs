@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IniParser;
-using Installation.Logger;
 using Installation.Parser.Exceptions;
 using Serilog;
 

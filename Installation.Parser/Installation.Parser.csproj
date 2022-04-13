@@ -72,10 +72,6 @@
     <Folder Include="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Installation.Logger\Installation.Logger.csproj">
-      <Project>{650ef876-12bb-4b84-b175-adfe9a51f834}</Project>
-      <Name>Installation.Logger</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Installation.Models\Installation.Models.csproj">
       <Project>{cc707c57-86e0-47eb-b86c-06a0ad5a772a}</Project>
       <Name>Installation.Models</Name>

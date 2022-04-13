@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Installation.Storage", "Ins
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Installation.Parser", "Installation.Parser\Installation.Parser.csproj", "{62F8D1E0-3E02-4F31-A71D-7501E3D8CA20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Installation.Logger", "Installation.Logger\Installation.Logger.csproj", "{650EF876-12BB-4B84-B175-ADFE9A51F834}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Installation.Models", "Installation.Models\Installation.Models.csproj", "{CC707C57-86E0-47EB-B86C-06A0AD5A772A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Installation.Executors", "Installation.Executors\Installation.Executors.csproj", "{79E77457-22FF-4BD7-B5C9-3293EF504157}"
@@ -87,14 +85,6 @@ Global
 		{62F8D1E0-3E02-4F31-A71D-7501E3D8CA20}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62F8D1E0-3E02-4F31-A71D-7501E3D8CA20}.Release|x64.ActiveCfg = Release|x64
 		{62F8D1E0-3E02-4F31-A71D-7501E3D8CA20}.Release|x64.Build.0 = Release|x64
-		{650EF876-12BB-4B84-B175-ADFE9A51F834}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{650EF876-12BB-4B84-B175-ADFE9A51F834}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{650EF876-12BB-4B84-B175-ADFE9A51F834}.Debug|x64.ActiveCfg = Debug|x64
-		{650EF876-12BB-4B84-B175-ADFE9A51F834}.Debug|x64.Build.0 = Debug|x64
-		{650EF876-12BB-4B84-B175-ADFE9A51F834}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{650EF876-12BB-4B84-B175-ADFE9A51F834}.Release|Any CPU.Build.0 = Release|Any CPU
-		{650EF876-12BB-4B84-B175-ADFE9A51F834}.Release|x64.ActiveCfg = Release|x64
-		{650EF876-12BB-4B84-B175-ADFE9A51F834}.Release|x64.Build.0 = Release|x64
 		{CC707C57-86E0-47EB-B86C-06A0AD5A772A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CC707C57-86E0-47EB-B86C-06A0AD5A772A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC707C57-86E0-47EB-B86C-06A0AD5A772A}.Debug|x64.ActiveCfg = Debug|x64

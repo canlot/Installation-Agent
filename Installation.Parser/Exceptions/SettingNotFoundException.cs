@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Installation.Logger;
+using Serilog;
 
 namespace Installation.Parser.Exceptions
 {
@@ -11,8 +11,7 @@ namespace Installation.Parser.Exceptions
     {
         public SettingNotFoundException(string setting) : base()
         {
-            string message = $"Could not find {setting} in settings";
-            CommonLogger.LogEvent(message, LogType.Error);
+            Log.Error("Could not find {setting} in settings", setting);
         }
     }
 }
