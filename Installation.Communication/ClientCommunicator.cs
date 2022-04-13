@@ -9,6 +9,8 @@ namespace Installation.Communication
 {
     public class ClientCommunicator : Communicator
     {
+        public delegate Task ClientConnected();
+        public event ClientConnected OnClientConnected;
         public ClientCommunicator(CancellationToken cancellationToken) : base(cancellationToken)
         {
 
@@ -26,7 +28,7 @@ namespace Installation.Communication
                 {
 
                 }
-
+                await OnClientConnected();
                 await ReadAsync();
 
             }

@@ -28,6 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.Service = new System.Diagnostics.Process();
+            // 
+            // Service
+            // 
+            this.Service.StartInfo.Domain = "";
+            this.Service.StartInfo.LoadUserProfile = false;
+            this.Service.StartInfo.Password = null;
+            this.Service.StartInfo.StandardErrorEncoding = null;
+            this.Service.StartInfo.StandardOutputEncoding = null;
+            this.Service.StartInfo.UserName = "";
+            this.Service.Exited += new System.EventHandler(this.process1_Exited);
             // 
             // InstallationService
             // 
@@ -36,5 +47,7 @@
         }
 
         #endregion
+
+        private System.Diagnostics.Process Service;
     }
 }

@@ -47,14 +47,20 @@ namespace Installation_Agent.Controller
             clientCommunicator = new ClientCommunicator(cancellationTokenSource.Token);
             clientCommunicator.OnExecutableReceived += newExecutableReceivedAsync;
             clientCommunicator.OnJobReceived += newJobReceivedAsync;
-            
+            clientCommunicator.OnClientConnected += OnClientConnectedAsync;
+
+
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
                 .CreateLogger();
             
         }
-
+        
+        private async Task OnClientConnectedAsync()
+        {
+            await clientCommunicator.SendCommandAsync(Command.SendExecutables);
+        }
         private bool ExecutableFilter(object item)
         {
             if(item == null)
@@ -66,7 +72,6 @@ namespace Installation_Agent.Controller
         public async Task RunAsync()
         {
             runningNamedPipe = clientCommunicator.ConnectAsync();
-            await clientCommunicator.SendCommandAsync(Command.SendExecutables);
         }
         public async Task StopAsync()
         {

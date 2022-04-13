@@ -97,6 +97,10 @@
       <Project>{c6d71117-0060-4294-9d78-6c0e5495eed5}</Project>
       <Name>Installation.Communication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Installation.Controller\Installation.Controller.csproj">
+      <Project>{66a7b69b-76cd-417c-ad7f-bbaabac5f3e0}</Project>
+      <Name>Installation.Controller</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json">

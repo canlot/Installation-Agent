@@ -39,8 +39,7 @@ namespace Installation.Controller
             
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
-                .WriteTo.Console(Serilog.Events.LogEventLevel.Verbose)
-                .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
+                .WriteTo.File(@"log.txt", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
                 .CreateLogger();
 
             finder = new ExecutableFinder(globalSettings);
@@ -77,38 +76,12 @@ namespace Installation.Controller
 
             var communicatorTask = Task.Run(() => serverCommunicator.ListenAsync());
             var executionTask = Task.Run(() => executionController.RunController(cancellationTokenSource.Token));
-            //var fire = Task.Run(() => TestItWithFire());
 
             Log.Verbose("Waiting for all task to finish");
 
             Task.WaitAll(communicatorTask, executionTask);
             Log.Information("------PROGRAM ENDED------ \n\n");
             Log.CloseAndFlush();
-        }
-        public async Task TestItWithFire()
-        {
-            while (true)
-            {
-                Console.WriteLine("Guid: ");
-                var input = Console.ReadLine();
-                if (input == "exit")
-                {
-                    Stop();
-                    break;
-                }
-                Guid guid;
-                if (Guid.TryParse(input, out guid))
-                {
-                    Job job = new Job()
-                    {
-                        Action = ExecuteAction.Run,
-                        ExecutableID = guid,
-                        ExecutionState = ExecutionState.Started
-                    }.WithNewGuiD();
-                    await newJob(job);
-                }
-            }
-            
         }
         public void Stop()
         {
