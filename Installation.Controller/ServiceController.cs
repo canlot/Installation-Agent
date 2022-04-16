@@ -39,6 +39,7 @@ namespace Installation.Controller
             
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
+                .WriteTo.Console()
                 .WriteTo.File(@"log.txt", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
                 .CreateLogger();
 
