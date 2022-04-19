@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Installation.Models.Attributes
+namespace Installation.Models
 {
     public enum ConfigContext
     {

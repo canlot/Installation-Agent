@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Installation.Models.Attributes
+namespace Installation.Models
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class ExecutableAttribute : Attribute
