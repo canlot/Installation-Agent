@@ -1,6 +1,4 @@
 ﻿using Installation.Models;
-using Installation.Models.Interfaces;
-using Installation.Models.Executables;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

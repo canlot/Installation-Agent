@@ -1,5 +1,4 @@
-﻿using Installation.Models.Executables;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +7,7 @@ using IniParser;
 using IniParser.Model;
 using Installation.Parser.Helpers;
 using Installation.Parser.Exceptions;
-using Installation.Models.Interfaces;
+using Installation.Models;
 using Serilog;
 
 

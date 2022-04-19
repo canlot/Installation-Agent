@@ -5,13 +5,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Installation.Models.Interfaces
+namespace Installation.Models
 {
     public interface IUninstallable
     {
         bool UnInstalled { get; set; }
         string UninstallFilePath { get; set; }
-        (StatusState, string) Uninstall();
-        Task<(StatusState, string)> UninstallAsync(CancellationToken cancellationToken);
+        Task<string> UninstallAsync(CancellationToken cancellationToken);
     }
 }

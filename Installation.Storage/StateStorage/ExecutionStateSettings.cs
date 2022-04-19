@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Installation.Models.Interfaces;
-using Installation.Models.Executables;
+using Installation.Models;
 using Installation.Storage;
 
 

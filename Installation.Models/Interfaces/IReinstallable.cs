@@ -5,13 +5,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Installation.Models.Interfaces
+namespace Installation.Models
 {
     public interface IReinstallable
     {
         bool ReInstalled { get; set; }
         string ReinstallFilePath { get; set; }
-        (StatusState, string) Reinstall();
-        Task<(StatusState, string)> ReinstallAsync(CancellationToken cancellationToken);
+        Task<string> ReinstallAsync(CancellationToken cancellationToken);
     }
 }

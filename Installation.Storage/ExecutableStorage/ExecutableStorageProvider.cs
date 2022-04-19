@@ -1,4 +1,4 @@
-﻿using Installation.Models.Executables;
+﻿using Installation.Models;
 using Installation.Parser;
 using System;
 using System.Collections.Generic;

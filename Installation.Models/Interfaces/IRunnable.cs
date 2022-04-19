@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Installation.Models;
 
-namespace Installation.Models.Interfaces
+namespace Installation.Models
 {
     public interface IRunnable
     {

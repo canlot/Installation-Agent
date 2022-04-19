@@ -5,13 +5,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Installation.Models.Interfaces
+namespace Installation.Models
 {
     public interface IInstalable
     {
         bool Installed { get; set; }
         string InstallFilePath { get; set; }
-        (StatusState, string) Install();
-        Task<(StatusState, string)> InstallAsync(CancellationToken cancellationToken);
+        Task<string> InstallAsync(CancellationToken cancellationToken);
     }
 }

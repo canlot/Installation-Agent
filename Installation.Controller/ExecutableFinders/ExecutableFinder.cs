@@ -1,6 +1,5 @@
 ﻿using Installation.Controller.Settings;
-using Installation.Models.Executables;
-using Installation.Models.Interfaces;
+using Installation.Models;
 using Installation.Storage.ExecutableStorage;
 using System;
 using System.Collections.Generic;

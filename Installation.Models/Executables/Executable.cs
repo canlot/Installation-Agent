@@ -6,8 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Installation.Models.Executables
+namespace Installation.Models
 {
+    
     public class Executable : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

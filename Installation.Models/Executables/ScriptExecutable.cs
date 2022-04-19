@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Installation.Models.Interfaces;
 using Installation.Executors;
 using Serilog;
 
-namespace Installation.Models.Executables
+namespace Installation.Models
 {
     public class ScriptExecutable : Executable, IRunnable
     {

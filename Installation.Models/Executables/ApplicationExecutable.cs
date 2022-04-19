@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Installation.Models.Interfaces;
 
-namespace Installation.Models.Executables
+namespace Installation.Models
 {
     public class ApplicationExecutable : Executable, IInstalable, IReinstallable, IUninstallable
     {
