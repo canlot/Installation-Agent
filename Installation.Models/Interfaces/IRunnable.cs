@@ -13,7 +13,6 @@ namespace Installation.Models
         bool Runned { get; set; }
         string RunFilePath { get; set; }
 
-        string Run();
         Task<string> RunAsync(CancellationToken cancellationToken);
     }
 }

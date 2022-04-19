@@ -15,7 +15,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Installation.Models.Executables;
 using Serilog;
 
 namespace Installation_Agent

@@ -9,8 +9,6 @@ using Installation.Controller.ExecutableControllers;
 using System.Threading;
 using Installation.Controller.Settings;
 using Installation.Controller.ExecutableFinders;
-using Installation.Models.Executables;
-using Installation.Models.Interfaces;
 using System.Collections.Concurrent;
 using Serilog;
 

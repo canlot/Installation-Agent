@@ -16,32 +16,20 @@ namespace Installation.Models
         bool IUninstallable.UnInstalled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         string IUninstallable.UninstallFilePath { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        (StatusState, string) IInstalable.Install()
+
+        Task<string> IInstalable.InstallAsync(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        Task<(StatusState, string)> IInstalable.InstallAsync(CancellationToken cancellationToken)
+
+        Task<string> IReinstallable.ReinstallAsync(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        (StatusState, string) IReinstallable.Reinstall()
-        {
-            throw new NotImplementedException();
-        }
 
-        Task<(StatusState, string)> IReinstallable.ReinstallAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        (StatusState, string) IUninstallable.Uninstall()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<(StatusState, string)> IUninstallable.UninstallAsync(CancellationToken cancellationToken)
+        Task<string> IUninstallable.UninstallAsync(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

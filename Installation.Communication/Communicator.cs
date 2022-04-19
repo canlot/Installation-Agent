@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Installation.Models;
-using Installation.Models.Executables;
 using Newtonsoft.Json;
 using Serilog;
 
