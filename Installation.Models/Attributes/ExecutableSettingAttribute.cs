@@ -13,7 +13,7 @@ namespace Installation.Models.Attributes
     }
 
     [AttributeUsage(AttributeTargets.Property)]
-    public class ExecutableSetting : Attribute
+    public class ExecutableSettingAttribute : Attribute
     {
         public string DefaultValue { get; set; }
         public ConfigContext ConfigContext { get; set; } = ConfigContext.File;
