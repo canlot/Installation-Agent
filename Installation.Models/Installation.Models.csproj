@@ -62,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ExecutableAttribute.cs" />
-    <Compile Include="Attributes\ExecutableSetting.cs" />
+    <Compile Include="Attributes\ExecutableSettingAttribute.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Executables\ApplicationExecutable.cs" />
     <Compile Include="Executables\Executable.cs" />
