@@ -18,7 +18,7 @@ namespace Installation.Parser
 
 				var executable = getRightExecutable<T>(name);
 
-				foreach (var property in typeof(T).GetProperties())
+				foreach (var property in executable.GetType().GetProperties())
 				{
 					ExecutableSettingAttribute att = (ExecutableSettingAttribute)Attribute.GetCustomAttribute(property, typeof(ExecutableSettingAttribute));
 					Log.Verbose(property.Name);
@@ -56,10 +56,12 @@ namespace Installation.Parser
 						
 					}
 				}
+				return (T)executable;
 			}
 			catch (Exception ex)
             {
 				Log.Error(ex, "could not parse file");
+				return default(T);
             }
 
 			
