@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Serilog;
 using Installation.Parser.Exceptions;
+using IniParser;
 
 namespace Installation.Parser.Helpers
 {
@@ -18,9 +19,9 @@ namespace Installation.Parser.Helpers
         private string RunFilePathName = "RunFilePath";
         private string InstallFilePathName = "InstallFilePath";
         private string UninstallFilePathName = "UninstallFilePath";
-        public ParseHelper(IniData settings)
+        public ParseHelper(string settingsFilePath)
         {
-            this.settings = settings;
+            settings = new FileIniDataParser().ReadFile(settingsFilePath);
         }
         public bool ContainsScript()
         {
@@ -37,6 +38,7 @@ namespace Installation.Parser.Helpers
         }
         public Guid GetSettingGuid(string var, string section = "")
         {
+            
             try
             {
                 return Guid.Parse(GetSetting(var, section));
@@ -87,6 +89,10 @@ namespace Installation.Parser.Helpers
                     return true;
             }
             return false;
+        }
+        public List<string> GetSections()
+        {
+            return settings.Sections.Select(s => s.SectionName).ToList();
         }
     }
 }

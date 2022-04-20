@@ -27,8 +27,7 @@ namespace Installation.Parser
         
     public Executable ParseExecutableSettingsFile(string settingsFilePath) // parse installation file for current executable
     {
-            settingsData = new FileIniDataParser().ReadFile(settingsFilePath);
-            helper = new ParseHelper(settingsData);
+            helper = new ParseHelper(settingsFilePath);
 
             Executable executable;
             try
