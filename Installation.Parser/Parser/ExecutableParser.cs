@@ -19,12 +19,16 @@ namespace Installation.Parser
 			fileParseHelper = new ParseHelper(settingsFilePath);
         }
 
-		public T ParseObject<T>(string name, Dictionary<string, string> dict) where T : class
+		public Executable ParseObject() 
 		{
 			try
             {
-
-				var executable = getExecutableObject<T>(name);
+				string executableTypeName = getExecutableTypeName();
+				if (executableTypeName == null)
+					throw new Exception();
+				var executable = getExecutableObject(executableTypeName);
+				if (executable == null)
+					throw new Exception();
 
 				foreach (var property in executable.GetType().GetProperties())
 				{
@@ -38,49 +42,59 @@ namespace Installation.Parser
 						else
 							keyName = property.Name;
 
-						string value;
-						if (!dict.TryGetValue(keyName, out value))
-						{
-							if (att.DefaultValue != null)
-								value = att.DefaultValue;
-							else
-							{
-								if (att.Mandatory)
-									throw new Exception();
 
-							}
+						string executableAttributeName = getExecutableNameAttribute(property.DeclaringType);
+
+						string settingValue;
+						if (executableAttributeName == null || executableAttributeName == "")
+                        {
+							settingValue = fileParseHelper.GetSetting(att.ConfigName);
+                        }
+						else
+                        {
+							settingValue = fileParseHelper.GetSetting(att.ConfigName, executableAttributeName);
+                        }
+
+
+						if (att.DefaultValue != null)
+							settingValue = att.DefaultValue;
+						else
+						{
+							if (att.Mandatory)
+								throw new Exception();
 
 						}
+
 						
 						if (property.PropertyType.IsEnum)
 						{
-							property.SetValue(executable, (object)Enum.Parse(property.PropertyType, value));
+							property.SetValue(executable, (object)Enum.Parse(property.PropertyType, settingValue));
 						}
 						else if (property.PropertyType == typeof(Guid))
                         {
-							property.SetValue(executable, (object)Guid.Parse(value));
+							property.SetValue(executable, (object)Guid.Parse(settingValue));
                         }
 						else
 						{
-							property.SetValue(executable, System.Convert.ChangeType(value, property.PropertyType));
+							property.SetValue(executable, System.Convert.ChangeType(settingValue, property.PropertyType));
 						}
 						
 					}
 				}
-				return (T)executable;
+				return executable;
 			}
 			catch (Exception ex)
             {
 				Log.Error(ex, "could not parse file");
-				return default(T);
+				return null;
             }
 
 			
 		}
 
-		private object getExecutableObject<T>(string name)
+		private Executable getExecutableObject(string name)
 		{
-			foreach (Type type in Assembly.GetAssembly(typeof(T)).GetTypes())
+			foreach (Type type in Assembly.GetAssembly(typeof(Executable)).GetTypes())
 			{
 				if (type.IsSubclassOf(typeof(Executable)))
 				{
@@ -88,12 +102,18 @@ namespace Installation.Parser
 					if (executableAttribute != null)
 					{
 						if (executableAttribute.ExecutableName == name)
-							return (T)Activator.CreateInstance(type);
+							return (Executable)Activator.CreateInstance(type);
 					}
 				}
 			}
-			return default(T);
+			return null;
 		}
+
+		private string getExecutableNameAttribute(Type type)
+        {
+			ExecutableAttribute executableAttribute = (ExecutableAttribute)Attribute.GetCustomAttribute(type, typeof(ExecutableAttribute));
+			return executableAttribute != null ? executableAttribute.ExecutableName : null;
+        }
 
 		private string getExecutableTypeName()
         {
