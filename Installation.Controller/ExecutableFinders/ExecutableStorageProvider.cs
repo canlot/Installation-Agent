@@ -8,9 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using IniParser;
 using Installation.Parser.Exceptions;
+using Installation.Storage;
 using Serilog;
 
-namespace Installation.Storage.ExecutableStorage
+namespace Installation.Controller.ExecutableFinders
 {
     public class ExecutableStorageProvider
     {
@@ -22,7 +23,7 @@ namespace Installation.Storage.ExecutableStorage
             this.executablePaths = executablePaths;
             this.executableSettingsFileName = applicationSettingsFileName;
         }
-        public IEnumerable<Executable> GetExecutables(ExecutableFileParser parser)
+        public IEnumerable<Executable> GetExecutables()
         {
             Executable executable = null;
             foreach (var path in executablePaths)
@@ -37,15 +38,15 @@ namespace Installation.Storage.ExecutableStorage
                 {
                     Log.Debug(ex, "Exception occured by searching in {folder}", path);
                 }
-
+                
                 foreach (var directory in directories)
                     {   
-                        
                         try
                         {
                             if(searchForSettingFile(directory))
                             {
-                                executable = parser.ParseExecutableSettingsFile(directory + @"\" + executableSettingsFileName);
+                                ExecutableParser executableParser = new ExecutableParser(directory + @"\" + executableSettingsFileName);
+                                executable = executableParser.ParseObject();
                             }
                             else
                             {

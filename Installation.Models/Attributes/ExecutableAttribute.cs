@@ -13,6 +13,6 @@ namespace Installation.Models
         {
             ExecutableName = name;
         }
-        public string ExecutableName { get; set; }
+        public string ExecutableName { get; private set; }
     }
 }

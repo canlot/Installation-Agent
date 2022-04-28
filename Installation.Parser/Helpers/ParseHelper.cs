@@ -19,8 +19,10 @@ namespace Installation.Parser.Helpers
         private string RunFilePathName = "RunFilePath";
         private string InstallFilePathName = "InstallFilePath";
         private string UninstallFilePathName = "UninstallFilePath";
+        private string settingsFilePath;
         public ParseHelper(string settingsFilePath)
         {
+            this.settingsFilePath = settingsFilePath;
             settings = new FileIniDataParser().ReadFile(settingsFilePath);
         }
         public bool ContainsScript()
