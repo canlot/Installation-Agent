@@ -7,29 +7,33 @@ using System.Threading.Tasks;
 
 namespace Installation.Models
 {
+    [Executable("App")]
     public class ApplicationExecutable : Executable, IInstalable, IReinstallable, IUninstallable
     {
-        bool IInstalable.Installed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        string IInstalable.InstallFilePath { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        bool IReinstallable.ReInstalled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        string IReinstallable.ReinstallFilePath { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        bool IUninstallable.UnInstalled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        string IUninstallable.UninstallFilePath { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool Installed { get; set; }
+        [ExecutableSetting(ConfigName = "InstallFilePath")]
+        public string InstallFilePath { get; set; }
+        public bool ReInstalled { get ; set; }
+        [ExecutableSetting(ConfigName = "ReinstallFilePath", Mandatory = false)]
+        public string ReinstallFilePath { get ; set ; }
+        public bool UnInstalled { get ; set ; }
+        [ExecutableSetting(ConfigName = "UninstallFilePath")]
+        public string UninstallFilePath { get ; set; }
 
 
-        Task<string> IInstalable.InstallAsync(CancellationToken cancellationToken)
+        public Task<string> InstallAsync(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
 
-        Task<string> IReinstallable.ReinstallAsync(CancellationToken cancellationToken)
+        public Task<string> ReinstallAsync(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
 
-        Task<string> IUninstallable.UninstallAsync(CancellationToken cancellationToken)
+        public Task<string> UninstallAsync(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

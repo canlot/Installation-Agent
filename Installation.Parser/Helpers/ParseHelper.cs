@@ -61,7 +61,7 @@ namespace Installation.Parser.Helpers
             {
                 var data = settings.Global.GetKeyData(var);
                 if (data == null || data.Value == "")
-                    throw new SettingNotFoundException(var);
+                    return null;
                 else
                     return data.Value;
             }
@@ -71,7 +71,7 @@ namespace Installation.Parser.Helpers
                 if (required)
                 {
                     if (data == null || data.Value == "")
-                        throw new SettingNotFoundException(var);
+                        return null;
                     else
                         return data.Value;
                 }
