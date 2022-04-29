@@ -45,12 +45,7 @@ namespace Installation_Agent
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             await viewController.RunAsync();
-            //
-            //DebugBox.Text = "Test";
-            ////viewController.Apps.Add(new Job
-            ////{
 
-            ////}.WithNewGuiD());
 
         }
 
@@ -77,32 +72,31 @@ namespace Installation_Agent
             var script = (ScriptExecutable)button.DataContext;
             script.CurrentlyRunning = true;
             await viewController.RunJob(script);
-            /*
-            DependencyObject parent = VisualTreeHelper.GetParent((DependencyObject)sender);
-            DependencyObject parentparent = VisualTreeHelper.GetParent((DependencyObject)parent);
-            DependencyObject parentparentparent = VisualTreeHelper.GetParent((DependencyObject)parentparent);
-            DependencyObject parentparentparentparent = VisualTreeHelper.GetParent((DependencyObject)parentparentparent);
-            ListBoxItem item = (ListBoxItem)parentparentparentparent;
-            ScriptExecutable scriptExecutable = (ScriptExecutable)item.DataContext;
-            scriptExecutable.CurrentlyRunning = true;
-            //Job job = (Job)item.DataContext;
-            await viewController.RunJob(scriptExecutable);
-            */
         }
 
-        private void ButtonInstallApplication_Click(object sender, RoutedEventArgs e)
+        private async void ButtonInstallApplication_Click(object sender, RoutedEventArgs e)
         {
-
+            var button = (Button)sender;
+            var app = (ApplicationExecutable)button.DataContext;
+            app.CurrentlyRunning = true;
+            await viewController.InstallApplication(app);
         }
 
-        private void ButtonReinstallApplication_Click(object sender, RoutedEventArgs e)
+        private async void ButtonReinstallApplication_Click(object sender, RoutedEventArgs e)
         {
-
+            var button = (Button)sender;
+            var app = (ApplicationExecutable)button.DataContext;
+            app.CurrentlyRunning = true;
+            await viewController.ReinstallApplication(app);
         }
 
-        private void ButtonUninstallApplication_Click(object sender, RoutedEventArgs e)
+        private async void ButtonUninstallApplication_Click(object sender, RoutedEventArgs e)
         {
-
+            var button = (Button)sender;
+            var app = (ApplicationExecutable)button.DataContext;
+            app.CurrentlyRunning = true;
+            await viewController.UninstallApplication(app);
+            
         }
 
         private void AutoSuggestBoxSearchExecutables_TextChanged(ModernWpf.Controls.AutoSuggestBox sender, ModernWpf.Controls.AutoSuggestBoxTextChangedEventArgs args)

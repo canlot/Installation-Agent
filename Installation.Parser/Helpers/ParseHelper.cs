@@ -13,48 +13,14 @@ namespace Installation.Parser.Helpers
     class ParseHelper
     {
         private IniData settings;
-        private string machineContext = "Machine";
-        private string userContext = "User";
-
-        private string RunFilePathName = "RunFilePath";
-        private string InstallFilePathName = "InstallFilePath";
-        private string UninstallFilePathName = "UninstallFilePath";
         private string settingsFilePath;
         public ParseHelper(string settingsFilePath)
         {
             this.settingsFilePath = settingsFilePath;
             settings = new FileIniDataParser().ReadFile(settingsFilePath);
+            settings.Configuration.CaseInsensitive = true;
         }
-        public bool ContainsScript()
-        {
-            if (settings[machineContext].ContainsKey(RunFilePathName) || settings[userContext].ContainsKey(RunFilePathName))
-                return true;
-            return false;
-        }
-        public bool ContainsApp()
-        {
-            if (settings[machineContext].ContainsKey(InstallFilePathName) || settings[userContext].ContainsKey(InstallFilePathName))
-                if (settings[machineContext].ContainsKey(UninstallFilePathName) || settings[userContext].ContainsKey(UninstallFilePathName))
-                    return true;
-            return false;
-        }
-        public Guid GetSettingGuid(string var, string section = "")
-        {
-            
-            try
-            {
-                return Guid.Parse(GetSetting(var, section));
-            }
-            catch (FormatException ex)
-            {
-                Log.Debug(ex, "Guid Parse failed");
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+
         public string GetSetting(string var, string section ="", bool required = true)
         {
             if (section == "")

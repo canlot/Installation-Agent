@@ -116,5 +116,35 @@ namespace Installation_Agent.Controller
             }.WithNewGuiD();
             await clientCommunicator.SendJobAsync(job);
         }
+        public async Task InstallApplication(Executable executable)
+        {
+            var job = new Job()
+            {
+                Action = ExecuteAction.Install,
+                ExecutableID = executable.Id,
+                ExecutionState = ExecutionState.Started
+            }.WithNewGuiD();
+            await clientCommunicator.SendJobAsync(job);
+        }
+        public async Task ReinstallApplication(Executable executable)
+        {
+            var job = new Job()
+            {
+                Action = ExecuteAction.Reinstall,
+                ExecutableID = executable.Id,
+                ExecutionState = ExecutionState.Started
+            }.WithNewGuiD();
+            await clientCommunicator.SendJobAsync(job);
+        }
+        public async Task UninstallApplication(Executable executable)
+        {
+            var job = new Job()
+            {
+                Action = ExecuteAction.Uninstall,
+                ExecutableID = executable.Id,
+                ExecutionState = ExecutionState.Started
+            }.WithNewGuiD();
+            await clientCommunicator.SendJobAsync(job);
+        }
     }
 }

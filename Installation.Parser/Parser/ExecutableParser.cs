@@ -49,7 +49,7 @@ namespace Installation.Parser
 					string executableAttributeName = getExecutableNameAttribute(property.DeclaringType); // get from which type this attribute come from
 
 					string settingValue;
-					if (executableAttributeName == null || executableAttributeName == "") // when its come from base executable type
+					if (string.IsNullOrEmpty(executableAttributeName)) // when its come from base executable type
                     {
 						settingValue = fileParseHelper.GetSetting(propertyName);
                     }
@@ -72,9 +72,7 @@ namespace Installation.Parser
 						}
 					}
 					
-
 					setProperty(property, executable, settingValue);
-					
 						
 				}
 			}
@@ -95,8 +93,8 @@ namespace Installation.Parser
 			}
 			else if(property.PropertyType == typeof(string))
             {
-				if(!string.IsNullOrEmpty(settingValue))
-					settingValue = settingValue.Replace("\"", "");
+				//if(!string.IsNullOrEmpty(settingValue))
+				//	settingValue = settingValue.Replace("\"", "");
 				property.SetValue(executable, System.Convert.ChangeType(settingValue, property.PropertyType));
 			}
 			else

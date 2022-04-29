@@ -108,6 +108,7 @@ namespace Installation.Controller.ExecutableControllers
                 catch (Exception ex)
                 {
                     Log.Error(ex, "Executable could't be executed");
+                    await executionCompleted(job, StatusState.Error, ex.Message);
                 }
                 
             }

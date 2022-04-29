@@ -24,16 +24,16 @@ namespace Installation.Models
         private bool currentlyRunning;
         private string category;
 
-        [ExecutableSetting(ConfigName = "Id")]
+        [ExecutableSetting]
         public Guid Id { get => id; set => id = value; }
-        [ExecutableSetting(ConfigName = "Name")]
+        [ExecutableSetting]
         public string Name { get => name; set => name = value; }
-        [ExecutableSetting(ConfigName ="Version")]
+        [ExecutableSetting]
         public string Version { get => version; set => version = value; }
         public bool CurrentlyRunning { get => currentlyRunning; set { currentlyRunning = value; OnPropertyChanged("CurrentlyRunning"); } }
         public StatusState StatusState { get => statusState; set { statusState = value; OnPropertyChanged("StatusState"); } }
         public string ExecutableDirectory { get => executableDirectory; set => executableDirectory = value; }
-        [ExecutableSetting(ConfigName ="Category", Mandatory = false)]
+        [ExecutableSetting(Mandatory = false)]
         public string Category { get => category; set => category = value; }
 
         public Executable()
