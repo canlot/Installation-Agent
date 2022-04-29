@@ -58,7 +58,7 @@ namespace Installation.Parser
 						settingValue = fileParseHelper.GetSetting(att.ConfigName, executableAttributeName);
                     }
 
-					if(settingValue == null || settingValue == "") // checks if value got from file is empty
+					if(string.IsNullOrEmpty(settingValue)) // checks if value got from file is empty
                     {
 						if (att.DefaultValue != null)
 							settingValue = att.DefaultValue;
@@ -73,24 +73,36 @@ namespace Installation.Parser
 					}
 					
 
-						
-					if (property.PropertyType.IsEnum)
-					{
-						property.SetValue(executable, (object)Enum.Parse(property.PropertyType, settingValue));
-					}
-					else if (property.PropertyType == typeof(Guid))
-                    {
-						property.SetValue(executable, (object)Guid.Parse(settingValue));
-                    }
-					else
-					{
-						property.SetValue(executable, System.Convert.ChangeType(settingValue, property.PropertyType));
-					}
+					setProperty(property, executable, settingValue);
+					
 						
 				}
 			}
+			Log.Debug("File: {file} successfully parsed", settingsFilePath);
 			return executable;
 
+		}
+
+		private void setProperty(PropertyInfo property, Executable executable, string settingValue)
+        {
+			if (property.PropertyType.IsEnum)
+			{
+				property.SetValue(executable, (object)Enum.Parse(property.PropertyType, settingValue));
+			}
+			else if (property.PropertyType == typeof(Guid))
+			{
+				property.SetValue(executable, (object)Guid.Parse(settingValue));
+			}
+			else if(property.PropertyType == typeof(string))
+            {
+				if(!string.IsNullOrEmpty(settingValue))
+					settingValue = settingValue.Replace("\"", "");
+				property.SetValue(executable, System.Convert.ChangeType(settingValue, property.PropertyType));
+			}
+			else
+			{
+				property.SetValue(executable, System.Convert.ChangeType(settingValue, property.PropertyType));
+			}
 		}
 
 		private Executable getExecutableObject(string name)
@@ -105,10 +117,11 @@ namespace Installation.Parser
 						if (executableAttribute.ExecutableName == name)
 							return (Executable)Activator.CreateInstance(type);
 						else
-							Log.Error("No executable type tag on attribute");
+							Log.Verbose("Executable type: {type} does not match with type: {name} from setting file", executableAttribute.ExecutableName, name);
 					}
 				}
 			}
+			Log.Error("Could not create instance for type {type} extracted from setting: {file}", name, settingsFilePath);
 			return null;
 		}
 

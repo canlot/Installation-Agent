@@ -32,8 +32,6 @@ namespace Installation.Controller.ExecutableFinders
                 Log.Debug("Following executable paths found {paths}", executablePaths);
                 ExecutableStorageProvider executableStorage = new ExecutableStorageProvider(executablePaths, globalSettings.ApplicationSettingsFileName);
 
-                
-
                 foreach (var executable in executableStorage.GetExecutables())
                 {
                     ExecutionStateSettings executionStateSettings = new ExecutionStateSettings();

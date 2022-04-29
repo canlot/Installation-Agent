@@ -28,12 +28,6 @@ namespace Installation_Agent.Controller
         public string SearchText = "";
         public ViewController()
         {
-            Executables.Add(new ApplicationExecutable()
-            {
-                Name = "Vlc",
-                Version = "14.5",
-
-            });
 
             BindingOperations.EnableCollectionSynchronization(Executables, _lock);
 
