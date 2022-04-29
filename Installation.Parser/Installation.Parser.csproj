@@ -64,7 +64,6 @@
     <Compile Include="Exceptions\ExecutableNotFoundException.cs" />
     <Compile Include="Exceptions\SettingNotFoundException.cs" />
     <Compile Include="Helpers\ParseHelper.cs" />
-    <Compile Include="Parser\ExecutableFileParser.cs" />
     <Compile Include="Parser\ExecutableParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

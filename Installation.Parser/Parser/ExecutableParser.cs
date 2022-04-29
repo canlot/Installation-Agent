@@ -39,11 +39,11 @@ namespace Installation.Parser
 				//Log.Verbose(property.Name);
 				if (att != null)
 				{
-					string keyName;
+					string propertyName;
 					if (att.ConfigName != null) // if custom Name is not specified in the executable, then it take the variable name
-						keyName = att.ConfigName;
+						propertyName = att.ConfigName;
 					else
-						keyName = property.Name;
+						propertyName = property.Name;
 
 
 					string executableAttributeName = getExecutableNameAttribute(property.DeclaringType); // get from which type this attribute come from
@@ -51,11 +51,11 @@ namespace Installation.Parser
 					string settingValue;
 					if (executableAttributeName == null || executableAttributeName == "") // when its come from base executable type
                     {
-						settingValue = fileParseHelper.GetSetting(att.ConfigName);
+						settingValue = fileParseHelper.GetSetting(propertyName);
                     }
 					else // when its come frome inhereted types
                     {
-						settingValue = fileParseHelper.GetSetting(att.ConfigName, executableAttributeName);
+						settingValue = fileParseHelper.GetSetting(propertyName, executableAttributeName);
                     }
 
 					if(string.IsNullOrEmpty(settingValue)) // checks if value got from file is empty
@@ -66,7 +66,7 @@ namespace Installation.Parser
 						{
 							if (att.Mandatory)
 							{
-								Log.Error("setting {setting} is mandatory", att.ConfigName);
+								Log.Error("setting {setting} is mandatory", propertyName);
 								throw new ExecutableBrokenException(settingsFilePath);
 							}
 						}

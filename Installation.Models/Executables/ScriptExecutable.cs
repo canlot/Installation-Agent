@@ -13,7 +13,7 @@ namespace Installation.Models
     [Executable("Script")]
     public class ScriptExecutable : Executable, IRunnable
     {
-        [ExecutableSetting(ConfigName = "RunFilePath")]
+        [ExecutableSetting]
         public string RunFilePath { get; set; }
         private bool runned;
         public bool Runned { get => runned; set => runned = value; }

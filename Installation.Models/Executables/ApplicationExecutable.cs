@@ -11,13 +11,14 @@ namespace Installation.Models
     public class ApplicationExecutable : Executable, IInstalable, IReinstallable, IUninstallable
     {
         public bool Installed { get; set; }
-        [ExecutableSetting(ConfigName = "InstallFilePath")]
+        [ExecutableSetting]
         public string InstallFilePath { get; set; }
+        //public string InstallArguments
         public bool ReInstalled { get ; set; }
-        [ExecutableSetting(ConfigName = "ReinstallFilePath", Mandatory = false)]
+        [ExecutableSetting(Mandatory = false)]
         public string ReinstallFilePath { get ; set ; }
         public bool UnInstalled { get ; set ; }
-        [ExecutableSetting(ConfigName = "UninstallFilePath")]
+        [ExecutableSetting]
         public string UninstallFilePath { get ; set; }
 
 
