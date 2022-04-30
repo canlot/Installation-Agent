@@ -27,9 +27,9 @@ namespace Installation.Models
         [ExecutableSetting]
         public Guid Id { get => id; set => id = value; }
         [ExecutableSetting]
-        public string Name { get => name; set => name = value; }
+        public string Name { get => name; set => name = value.Replace("\"", ""); }
         [ExecutableSetting]
-        public string Version { get => version; set => version = value; }
+        public string Version { get => version; set => version = value.Replace("\"", ""); }
         public bool CurrentlyRunning { get => currentlyRunning; set { currentlyRunning = value; OnPropertyChanged("CurrentlyRunning"); } }
         public StatusState StatusState { get => statusState; set { statusState = value; OnPropertyChanged("StatusState"); } }
         public string ExecutableDirectory { get => executableDirectory; set => executableDirectory = value; }

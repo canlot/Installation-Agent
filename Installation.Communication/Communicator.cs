@@ -44,11 +44,25 @@ namespace Installation.Communication
                     break;
                 }
                 byte[] buffer = new byte[4];
-                await pipeStream.ReadAsync(buffer, 0, 4, cancellationToken).ConfigureAwait(false);
+                int bytes = await pipeStream.ReadAsync(buffer, 0, 4, cancellationToken).ConfigureAwait(false);
+                if (bytes != 4)
+                {
+                    Log.Debug("Less than initial 4 bytes received");
+                    if (!pipeStream.IsConnected)
+                        Log.Debug("Client disconnected");
+                    break;
+                }
                 int size = getMessageSize(buffer);
 
                 buffer = new byte[size];
-                await pipeStream.ReadAsync(buffer, 0, size, cancellationToken).ConfigureAwait(false);
+                bytes = await pipeStream.ReadAsync(buffer, 0, size, cancellationToken).ConfigureAwait(false);
+                if (bytes != size)
+                {
+                    Log.Debug("Less than the size: {size} of the message bytes received", size);
+                    if (!pipeStream.IsConnected)
+                        Log.Debug("Client disconnected");
+                    break;
+                }
                 var dataString = convertFromByte(buffer);
                 await handleIncomingDataAsync(dataString);
             }
