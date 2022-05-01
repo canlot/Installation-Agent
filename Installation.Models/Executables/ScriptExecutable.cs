@@ -20,7 +20,7 @@ namespace Installation.Models
 
         public async Task<string> RunAsync(CancellationToken cancellationToken)
         {
-            Log.Debug("Running Script {file} from {dir}", RunFilePath, ExecutableDirectory);
+            Log.Information("Running Script {file} from {dir}", RunFilePath, ExecutableDirectory);
 
             var executor = new ScriptExecutor();
 

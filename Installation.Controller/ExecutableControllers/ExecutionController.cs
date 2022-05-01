@@ -80,17 +80,20 @@ namespace Installation.Controller.ExecutableControllers
                     if (job.Action == ExecuteAction.Install && executable is IInstalable)
                     {
                         Log.Verbose("Install {id} with name {name}", executable.Id, executable.Name);
-                        await (executable as IInstalable).InstallAsync(cancellationToken);
+                        string message = await (executable as IInstalable).InstallAsync(cancellationToken);
+                        await executionCompleted(job, executable.StatusState, message);
                     }
                     else if (job.Action == ExecuteAction.Reinstall && executable is IReinstallable)
                     {
                         Log.Verbose("Reinstall {id} with name {name}", executable.Id, executable.Name);
-                        await (executable as IReinstallable).ReinstallAsync(cancellationToken);
+                        string message = await (executable as IReinstallable).ReinstallAsync(cancellationToken);
+                        await executionCompleted(job, executable.StatusState, message);
                     }
                     else if (job.Action == ExecuteAction.Uninstall && executable is IUninstallable)
                     {
                         Log.Verbose("Uninstall {id} with name {name}", executable.Id, executable.Name);
-                        await (executable as IUninstallable).UninstallAsync(cancellationToken);
+                        string message = await (executable as IUninstallable).UninstallAsync(cancellationToken);
+                        await executionCompleted(job, executable.StatusState, message);
                     }
                     else if (job.Action == ExecuteAction.Run && executable is IRunnable)
                     {

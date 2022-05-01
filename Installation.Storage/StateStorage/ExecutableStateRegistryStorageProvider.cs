@@ -24,7 +24,8 @@ namespace Installation.Storage.StateStorage
             {
                 using (var key = Registry.LocalMachine.OpenSubKey(softwarePath, true))
                 {
-                    return;
+                    if(key != null)
+                        return;
                 }
             }
             catch (Exception ex)
