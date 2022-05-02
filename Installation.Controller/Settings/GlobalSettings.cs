@@ -29,7 +29,9 @@ namespace Installation.Controller.Settings
         }
         public void LoadSettings()
         {
-            var path = Path.GetFullPath(IniFile);
+            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
+            var path = Path.Combine(executablePath, IniFile);
+            //var path = Path.GetFullPath(IniFile);
             if(File.Exists(path))
             {
                 IniData = new FileIniDataParser().ReadFile(IniFile);
