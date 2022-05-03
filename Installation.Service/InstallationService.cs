@@ -28,7 +28,7 @@ namespace Installation.Service
 
         protected override void OnStop()
         {
-            controller.Stop();
+            controller.Stop().Wait();
         }
 
         private void process1_Exited(object sender, EventArgs e)

@@ -29,12 +29,14 @@ namespace Installation.Controller.Settings
         }
         public void LoadSettings()
         {
-            string executablePath = AppDomain.CurrentDomain.BaseDirectory;
+            //string executablePath = AppDomain.CurrentDomain.BaseDirectory;
+            string executablePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            Log.Debug("Exe file path: {path}", executablePath);
             var path = Path.Combine(executablePath, IniFile);
             //var path = Path.GetFullPath(IniFile);
             if(File.Exists(path))
             {
-                IniData = new FileIniDataParser().ReadFile(IniFile);
+                IniData = new FileIniDataParser().ReadFile(path);
                 parseSettings();
             }
             else
