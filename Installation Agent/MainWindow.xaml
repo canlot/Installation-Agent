@@ -9,7 +9,7 @@
         xmlns:models="clr-namespace:Installation.Models;assembly=Installation.Models"
         mc:Ignorable="d"
         Background="#FFF2F2F2"
-        Title="MainWindow" Height="450" Width="1000" Closing="Window_Closing" Loaded="Window_Loaded" >
+        Title="Packet Delivery" Height="450" Width="1000" Closing="Window_Closing" Loaded="Window_Loaded" Icon="/box.ico" WindowStyle="SingleBorderWindow" >
     <Window.Resources>
         <local:StatusStateToColorConverter x:Key="StatusStateToColorConverter" />
     </Window.Resources>
