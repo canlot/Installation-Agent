@@ -32,6 +32,10 @@ namespace Installation.Controller
 
         private ConcurrentQueue<Job> jobsQueue;
 
+        private Task communicatorTask;
+        private Task executionTask;
+
+
         public ServiceController()
         {
             
@@ -73,19 +77,20 @@ namespace Installation.Controller
             executionController.OnCompleted += executionCompleted;
 
 
-            var communicatorTask = Task.Run(() => serverCommunicator.ListenAsync());
-            var executionTask = Task.Run(() => executionController.RunController(cancellationTokenSource.Token));
+            communicatorTask = Task.Run(() => serverCommunicator.ListenAsync());
+            executionTask = Task.Run(() => executionController.RunController(cancellationTokenSource.Token));
 
-            Log.Verbose("Waiting for all task to finish");
-
-            Task.WaitAll(communicatorTask, executionTask);
-            Log.Information("------PROGRAM ENDED------ \n\n");
-            Log.CloseAndFlush();
         }
-        public void Stop()
+        public async Task Stop()
         {
             cancellationTokenSource.Cancel();
-            
+            Log.Verbose("Waiting for all task to finish");
+
+            //Task.WaitAll(communicatorTask, executionTask);
+            await Task.WhenAll(communicatorTask, executionTask);
+            Log.Information("------PROGRAM ENDED------ \n\n");
+            Log.CloseAndFlush();
+
         }
         private async Task newJob(Job job)
         {
