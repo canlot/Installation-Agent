@@ -85,7 +85,7 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>box.ico</ApplicationIcon>
+    <ApplicationIcon>InstallationAgent.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="netstandard" />
@@ -212,7 +212,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="box.ico" />
+    <Resource Include="InstallationAgent.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
