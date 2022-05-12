@@ -42,7 +42,7 @@ namespace Installation.Controller
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Console()
-                .WriteTo.File(@"log.txt", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
+                .WriteTo.File(globalSettings.ServerLogsFilePath, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
                 .CreateLogger();
 
             finder = new ExecutableFinder(globalSettings);
@@ -87,7 +87,14 @@ namespace Installation.Controller
             Log.Verbose("Waiting for all task to finish");
 
             //Task.WaitAll(communicatorTask, executionTask);
-            await Task.WhenAll(communicatorTask, executionTask);
+            try
+            {
+                await Task.WhenAll(communicatorTask, executionTask);
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Exception occured at stopping tasks");
+            }
             Log.Information("------PROGRAM ENDED------ \n\n");
             Log.CloseAndFlush();
 

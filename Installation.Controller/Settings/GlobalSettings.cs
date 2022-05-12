@@ -18,10 +18,19 @@ namespace Installation.Controller.Settings
         public string ApplicationSettingsFileName { get => applicationSettingsFileName; private set => applicationSettingsFileName = value; }
         public List<ISettings> ExecutablesSettings = new List<ISettings>();
 
+
+        private string serverLogsFilePath;
+        public string ServerLogsFilePath { get => serverLogsFilePath; private set => serverLogsFilePath = value; }
+
+        private string programPath;
+        public string ProgramPath { get => programPath; private set => programPath = value; }
+
         public IniData IniData;
 
         public GlobalSettings()
         {
+            programPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            serverLogsFilePath = Path.Combine(programPath, @"Logs\Server\log.txt");
         }
         public GlobalSettings(string iniFilePath)
         {
@@ -30,9 +39,8 @@ namespace Installation.Controller.Settings
         public void LoadSettings()
         {
             //string executablePath = AppDomain.CurrentDomain.BaseDirectory;
-            string executablePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            Log.Debug("Exe file path: {path}", executablePath);
-            var path = Path.Combine(executablePath, IniFile);
+            
+            var path = Path.Combine(programPath, IniFile);
             //var path = Path.GetFullPath(IniFile);
             if(File.Exists(path))
             {

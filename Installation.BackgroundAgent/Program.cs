@@ -14,6 +14,8 @@ namespace Installation.BackgroundAgent
             ServiceController controller = new ServiceController();
             controller.Start();
             Console.Read();
+            controller.Stop().Wait();
+            Console.Read();
         }
     }
 }

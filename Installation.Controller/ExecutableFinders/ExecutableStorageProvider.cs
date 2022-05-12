@@ -25,12 +25,11 @@ namespace Installation.Controller.ExecutableFinders
         }
         public IEnumerable<Executable> GetExecutables()
         {
-            Executable executable = null;
             foreach (var path in executablePaths)
             {
                 foreach (var directory in getDirectoriesInExecutablePath(path))
                 {
-                    executable = null; //sets the executable to null because last executable could get different directory
+                    Executable executable = executable = null; //sets the executable to null because last executable could get different directory
                     try
                     {
                         if(searchForSettingFile(directory))
