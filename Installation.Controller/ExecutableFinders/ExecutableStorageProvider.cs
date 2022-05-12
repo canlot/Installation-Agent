@@ -30,6 +30,7 @@ namespace Installation.Controller.ExecutableFinders
             {
                 foreach (var directory in getDirectoriesInExecutablePath(path))
                 {
+                    executable = null; //sets the executable to null because last executable could get different directory
                     try
                     {
                         if(searchForSettingFile(directory))
