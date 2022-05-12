@@ -28,6 +28,8 @@ namespace Installation.Models
         private StatusState statusState;
         public StatusState StatusState { get => statusState; set { statusState = value; OnPropertyChanged("StatusState"); } }
 
+        public string StatusMessage { get; set; }
+
 
         private Guid executableID;
         public Guid ExecutableID { get => executableID; set { executableID = value; OnPropertyChanged("ExecutableID"); } }

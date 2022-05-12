@@ -80,6 +80,7 @@ namespace Installation_Agent.Controller
                     if(executable.Id == job.ExecutableID)
                     {
                         executable.StatusState = job.StatusState;
+                        executable.StatusMessage = job.StatusMessage;
                         executable.CurrentlyRunning = false;
 
                     }

@@ -133,6 +133,7 @@ namespace Installation.Controller.ExecutableControllers
                 Log.Error(message);
                 job.ExecutionState = ExecutionState.Stopped;
             }
+            job.StatusMessage = message;
             await OnCompleted(job);
             
         }

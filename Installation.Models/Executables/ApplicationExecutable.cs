@@ -49,12 +49,14 @@ namespace Installation.Models
                 {
                     Installed = true;
                     StatusState = StatusState.Success;
+                    StatusMessage = "Erfolgreich installiert";
                     return executionStatement.errorMessage;
                 }
                 else
                 {
                     Installed = false;
                     StatusState = StatusState.Error;
+                    StatusMessage = "Installation fehlgeschlagen: " + executionStatement.errorMessage;
                     return executionStatement.errorMessage;
                 }
             }
