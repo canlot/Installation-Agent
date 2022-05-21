@@ -145,7 +145,7 @@ namespace Installation.Communication
         }
         private string convertFromByte(byte[] byteArray)
         {
-            return Encoding.ASCII.GetString(byteArray);
+            return Encoding.UTF8.GetString(byteArray);
         }
 
         private int getMessageSize(byte[] byteArray)
@@ -156,8 +156,8 @@ namespace Installation.Communication
 
         private byte[] convertToByte(string text)
         {
-            byte[] messageSize = BitConverter.GetBytes(text.Length);
-            byte[] messageText = Encoding.ASCII.GetBytes(text);
+            byte[] messageText = Encoding.UTF8.GetBytes(text);
+            byte[] messageSize = BitConverter.GetBytes(messageText.Length);
             byte[] message = new byte[messageSize.Length + messageText.Length];
             messageSize.CopyTo(message, 0);
             messageText.CopyTo(message, messageSize.Length);
