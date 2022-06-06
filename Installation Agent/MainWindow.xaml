@@ -38,7 +38,7 @@
                         <Image Source="{Binding Path=IconPath}" Width="64"></Image>
                         <Grid Margin="5,10,5,10">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="*"/>
                                 <RowDefinition Height="1*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
