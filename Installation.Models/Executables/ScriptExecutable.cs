@@ -22,6 +22,7 @@ namespace Installation.Models
         {
             Log.Information("Running Script {file} from {dir}", RunFilePath, ExecutableDirectory);
 
+            var exec = Executor.GetExecutor();
             var executor = new ScriptExecutor();
 
             (bool success, string errorMessage) executionStatement = await executor.ExecuteAsync(RunFilePath, ExecutableDirectory, cancellationToken);
