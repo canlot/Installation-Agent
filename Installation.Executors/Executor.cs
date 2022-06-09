@@ -12,29 +12,41 @@ namespace Installation.Executors
 {
     public class Executor : IDisposable
     {
+        protected string executableFile;
+        protected string arguments;
+        protected string baseFolder;
+        protected CancellationToken cancellationToken;
+        private Process process;
         private Executor()
         {
 
         }
-        public static Executor GetExecutor()
+        protected Executor(string executableFile, string arguments, string baseFolder, CancellationToken cancellationToken)
         {
-            return new Executor();
-        }
-        private string executableFile;
-        private string arguments;
-        private string baseFolder;
-        private CancellationToken cancellationToken;
-        private Process process;
-        /*
-        public Executor(string executableFile, string arguments, string baseFolder, CancellationToken cancellationToken)
-        {
-            this.baseFolder = baseFolder;
             this.executableFile = executableFile;
             this.arguments = arguments;
+            this.baseFolder = baseFolder;
             this.cancellationToken = cancellationToken;
-            
         }
-        */
+
+        public static Executor GetExecutor(string executableFile, string arguments, string baseFolder, CancellationToken token)
+        {
+            var extension = Path.GetExtension(executableFile);
+            extension = extension.Replace(".", "");
+            switch(extension)
+            {
+                case "exe":
+                    return new ExeExecutor(executableFile, arguments, baseFolder, token);
+                case "msi":
+                    return new MsiExecutor(executableFile, arguments, baseFolder, token);
+                case "ps1":
+                    return new PowershellExecutor(executableFile, arguments, baseFolder, token);
+                default:
+                    return null;
+
+            }
+        }
+        
         public async Task<(bool success, string message)> ExecuteAsync()
         {
             createProcess();

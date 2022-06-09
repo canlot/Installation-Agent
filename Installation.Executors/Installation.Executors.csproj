@@ -61,6 +61,11 @@
   <ItemGroup>
     <Compile Include="ApplicationExecutor.cs" />
     <Compile Include="Executor.cs" />
+    <Compile Include="FileExecutors\ExeExecutor.cs" />
+    <Compile Include="FileExecutors\MsiExecutor.cs" />
+    <Compile Include="FileExecutors\PowershellExecutor.cs" />
+    <Compile Include="IApplicationExecutor.cs" />
+    <Compile Include="IScriptExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScriptExecutor.cs" />
   </ItemGroup>
