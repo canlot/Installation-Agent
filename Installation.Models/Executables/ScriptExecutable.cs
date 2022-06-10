@@ -22,23 +22,33 @@ namespace Installation.Models
         {
             Log.Information("Running Script {file} from {dir}", RunFilePath, ExecutableDirectory);
 
-            var exec = Executor.GetExecutor();
-            var executor = new ScriptExecutor();
+            using (var executor = Executor.GetExecutor(RunFilePath, "",  ExecutableDirectory, cancellationToken))
+            {
+                checkExecutor(executor);
 
-            (bool success, string errorMessage) executionStatement = await executor.ExecuteAsync(RunFilePath, ExecutableDirectory, cancellationToken);
-            
-            if(executionStatement.success)
-            {
-                Runned = true;
-                StatusState = StatusState.Success;
-                return executionStatement.errorMessage;
+                (bool success, string errorMessage) executionStatement = await (executor as IScriptExecutor).RunAsync();
+
+
+                if (executionStatement.success)
+                {
+                    Runned = true;
+                    StatusState = StatusState.Success;
+                    return executionStatement.errorMessage;
+                }
+                else
+                {
+                    Runned = false;
+                    StatusState = StatusState.Error;
+                    return executionStatement.errorMessage;
+                }
             }
-            else
-            {
-                Runned = false;
-                StatusState = StatusState.Error;
-                return executionStatement.errorMessage;
-            }
+        }
+        private void checkExecutor(Executor executor)
+        {
+            if (executor == null)
+                throw new NullReferenceException("No executor for this file type found");
+            if (!(executor is IScriptExecutor))
+                throw new InvalidOperationException("This operation is not supported for this file type");
         }
     }
 }

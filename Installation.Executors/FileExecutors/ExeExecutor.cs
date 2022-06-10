@@ -15,24 +15,24 @@ namespace Installation.Executors
 
         }
 
-        public Task<(bool, string)> InstallAsync()
+        public async Task<(bool, string)> InstallAsync()
         {
-            throw new NotImplementedException();
+            return await ExecuteAsync();
         }
 
-        public Task<(bool, string)> ReinstallAsync()
+        public async Task<(bool, string)> ReinstallAsync()
         {
-            throw new NotImplementedException();
+            return await ExecuteAsync();
         }
 
-        public Task<(bool, string)> RunAsync()
+        public async Task<(bool, string)> RunAsync()
         {
-            throw new NotImplementedException();
+            return await ExecuteAsync();
         }
 
-        public Task<(bool, string)> UninstallAsync()
+        public async Task<(bool, string)> UninstallAsync()
         {
-            throw new NotImplementedException();
+            return await ExecuteAsync();
         }
     }
 }

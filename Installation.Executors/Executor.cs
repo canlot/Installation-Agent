@@ -49,6 +49,8 @@ namespace Installation.Executors
         
         public async Task<(bool success, string message)> ExecuteAsync()
         {
+            Log.Debug("Execute following executable: {executable} with arguments: {arguments} in folder: {folder}", executableFile, arguments, baseFolder);
+
             createProcess();
 
             await Task.Run(() =>

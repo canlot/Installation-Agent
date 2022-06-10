@@ -14,19 +14,25 @@ namespace Installation.Executors
         {
 
         }
-        public Task<(bool, string)> InstallAsync()
+        public async Task<(bool, string)> InstallAsync()
         {
-            throw new NotImplementedException();
+            arguments = $"/i {executableFile} {arguments}";
+            executableFile = "msiexec";
+            return await ExecuteAsync();
         }
 
-        public Task<(bool, string)> ReinstallAsync()
+        public async Task<(bool, string)> ReinstallAsync()
         {
-            throw new NotImplementedException();
+            arguments = $"/f {executableFile} {arguments}";
+            executableFile = "msiexec";
+            return await ExecuteAsync();    
         }
 
-        public Task<(bool, string)> UninstallAsync()
+        public async Task<(bool, string)> UninstallAsync()
         {
-            throw new NotImplementedException();
+            arguments = $"/x {executableFile} {arguments}";
+            executableFile = "msiexec";
+            return await ExecuteAsync();
         }
     }
 }

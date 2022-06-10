@@ -15,9 +15,11 @@ namespace Installation.Executors
 
         }
 
-        public Task<(bool, string)> RunAsync()
+        public async Task<(bool, string)> RunAsync()
         {
-            throw new NotImplementedException();
+            arguments = $"-NoProfile -ExecutionPolicy bypass -File \"{executableFile}\"";
+            executableFile = "powershell.exe";
+            return await ExecuteAsync();
         }
     }
 }

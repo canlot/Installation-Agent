@@ -19,6 +19,7 @@ namespace Installation.Parser.Helpers
             this.settingsFilePath = settingsFilePath;
             settings = new FileIniDataParser().ReadFile(settingsFilePath);
             settings.Configuration.CaseInsensitive = true;
+            
         }
 
         public string GetSetting(string var, string section ="", bool required = true)
@@ -29,7 +30,7 @@ namespace Installation.Parser.Helpers
                 if (data == null || data.Value == "")
                     return null;
                 else
-                    return data.Value;
+                    return data.Value.RemoveWrongCharacters();
             }
             else
             {
@@ -39,7 +40,7 @@ namespace Installation.Parser.Helpers
                     if (data == null || data.Value == "")
                         return null;
                     else
-                        return data.Value;
+                        return data.Value.RemoveWrongCharacters();
                 }
                 else
                 {
@@ -47,6 +48,7 @@ namespace Installation.Parser.Helpers
                 }
                 
             }
+            
             
         }
         public bool SectionExists(string section)
@@ -62,5 +64,6 @@ namespace Installation.Parser.Helpers
         {
             return settings.Sections.Select(s => s.SectionName).ToList();
         }
+        
     }
 }

@@ -37,13 +37,21 @@ namespace Installation.Models
         public bool ReInstalled { get; set; }
         public bool UnInstalled { get; set; }
 
+        private void checkExecutor(Executor executor)
+        {
+            if (executor == null)
+                throw new NullReferenceException("No executor for this file type found");
+            if (!(executor is IApplicationExecutor))
+                throw new InvalidOperationException("This operation is not supported for this file type");
+        }
         public async Task<string> InstallAsync(CancellationToken cancellationToken)
         {
             Log.Information("Installing application: {name}, file: {file}, dir {dir}", Name, InstallFilePath, ExecutableDirectory);
 
-            using (var executor = new ApplicationExecutor(InstallFilePath, InstallArguments, ExecutableDirectory, cancellationToken))
+            using (var executor = Executor.GetExecutor(installFilePath, InstallArguments, ExecutableDirectory, cancellationToken))
             {
-                (bool success, string errorMessage) executionStatement = await executor.ExecuteAsync();
+                checkExecutor(executor);
+                (bool success, string errorMessage) executionStatement = await (executor as IApplicationExecutor).InstallAsync();
 
                 if (executionStatement.success)
                 {
@@ -72,9 +80,10 @@ namespace Installation.Models
             Log.Information("Reinstalling application: {name}, file: {file}, dir {dir}", ReinstallFilePath, ExecutableDirectory);
 
 
-            using (var executor = new ApplicationExecutor(ReinstallFilePath, ReinstallArguments, ExecutableDirectory, cancellationToken))
+            using (var executor = Executor.GetExecutor(ReinstallFilePath, ReinstallArguments, ExecutableDirectory, cancellationToken))
             {
-                (bool success, string errorMessage) executionStatement = await executor.ExecuteAsync();
+                checkExecutor(executor);
+                (bool success, string errorMessage) executionStatement = await (executor as IApplicationExecutor).ReinstallAsync();
 
                 if (executionStatement.success)
                 {
@@ -96,9 +105,10 @@ namespace Installation.Models
         {
             Log.Information("Uninstalling application: {name}, file: {file}, dir: {dir}", Name, UninstallFilePath, ExecutableDirectory);
 
-            using (var executor = new ApplicationExecutor(UninstallFilePath, UninstallArguments, ExecutableDirectory, cancellationToken))
+            using (var executor = Executor.GetExecutor(UninstallFilePath, UninstallArguments, ExecutableDirectory, cancellationToken))
             {
-                (bool success, string errorMessage) executionStatement = await executor.ExecuteAsync();
+                checkExecutor(executor);
+                (bool success, string errorMessage) executionStatement = await (executor as IApplicationExecutor).UninstallAsync();
 
                 if (executionStatement.success)
                 {
