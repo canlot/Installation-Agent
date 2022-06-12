@@ -16,7 +16,7 @@ namespace Installation.Models
         private string installArguments;
         
         [ExecutableSetting]
-        public string InstallFilePath { get => installFilePath; set => installFilePath = value.Replace("\"", ""); }
+        public string InstallFilePath { get => installFilePath; set => installFilePath = value; }
 
         [ExecutableSetting(Mandatory = false)]
         public string ReinstallFilePath { get ; set ; }
@@ -26,7 +26,7 @@ namespace Installation.Models
 
 
         [ExecutableSetting(Mandatory = false)]
-        public string InstallArguments { get => installArguments; set => installArguments = value.Replace("\"", ""); }
+        public string InstallArguments { get => installArguments; set => installArguments = value; }
         [ExecutableSetting(Mandatory = false)]
         public string ReinstallArguments { get; set; }
         [ExecutableSetting(Mandatory = false)]
