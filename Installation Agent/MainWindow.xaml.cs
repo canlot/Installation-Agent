@@ -26,20 +26,47 @@ namespace Installation_Agent
     {
 
         public ViewController viewController = new ViewController();
+        private bool closingFromContextMenu = false;
         public MainWindow()
         {
             
             InitializeComponent();
+            initializeTrayIcon();
             this.DataContext = viewController;
             ListBoxJobs.ItemsSource = viewController.ExecutableCollection;
-
-
+            
         }
-        
+
+        private void initializeTrayIcon()
+        {
+            System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
+            System.Windows.Forms.ContextMenu contextMenu = new System.Windows.Forms.ContextMenu();
+            contextMenu.MenuItems.Add("Beenden");
+            contextMenu.MenuItems[0].Click +=
+                delegate (object sender, EventArgs args)
+                {
+                    closingFromContextMenu = true;
+                    this.Close();
+                };
+            ni.ContextMenu = contextMenu;
+            ni.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetEntryAssembly().ManifestModule.Name);
+            ni.Visible = true;
+            ni.DoubleClick +=
+                delegate (object sender, EventArgs args)
+                {
+                    this.Show();
+                    this.WindowState = WindowState.Normal;
+                };
+        }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
+            if (!closingFromContextMenu)
+            {
+                e.Cancel = true;
+                this.Hide();
+            }
+                
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
