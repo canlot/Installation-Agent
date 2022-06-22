@@ -14,7 +14,6 @@ namespace Installation.Executors
         {
         }
 
-        public override List<int> SuccessfullReturnCodes { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public async Task InstallAsync()
         {

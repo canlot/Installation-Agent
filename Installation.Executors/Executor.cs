@@ -21,7 +21,7 @@ namespace Installation.Executors
         public int LastReturnCode { get; private set; }
         public string LastReturnMessage { get; private set; }
 
-        public abstract List<int> SuccessfullReturnCodes { get; set; }
+        public List<int> SuccessfullReturnCodes { get; set; }
         private Executor()
         {
             SuccessfullReturnCodes = new List<int>();

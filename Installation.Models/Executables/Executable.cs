@@ -85,18 +85,41 @@ namespace Installation.Models
         {
             return !(a == b);
         }
-        protected void setExecutionStateFromExecutor(Executor executor, List<int> successfulReturnCodes) // first check if return code exists in successfulReturnCodes than check if the return code exists in defined executor for this file
+        protected void setExecutionStateFromExecutor(Executor executor, List<int> successfulReturnCodes) // if user defined return codes are present they will be used, otherwise standard return codes will be used
         {
-            if(successfulReturnCodes.Contains(executor.LastReturnCode) || executor.SuccessfullReturnCodes.Contains(executor.LastReturnCode))
+            if (executor == null)
+                throw new ArgumentNullException(nameof(executor));
+            if (executor.SuccessfullReturnCodes == null || executor.SuccessfullReturnCodes.Count == 0)
+                throw new ArgumentException(nameof(executor.SuccessfullReturnCodes));
+
+            if (successfulReturnCodes == null || successfulReturnCodes.Count == 0)
             {
-                StatusState = StatusState.Success;
-                StatusMessage = "Erfolgreich installiert";
+                if(executor.SuccessfullReturnCodes.Contains(executor.LastReturnCode))
+                {
+                    StatusState = StatusState.Success;
+                    StatusMessage = "Erfolgreich installiert";
+                }
+                else
+                {
+                    StatusState = StatusState.Error;
+                    StatusMessage = "Installation fehlgeschlagen: " + executor.LastReturnMessage;
+                }
+                    
             }
             else
             {
-                StatusState = StatusState.Error;
-                StatusMessage = "Installation fehlgeschlagen: " + executor.LastReturnMessage;
+                if(successfulReturnCodes.Contains(executor.LastReturnCode))
+                {
+                    StatusState = StatusState.Success;
+                    StatusMessage = "Erfolgreich installiert";
+                }
+                else
+                {
+                    StatusState = StatusState.Error;
+                    StatusMessage = "Installation fehlgeschlagen: " + executor.LastReturnMessage;
+                }
             }
+
         }
 
     }
