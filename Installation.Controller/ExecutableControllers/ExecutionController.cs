@@ -80,26 +80,26 @@ namespace Installation.Controller.ExecutableControllers
                     if (job.Action == ExecuteAction.Install && executable is IInstalable)
                     {
                         Log.Verbose("Install {id} with name {name}", executable.Id, executable.Name);
-                        string message = await (executable as IInstalable).InstallAsync(cancellationToken);
-                        await executionCompleted(job, executable.StatusState, message);
+                        await (executable as IInstalable).InstallAsync(cancellationToken);
+                        await executionCompleted(job, executable.StatusState, executable.statusMessage);
                     }
                     else if (job.Action == ExecuteAction.Reinstall && executable is IReinstallable)
                     {
                         Log.Verbose("Reinstall {id} with name {name}", executable.Id, executable.Name);
-                        string message = await (executable as IReinstallable).ReinstallAsync(cancellationToken);
-                        await executionCompleted(job, executable.StatusState, message);
+                        await (executable as IReinstallable).ReinstallAsync(cancellationToken);
+                        await executionCompleted(job, executable.StatusState, executable.statusMessage);
                     }
                     else if (job.Action == ExecuteAction.Uninstall && executable is IUninstallable)
                     {
                         Log.Verbose("Uninstall {id} with name {name}", executable.Id, executable.Name);
-                        string message = await (executable as IUninstallable).UninstallAsync(cancellationToken);
-                        await executionCompleted(job, executable.StatusState, message);
+                        await (executable as IUninstallable).UninstallAsync(cancellationToken);
+                        await executionCompleted(job, executable.StatusState, executable.statusMessage);
                     }
                     else if (job.Action == ExecuteAction.Run && executable is IRunnable)
                     {
                         Log.Debug("RunAsync {id} with name {name}", executable.Id, executable.Name);
-                        string message = await (executable as IRunnable).RunAsync(cancellationToken);
-                        await executionCompleted(job, executable.StatusState, message);
+                        await (executable as IRunnable).RunAsync(cancellationToken);
+                        await executionCompleted(job, executable.StatusState, executable.statusMessage);
                     }
                     else
                     {

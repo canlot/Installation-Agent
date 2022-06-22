@@ -10,18 +10,23 @@ using System.Threading.Tasks;
 
 namespace Installation.Executors
 {
-    public class Executor : IDisposable
+    public abstract class Executor : IDisposable
     {
         protected string executableFile;
         protected string arguments;
         protected string baseFolder;
         protected CancellationToken cancellationToken;
         private Process process;
+
+        public int LastReturnCode { get; private set; }
+        public string LastReturnMessage { get; private set; }
+
+        public abstract List<int> SuccessfullReturnCodes { get; set; }
         private Executor()
         {
-
+            SuccessfullReturnCodes = new List<int>();
         }
-        protected Executor(string executableFile, string arguments, string baseFolder, CancellationToken cancellationToken)
+        protected Executor(string executableFile, string arguments, string baseFolder, CancellationToken cancellationToken) : this()
         {
             this.executableFile = executableFile;
             this.arguments = arguments;
@@ -47,7 +52,7 @@ namespace Installation.Executors
             }
         }
         
-        public async Task<(bool success, string message)> ExecuteAsync()
+        public async Task ExecuteAsync()
         {
             Log.Debug("Execute following executable: {executable} with arguments: {arguments} in folder: {folder}", executableFile, arguments, baseFolder);
 
@@ -77,10 +82,8 @@ namespace Installation.Executors
 
             Log.Debug("Return code: {code}", process.ExitCode);
 
-            if (process.ExitCode == 0)
-                return (true, "Success");
-            else
-                return (false, process.StandardError.ReadToEnd());
+            LastReturnCode = process.ExitCode;
+            LastReturnMessage = process.StandardError.ReadToEnd();
         }
         private void createProcess()
         {

@@ -8,6 +8,6 @@ namespace Installation.Executors
 {
     public interface IScriptExecutor
     {
-        Task<(bool, string)> RunAsync();
+        Task RunAsync();
     }
 }

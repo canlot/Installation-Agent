@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -71,9 +72,11 @@ namespace Installation.Parser
 							}
 						}
 					}
-					
-					setProperty(property, executable, settingValue);
-						
+					else
+                    {
+						setProperty(property, executable, settingValue);
+					}
+
 				}
 			}
 			Log.Debug("File: {file} successfully parsed", settingsFilePath);
@@ -83,6 +86,53 @@ namespace Installation.Parser
 
 		private void setProperty(PropertyInfo property, Executable executable, string settingValue)
         {
+			
+			if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
+			{
+				Type t = property.PropertyType;
+				Type[] typeParameters = t.GetGenericArguments();
+				
+				if(typeParameters.Length == 1)
+                {
+					setPropertyList(property, executable, settingValue, typeParameters[0]);
+                }
+				else
+                {
+					Log.Error("1 argument of List<T> expected, more or less given from property: {property}", property.Name);
+					throw new ArgumentOutOfRangeException();
+                }
+
+			}
+			else
+            {
+				setPropertySingle(property, executable, settingValue);
+            }
+			
+		}
+		private List<T> getList<T>()
+        {
+			List<T> list = new List<T>();
+			return list;
+        }
+		private void setPropertyList(PropertyInfo property, Executable executable, string settingValue, Type type)
+        {
+			Type genericListType = typeof(List<>).MakeGenericType(type);
+			var list = (IList)Activator.CreateInstance(genericListType);
+			addValuesToList(list, settingValue, type);
+			property.SetValue(executable, list);
+			
+		}
+		private void addValuesToList(IList list, string settingValue, Type type)
+        {
+			var array = settingValue.Split(',');
+			foreach(var item in array)
+            {
+				var value = Convert.ChangeType(item, type);
+				list.Add(value);
+			}
+        }
+		private void setPropertySingle(PropertyInfo property, Executable executable, string settingValue)
+        {
 			if (property.PropertyType.IsEnum)
 			{
 				property.SetValue(executable, (object)Enum.Parse(property.PropertyType, settingValue));
@@ -91,10 +141,8 @@ namespace Installation.Parser
 			{
 				property.SetValue(executable, (object)Guid.Parse(settingValue));
 			}
-			else if(property.PropertyType == typeof(string))
-            {
-				//if(!string.IsNullOrEmpty(settingValue))
-				//	settingValue = settingValue.Replace("\"", "");
+			else if (property.PropertyType == typeof(string))
+			{
 				property.SetValue(executable, System.Convert.ChangeType(settingValue, property.PropertyType));
 			}
 			else

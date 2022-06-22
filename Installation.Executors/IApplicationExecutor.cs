@@ -8,8 +8,8 @@ namespace Installation.Executors
 {
     public interface IApplicationExecutor
     {
-        Task<(bool, string)> InstallAsync();
-        Task<(bool, string)> ReinstallAsync();
-        Task<(bool, string)> UninstallAsync();
+        Task InstallAsync();
+        Task ReinstallAsync();
+        Task UninstallAsync();
     }
 }

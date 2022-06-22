@@ -11,6 +11,6 @@ namespace Installation.Models
     {
         bool ReInstalled { get; set; }
         string ReinstallFilePath { get; set; }
-        Task<string> ReinstallAsync(CancellationToken cancellationToken);
+        Task ReinstallAsync(CancellationToken cancellationToken);
     }
 }

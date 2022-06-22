@@ -11,6 +11,6 @@ namespace Installation.Models
     {
         bool Installed { get; set; }
         string InstallFilePath { get; set; }
-        Task<string> InstallAsync(CancellationToken cancellationToken);
+        Task InstallAsync(CancellationToken cancellationToken);
     }
 }

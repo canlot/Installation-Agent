@@ -11,6 +11,6 @@ namespace Installation.Models
     {
         bool UnInstalled { get; set; }
         string UninstallFilePath { get; set; }
-        Task<string> UninstallAsync(CancellationToken cancellationToken);
+        Task UninstallAsync(CancellationToken cancellationToken);
     }
 }

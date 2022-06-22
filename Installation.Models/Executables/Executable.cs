@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Installation.Executors;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -21,6 +22,7 @@ namespace Installation.Models
         private Guid id;
         private string executableDirectory;
         private string iconPath;
+        private string description;
 
         private StatusState statusState;
         private bool currentlyRunning;
@@ -29,9 +31,11 @@ namespace Installation.Models
         [ExecutableSetting]
         public Guid Id { get => id; set => id = value; }
         [ExecutableSetting]
-        public string Name { get => name; set => name = value.Replace("\"", ""); }
+        public string Name { get => name; set => name = value; }
         [ExecutableSetting]
-        public string Version { get => version; set => version = value.Replace("\"", ""); }
+        public string Version { get => version; set => version = value; }
+        [ExecutableSetting(Mandatory = false)]
+        public string Description { get => description; set => description = value; }
         [ExecutableSetting(Mandatory = false)]
         public string IconPath 
         { get
@@ -81,7 +85,19 @@ namespace Installation.Models
         {
             return !(a == b);
         }
-        
+        protected void setExecutionStateFromExecutor(Executor executor, List<int> successfulReturnCodes) // first check if return code exists in successfulReturnCodes than check if the return code exists in defined executor for this file
+        {
+            if(successfulReturnCodes.Contains(executor.LastReturnCode) || executor.SuccessfullReturnCodes.Contains(executor.LastReturnCode))
+            {
+                StatusState = StatusState.Success;
+                StatusMessage = "Erfolgreich installiert";
+            }
+            else
+            {
+                StatusState = StatusState.Error;
+                StatusMessage = "Installation fehlgeschlagen: " + executor.LastReturnMessage;
+            }
+        }
 
     }
 }

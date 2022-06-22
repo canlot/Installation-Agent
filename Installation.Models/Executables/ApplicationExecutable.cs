@@ -37,6 +37,13 @@ namespace Installation.Models
         public bool ReInstalled { get; set; }
         public bool UnInstalled { get; set; }
 
+        [ExecutableSetting(Mandatory = false)]
+        public List<int> SuccessfullInstallReturnCodes { get; set; }
+        [ExecutableSetting(Mandatory = false)]
+        public List<int> SuccessfullReInstallReturnCodes { get; set; }
+        [ExecutableSetting(Mandatory = false)]
+        public List<int> SuccessfullUnInstallReturnCodes { get; set; }
+
         private void checkExecutor(Executor executor)
         {
             if (executor == null)
@@ -44,35 +51,22 @@ namespace Installation.Models
             if (!(executor is IApplicationExecutor))
                 throw new InvalidOperationException("This operation is not supported for this file type");
         }
-        public async Task<string> InstallAsync(CancellationToken cancellationToken)
+        public async Task InstallAsync(CancellationToken cancellationToken)
         {
             Log.Information("Installing application: {name}, file: {file}, dir {dir}", Name, InstallFilePath, ExecutableDirectory);
 
             using (var executor = Executor.GetExecutor(installFilePath, InstallArguments, ExecutableDirectory, cancellationToken))
             {
                 checkExecutor(executor);
-                (bool success, string errorMessage) executionStatement = await (executor as IApplicationExecutor).InstallAsync();
+                await (executor as IApplicationExecutor).InstallAsync();
 
-                if (executionStatement.success)
-                {
-                    Installed = true;
-                    StatusState = StatusState.Success;
-                    StatusMessage = "Erfolgreich installiert";
-                    return executionStatement.errorMessage;
-                }
-                else
-                {
-                    Installed = false;
-                    StatusState = StatusState.Error;
-                    StatusMessage = "Installation fehlgeschlagen: " + executionStatement.errorMessage;
-                    return executionStatement.errorMessage;
-                }
+                setExecutionStateFromExecutor(executor, SuccessfullInstallReturnCodes);
             }
 
         }
+        
 
-
-        public async Task<string> ReinstallAsync(CancellationToken cancellationToken)
+        public async Task ReinstallAsync(CancellationToken cancellationToken)
         {
             if(string.IsNullOrWhiteSpace(ReinstallFilePath))
                 throw new ArgumentNullException(nameof(ReinstallFilePath));
@@ -83,45 +77,23 @@ namespace Installation.Models
             using (var executor = Executor.GetExecutor(ReinstallFilePath, ReinstallArguments, ExecutableDirectory, cancellationToken))
             {
                 checkExecutor(executor);
-                (bool success, string errorMessage) executionStatement = await (executor as IApplicationExecutor).ReinstallAsync();
+                await (executor as IApplicationExecutor).ReinstallAsync();
 
-                if (executionStatement.success)
-                {
-                    ReInstalled = true;
-                    StatusState = StatusState.Success;
-                    return executionStatement.errorMessage;
-                }
-                else
-                {
-                    ReInstalled = false;
-                    StatusState = StatusState.Error;
-                    return executionStatement.errorMessage;
-                }
+                setExecutionStateFromExecutor(executor, SuccessfullReInstallReturnCodes);
             }
         }
 
 
-        public async Task<string> UninstallAsync(CancellationToken cancellationToken)
+        public async Task UninstallAsync(CancellationToken cancellationToken)
         {
             Log.Information("Uninstalling application: {name}, file: {file}, dir: {dir}", Name, UninstallFilePath, ExecutableDirectory);
 
             using (var executor = Executor.GetExecutor(UninstallFilePath, UninstallArguments, ExecutableDirectory, cancellationToken))
             {
                 checkExecutor(executor);
-                (bool success, string errorMessage) executionStatement = await (executor as IApplicationExecutor).UninstallAsync();
+                await (executor as IApplicationExecutor).UninstallAsync();
 
-                if (executionStatement.success)
-                {
-                    UnInstalled = true;
-                    StatusState = StatusState.Success;
-                    return executionStatement.errorMessage;
-                }
-                else
-                {
-                    UnInstalled = false;
-                    StatusState = StatusState.Error;
-                    return executionStatement.errorMessage;
-                }
+                setExecutionStateFromExecutor(executor, SuccessfullUnInstallReturnCodes);
             }
         }
     }

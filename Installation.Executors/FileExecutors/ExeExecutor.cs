@@ -12,27 +12,40 @@ namespace Installation.Executors
         public ExeExecutor(string executableFile, string arguments, string baseFolder, CancellationToken token) 
             : base(executableFile, arguments, baseFolder, token)
         {
-
         }
 
-        public async Task<(bool, string)> InstallAsync()
+        public override List<int> SuccessfullReturnCodes { get; set; }
+
+        public async Task InstallAsync()
         {
-            return await ExecuteAsync();
+            SuccessfullReturnCodes.Clear();
+            SuccessfullReturnCodes.Add(0);
+
+            await ExecuteAsync();
         }
 
-        public async Task<(bool, string)> ReinstallAsync()
+        public async Task ReinstallAsync()
         {
-            return await ExecuteAsync();
+            SuccessfullReturnCodes.Clear();
+            SuccessfullReturnCodes.Add(0);
+
+            await ExecuteAsync();
         }
 
-        public async Task<(bool, string)> RunAsync()
+        public async Task RunAsync()
         {
-            return await ExecuteAsync();
+            SuccessfullReturnCodes.Clear();
+            SuccessfullReturnCodes.Add(0);
+
+            await ExecuteAsync();
         }
 
-        public async Task<(bool, string)> UninstallAsync()
+        public async Task UninstallAsync()
         {
-            return await ExecuteAsync();
+            SuccessfullReturnCodes.Clear();
+            SuccessfullReturnCodes.Add(0);
+
+            await ExecuteAsync();
         }
     }
 }

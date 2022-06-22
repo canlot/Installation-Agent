@@ -12,27 +12,38 @@ namespace Installation.Executors
         public MsiExecutor(string executableFile, string arguments, string baseFolder, CancellationToken token)
             : base(executableFile, arguments, baseFolder, token)
         {
-
         }
-        public async Task<(bool, string)> InstallAsync()
+
+        public override List<int> SuccessfullReturnCodes { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public async Task InstallAsync()
         {
+            SuccessfullReturnCodes.Clear();
+            SuccessfullReturnCodes.Add(0);
+
             arguments = $"/i {executableFile} {arguments}";
             executableFile = "msiexec";
-            return await ExecuteAsync();
+            await ExecuteAsync();
         }
 
-        public async Task<(bool, string)> ReinstallAsync()
+        public async Task ReinstallAsync()
         {
+            SuccessfullReturnCodes.Clear();
+            SuccessfullReturnCodes.Add(0);
+
             arguments = $"/f {executableFile} {arguments}";
             executableFile = "msiexec";
-            return await ExecuteAsync();    
+            await ExecuteAsync();    
         }
 
-        public async Task<(bool, string)> UninstallAsync()
+        public async Task UninstallAsync()
         {
+            SuccessfullReturnCodes.Clear();
+            SuccessfullReturnCodes.Add(0);
+
             arguments = $"/x {executableFile} {arguments}";
             executableFile = "msiexec";
-            return await ExecuteAsync();
+            await ExecuteAsync();
         }
     }
 }

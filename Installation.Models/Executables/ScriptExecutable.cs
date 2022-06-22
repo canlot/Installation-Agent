@@ -18,7 +18,11 @@ namespace Installation.Models
         private bool runned;
         public bool Runned { get => runned; set => runned = value; }
 
-        public async Task<string> RunAsync(CancellationToken cancellationToken)
+        [ExecutableSetting(Mandatory = false)]
+        public List<int> SuccessfullRunReturnCodes { get; set; }
+
+
+        public async Task RunAsync(CancellationToken cancellationToken)
         {
             Log.Information("Running Script {file} from {dir}", RunFilePath, ExecutableDirectory);
 
@@ -26,21 +30,10 @@ namespace Installation.Models
             {
                 checkExecutor(executor);
 
-                (bool success, string errorMessage) executionStatement = await (executor as IScriptExecutor).RunAsync();
+                await (executor as IScriptExecutor).RunAsync();
 
 
-                if (executionStatement.success)
-                {
-                    Runned = true;
-                    StatusState = StatusState.Success;
-                    return executionStatement.errorMessage;
-                }
-                else
-                {
-                    Runned = false;
-                    StatusState = StatusState.Error;
-                    return executionStatement.errorMessage;
-                }
+                setExecutionStateFromExecutor(executor, SuccessfullRunReturnCodes);
             }
         }
         private void checkExecutor(Executor executor)
