@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:controller="clr-namespace:Installation_Agent.Controller"
         ui:WindowHelper.UseModernWindowStyle="True"
         xmlns:local="clr-namespace:Installation_Agent"
         xmlns:models="clr-namespace:Installation.Models;assembly=Installation.Models"
@@ -13,6 +14,9 @@
     <Window.Resources>
         <local:StatusStateToColorConverter x:Key="StatusStateToColorConverter" />
     </Window.Resources>
+    <Window.DataContext>
+        <controller:ViewController x:Name="viewController"/>
+    </Window.DataContext>
     <Grid Background="#FFF2F2F2" Margin="30">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -24,98 +28,149 @@
         <ui:AutoSuggestBox x:Name="AutoSuggestBoxSearchExecutables" Grid.Row="0" PlaceholderText="Search" QueryIcon="Find" Margin="5,10" Background="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" TextChanged="AutoSuggestBoxSearchExecutables_TextChanged" >
 
         </ui:AutoSuggestBox>
-
-        <ListBox  x:Name="ListBoxJobs" Grid.Row="1" >
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="HorizontalContentAlignment"
+        <Grid Name="InnerGrid" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0" />
+            </Grid.ColumnDefinitions>
+            <ListBox  x:Name="ListBoxJobs" Grid.Column="0" SelectionChanged="ListBoxJobs_SelectionChanged" ItemsSource="{Binding ExecutableCollection}" IsSynchronizedWithCurrentItem="True">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment"
                         Value="Stretch"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.Resources>
-                <DataTemplate DataType="{x:Type models:ScriptExecutable}">
-                    <ui:SimpleStackPanel Orientation="Horizontal">
-                        <Image Source="{Binding Path=IconPath}" Width="64"></Image>
-                        <Grid Margin="5,10,5,10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <StackPanel Grid.Row="0" Orientation="Horizontal">
-                                <Ellipse Fill="{Binding StatusState, Converter={StaticResource StatusStateToColorConverter}}" Width="10" Height="10" Margin="5"/>
-                                <Label FontSize="20" Margin="5">
-                                    <Label.Content>
-                                        <AccessText>
-                                            <MultiBinding StringFormat="{}{0} {1}">
-                                                <Binding Path="Name"/>
-                                                <Binding Path="Version"/>
-                                            </MultiBinding>
-                                        </AccessText>
-                                    </Label.Content>
-                                </Label>
-                                <ui:ProgressRing Name = "ProgressRing" Margin="5" IsActive="{Binding CurrentlyRunning, Mode=TwoWay }">
-                                </ui:ProgressRing>
-                            </StackPanel>
-                            <ui:CommandBar Grid.Row="1" HorizontalAlignment="Left" >
-                                <ui:AppBarButton Label="Ausführen" Click="ButtonRunScript_Click">>
-                                    <ui:AppBarButton.Icon>
-                                        <ui:BitmapIcon UriSource="/play_512px.png"/>
-                                    </ui:AppBarButton.Icon>
-                                </ui:AppBarButton>
-                            </ui:CommandBar>
-                            <Label Grid.Row="2" x:Name="StatusText" Content="{Binding StatusMessage}"></Label>
-                        </Grid>
-                    </ui:SimpleStackPanel>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type models:ApplicationExecutable}">
-                    <ui:SimpleStackPanel Orientation="Horizontal">
-                        <Image Source="{Binding Path=IconPath}" Width="64"></Image>
-                        <Grid Margin="5,10,5,10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <StackPanel Grid.Row="0" Orientation="Horizontal">
-                                <Ellipse Fill="{Binding StatusState, Converter={StaticResource StatusStateToColorConverter}}" Width="10" Height="10" Margin="5"/>
-                                <Label FontSize="20" Margin="5">
-                                    <Label.Content>
-                                        <AccessText>
-                                            <MultiBinding StringFormat="{}{0} {1}">
-                                                <Binding Path="Name"/>
-                                                <Binding Path="Version"/>
-                                            </MultiBinding>
-                                        </AccessText>
-                                    </Label.Content>
-                                </Label>
-                                <ui:ProgressRing Name = "ProgressRing" Margin="5" IsActive="{Binding CurrentlyRunning, Mode=TwoWay }">
-                                </ui:ProgressRing>
-                            </StackPanel>
-                            <ui:CommandBar Grid.Row="1" HorizontalAlignment="Left" >
-                                <ui:AppBarButton Label="Installieren" Click="ButtonInstallApplication_Click">
-                                    <ui:AppBarButton.Icon>
-                                        <ui:BitmapIcon UriSource="/installing_512px.png"/>
-                                    </ui:AppBarButton.Icon>
-                                </ui:AppBarButton>
-                                <ui:AppBarButton Label="Neuinstallieren" Click="ButtonReinstallApplication_Click">
-                                    <ui:AppBarButton.Icon>
-                                        <ui:BitmapIcon UriSource="/reboot_512px.png"/>
-                                    </ui:AppBarButton.Icon>
-                                </ui:AppBarButton>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.Resources>
+                    <DataTemplate DataType="{x:Type models:ScriptExecutable}">
+                        <ui:SimpleStackPanel Orientation="Horizontal">
+                            <Image Source="{Binding Path=IconPath}" Width="64"></Image>
+                            <Grid Margin="5,10,5,10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                    <Ellipse Fill="{Binding StatusState, Converter={StaticResource StatusStateToColorConverter}}" Width="10" Height="10" Margin="5"/>
+                                    <Label FontSize="20" Margin="5">
+                                        <Label.Content>
+                                            <AccessText>
+                                                <MultiBinding StringFormat="{}{0} {1}">
+                                                    <Binding Path="Name"/>
+                                                    <Binding Path="Version"/>
+                                                </MultiBinding>
+                                            </AccessText>
+                                        </Label.Content>
+                                    </Label>
+                                    <ui:ProgressRing Name = "ProgressRing" Margin="5" IsActive="{Binding CurrentlyRunning, Mode=TwoWay }">
+                                    </ui:ProgressRing>
+                                </StackPanel>
+                                <ui:CommandBar Grid.Row="1" HorizontalAlignment="Left" >
+                                    <ui:AppBarButton Label="Ausführen" Click="ButtonRunScript_Click">>
+                                        <ui:AppBarButton.Icon>
+                                            <ui:BitmapIcon UriSource="/play_512px.png"/>
+                                        </ui:AppBarButton.Icon>
+                                    </ui:AppBarButton>
+                                </ui:CommandBar>
+                                <Label Grid.Row="2" x:Name="StatusText" Content="{Binding StatusMessage}"></Label>
+                            </Grid>
+                        </ui:SimpleStackPanel>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type models:ApplicationExecutable}">
+                        <ui:SimpleStackPanel Orientation="Horizontal">
+                            <Image Source="{Binding Path=IconPath}" Width="64"></Image>
+                            <Grid Margin="5,10,5,10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                    <Ellipse Fill="{Binding StatusState, Converter={StaticResource StatusStateToColorConverter}}" Width="10" Height="10" Margin="5"/>
+                                    <Label FontSize="20" Margin="5">
+                                        <Label.Content>
+                                            <AccessText>
+                                                <MultiBinding StringFormat="{}{0} {1}">
+                                                    <Binding Path="Name"/>
+                                                    <Binding Path="Version"/>
+                                                </MultiBinding>
+                                            </AccessText>
+                                        </Label.Content>
+                                    </Label>
+                                    <ui:ProgressRing Name = "ProgressRing" Margin="5" IsActive="{Binding CurrentlyRunning, Mode=TwoWay }">
+                                    </ui:ProgressRing>
+                                </StackPanel>
+                                <ui:CommandBar Grid.Row="1" HorizontalAlignment="Left" >
+                                    <ui:AppBarButton Label="Installieren" Click="ButtonInstallApplication_Click">
+                                        <ui:AppBarButton.Icon>
+                                            <ui:BitmapIcon UriSource="/installing_512px.png"/>
+                                        </ui:AppBarButton.Icon>
+                                    </ui:AppBarButton>
+                                    <ui:AppBarButton Label="Neuinstallieren" Click="ButtonReinstallApplication_Click">
+                                        <ui:AppBarButton.Icon>
+                                            <ui:BitmapIcon UriSource="/reboot_512px.png"/>
+                                        </ui:AppBarButton.Icon>
+                                    </ui:AppBarButton>
 
-                                <ui:AppBarButton Label="Deinstallieren" Click="ButtonUninstallApplication_Click">
-                                    <ui:AppBarButton.Icon>
-                                        <ui:BitmapIcon UriSource="/Remove_512px.png"/>
-                                    </ui:AppBarButton.Icon>
-                                </ui:AppBarButton>
-                            </ui:CommandBar>
-                            <Label Grid.Row="2" x:Name="StatusText" Content="{Binding StatusMessage}" Background="LightGreen" Margin="2" ></Label>
-                        </Grid>
-                    </ui:SimpleStackPanel>
-                </DataTemplate>
-            </ListBox.Resources>
+                                    <ui:AppBarButton Label="Deinstallieren" Click="ButtonUninstallApplication_Click">
+                                        <ui:AppBarButton.Icon>
+                                            <ui:BitmapIcon UriSource="/Remove_512px.png"/>
+                                        </ui:AppBarButton.Icon>
+                                    </ui:AppBarButton>
+                                </ui:CommandBar>
+                                <Label Grid.Row="2" x:Name="StatusText" Content="{Binding StatusMessage}" Background="LightGreen" Margin="2" ></Label>
+                            </Grid>
+                        </ui:SimpleStackPanel>
+                    </DataTemplate>
+                </ListBox.Resources>
 
-        </ListBox>
+            </ListBox>
+            <Grid Grid.Column="1">
+                <ui:SimpleStackPanel Orientation="Horizontal">
+                    <Image Source="{Binding ExecutableCollection/IconPath}" Width="64"></Image>
+                    <Grid Margin="5,10,5,10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                            <Ellipse Fill="{Binding StatusState, Converter={StaticResource StatusStateToColorConverter}}" Width="10" Height="10" Margin="5"/>
+                            <Label FontSize="20" Margin="5">
+                                <Label.Content>
+                                    <AccessText>
+                                        <MultiBinding StringFormat="{}{0} {1}">
+                                            <Binding Path="Name"/>
+                                            <Binding Path="Version"/>
+                                        </MultiBinding>
+                                    </AccessText>
+                                </Label.Content>
+                            </Label>
+                            <ui:ProgressRing Name = "ProgressRing" Margin="5" IsActive="{Binding CurrentlyRunning, Mode=TwoWay }">
+                            </ui:ProgressRing>
+                        </StackPanel>
+                        <ui:CommandBar Grid.Row="1" HorizontalAlignment="Left" >
+                            <ui:AppBarButton Label="Installieren" Click="ButtonInstallApplication_Click">
+                                <ui:AppBarButton.Icon>
+                                    <ui:BitmapIcon UriSource="/installing_512px.png"/>
+                                </ui:AppBarButton.Icon>
+                            </ui:AppBarButton>
+                            <ui:AppBarButton Label="Neuinstallieren" Click="ButtonReinstallApplication_Click">
+                                <ui:AppBarButton.Icon>
+                                    <ui:BitmapIcon UriSource="/reboot_512px.png"/>
+                                </ui:AppBarButton.Icon>
+                            </ui:AppBarButton>
+
+                            <ui:AppBarButton Label="Deinstallieren" Click="ButtonUninstallApplication_Click">
+                                <ui:AppBarButton.Icon>
+                                    <ui:BitmapIcon UriSource="/Remove_512px.png"/>
+                                </ui:AppBarButton.Icon>
+                            </ui:AppBarButton>
+                        </ui:CommandBar>
+                        <Label Grid.Row="2" x:Name="StatusText" Content="{Binding StatusMessage}" Background="LightGreen" Margin="2" ></Label>
+                    </Grid>
+                </ui:SimpleStackPanel>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

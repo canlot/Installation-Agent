@@ -25,16 +25,20 @@ namespace Installation_Agent
     public partial class MainWindow : Window
     {
 
-        public ViewController viewController = new ViewController();
+        //public ViewController viewController = new ViewController();
         private bool closingFromContextMenu = false;
         public MainWindow()
         {
-            
+            //this.DataContext = viewController;
             InitializeComponent();
             initializeTrayIcon();
-            this.DataContext = viewController;
-            ListBoxJobs.ItemsSource = viewController.ExecutableCollection;
             
+            //ListBoxJobs.ItemsSource = viewController.ExecutableCollection;
+            //ListBoxJobs.IsSynchronizedWithCurrentItem = true;
+#if DEBUG
+            closingFromContextMenu = true;
+#endif
+
         }
 
         private void initializeTrayIcon()
@@ -130,6 +134,12 @@ namespace Installation_Agent
         {
             viewController.SearchText = sender.Text;
             viewController.ExecutableCollection.Refresh();
+        }
+
+
+        private void ListBoxJobs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            InnerGrid.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Star);
         }
     }
 }

@@ -18,7 +18,8 @@ namespace Installation_Agent.Controller
     {
         public ObservableCollection<Executable> Executables = new ObservableCollection<Executable>();
         public CollectionViewSource ExecutablesViewSource { get; set; } = new CollectionViewSource();
-        public ICollectionView ExecutableCollection;
+        public ICollectionView ExecutableCollection { get; set; }
+        
 
         ClientCommunicator clientCommunicator;
         CancellationTokenSource cancellationTokenSource;
