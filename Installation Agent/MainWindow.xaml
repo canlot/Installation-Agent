@@ -125,7 +125,7 @@
                 </ListBox.Resources>
 
             </ListBox>
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="1" Background="#FFF5F5F5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="*"/>
@@ -133,9 +133,9 @@
                     <RowDefinition Height="4*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <Image Source="{Binding ExecutableCollection/IconPath}" Width="64"></Image>
+                    <Image Source="{Binding ExecutableCollection/IconPath}" Width="64" Margin="5" MinWidth="64"></Image>
                     <Ellipse Fill="{Binding ExecutableCollection/StatusState, Converter={StaticResource StatusStateToColorConverter}}" Width="10" Height="10" Margin="5"/>
-                    <Label FontSize="20" Margin="5">
+                    <Label FontSize="20" Margin="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
                         <Label.Content>
                             <AccessText>
                                 <MultiBinding StringFormat="{}{0} {1}">
