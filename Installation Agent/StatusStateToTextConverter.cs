@@ -1,37 +1,34 @@
-﻿using System;
+﻿using Installation.Models;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using Installation.Models;
-using System.Windows.Media;
-using Serilog;
 
 namespace Installation_Agent
 {
-    public class StatusStateToColorConverter : IValueConverter
+    public class StatusStateToTextConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Log.Debug("Convert value");
+            Log.Verbose("Convert value from StatusStateToTextConverter");
             if (value == null) return null;
-            if(value is StatusState)
+            if (value is StatusState)
             {
-                Log.Debug("Value is StatusState {value}", (StatusState)value);
+                Log.Verbose("Value is StatusState {value}", (StatusState)value);
                 switch (value)
                 {
-                    case StatusState.NotExecuted:
-                        return new SolidColorBrush();
                     case StatusState.Success:
-                        return new SolidColorBrush(Brushes.Green.Color);
+                        return "Erfogreich ausgeführt";
                     case StatusState.Warning:
-                        return new SolidColorBrush(Brushes.Orange.Color);
+                        return "Ausgeführt mit Warnungen";
                     case StatusState.Error:
-                        return new SolidColorBrush(Brushes.Red.Color);
+                        return "Fehler beim Ausführen aufgetreten";
                     default:
-                        return new SolidColorBrush();
+                        return "";
                 }
             }
             else

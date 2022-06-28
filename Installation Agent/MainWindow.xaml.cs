@@ -99,34 +99,55 @@ namespace Installation_Agent
 
         private async void ButtonRunScript_Click(object sender, RoutedEventArgs e)
         {
-            var button = (Button)sender;
-            var script = (ScriptExecutable)button.DataContext;
-            script.CurrentlyRunning = true;
-            await viewController.RunJob(script);
+
+            if (ListBoxJobs.SelectedItem != null)
+            {
+                if(ListBoxJobs.SelectedItem is ScriptExecutable)
+                {
+                    ScriptExecutable scriptExecutable = (ScriptExecutable)ListBoxJobs.SelectedItem;
+                    scriptExecutable.CurrentlyRunning = true;
+                    await viewController.RunJob(scriptExecutable);
+                }
+            }
         }
 
         private async void ButtonInstallApplication_Click(object sender, RoutedEventArgs e)
         {
-            var button = (Button)sender;
-            var app = (ApplicationExecutable)button.DataContext;
-            app.CurrentlyRunning = true;
-            await viewController.InstallApplication(app);
+            if (ListBoxJobs.SelectedItem != null)
+            {
+                if (ListBoxJobs.SelectedItem is ApplicationExecutable)
+                {
+                    ApplicationExecutable applicationExecutable = (ApplicationExecutable)ListBoxJobs.SelectedItem;
+                    applicationExecutable.CurrentlyRunning = true;
+                    await viewController.InstallApplication(applicationExecutable);
+                }
+            }
         }
 
         private async void ButtonReinstallApplication_Click(object sender, RoutedEventArgs e)
         {
-            var button = (Button)sender;
-            var app = (ApplicationExecutable)button.DataContext;
-            app.CurrentlyRunning = true;
-            await viewController.ReinstallApplication(app);
+            if (ListBoxJobs.SelectedItem != null)
+            {
+                if (ListBoxJobs.SelectedItem is ApplicationExecutable)
+                {
+                    ApplicationExecutable applicationExecutable = (ApplicationExecutable)ListBoxJobs.SelectedItem;
+                    applicationExecutable.CurrentlyRunning = true;
+                    await viewController.ReinstallApplication(applicationExecutable);
+                }
+            }
         }
 
         private async void ButtonUninstallApplication_Click(object sender, RoutedEventArgs e)
         {
-            var button = (Button)sender;
-            var app = (ApplicationExecutable)button.DataContext;
-            app.CurrentlyRunning = true;
-            await viewController.UninstallApplication(app);
+            if (ListBoxJobs.SelectedItem != null)
+            {
+                if (ListBoxJobs.SelectedItem is ApplicationExecutable)
+                {
+                    ApplicationExecutable applicationExecutable = (ApplicationExecutable)ListBoxJobs.SelectedItem;
+                    applicationExecutable.CurrentlyRunning = true;
+                    await viewController.UninstallApplication(applicationExecutable);
+                }
+            }
             
         }
 
@@ -139,7 +160,31 @@ namespace Installation_Agent
 
         private void ListBoxJobs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InnerGrid.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Star);
+            makeAllButtonsInvisible();
+            //InnerGrid.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Star);
+            InnerGrid.ColumnDefinitions[1].Width = GridLength.Auto;
+            var listbox = (ListBox)sender;
+            
+            var item = listbox.SelectedItem;
+            if(item != null)
+            {
+                if(item is IRunnable)
+                    RunButton.Visibility = Visibility.Visible;
+                if (item is IInstalable)
+                    InstallButton.Visibility = Visibility.Visible;
+                if(item is IReinstallable)
+                    ReinstallButton.Visibility = Visibility.Visible;
+                if(item is IUninstallable)
+                    UninstallButton.Visibility = Visibility.Visible;
+            }
+            Log.Information(item.GetType().ToString());
+        }
+        private void makeAllButtonsInvisible()
+        {
+            RunButton.Visibility = Visibility.Collapsed;
+            InstallButton.Visibility = Visibility.Collapsed;
+            ReinstallButton.Visibility = Visibility.Collapsed;
+            UninstallButton.Visibility = Visibility.Collapsed;
         }
     }
 }

@@ -97,26 +97,22 @@ namespace Installation.Models
                 if(executor.SuccessfullReturnCodes.Contains(executor.LastReturnCode))
                 {
                     StatusState = StatusState.Success;
-                    StatusMessage = "Erfolgreich installiert";
                 }
                 else
                 {
                     StatusState = StatusState.Error;
-                    StatusMessage = "Installation fehlgeschlagen: " + executor.LastReturnMessage;
+                    StatusMessage = executor.LastReturnMessage;
                 }
                     
             }
             else
             {
                 if(successfulReturnCodes.Contains(executor.LastReturnCode))
-                {
                     StatusState = StatusState.Success;
-                    StatusMessage = "Erfolgreich installiert";
-                }
                 else
                 {
                     StatusState = StatusState.Error;
-                    StatusMessage = "Installation fehlgeschlagen: " + executor.LastReturnMessage;
+                    StatusMessage = executor.LastReturnMessage;
                 }
             }
 
