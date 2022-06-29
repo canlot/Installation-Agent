@@ -27,6 +27,7 @@ namespace Installation_Agent.Controller
         Task runningNamedPipe;
         private readonly object _lock = new object();
         public string SearchText = "";
+
         public ViewController()
         {
 
@@ -84,6 +85,18 @@ namespace Installation_Agent.Controller
                         executable.StatusMessage = job.StatusMessage;
                         executable.CurrentlyRunning = false;
 
+                        switch(job.StatusState)
+                        {
+                            case StatusState.Success:
+                            case StatusState.Warning:
+                                setState(executable, job.Action, true);
+                                break;
+                            case StatusState.Error:
+                                setState(executable, job.Action, false);
+                                break;
+                        }
+                        
+
                     }
                 }
             }
@@ -92,6 +105,35 @@ namespace Installation_Agent.Controller
                 Log.Error(ex, "No job");
             }
         }
+
+        private void setState(Executable executable, ExecuteAction action, bool state)
+        {
+            if(executable is ApplicationExecutable)
+            {
+                var applicationExecutable = (ApplicationExecutable)executable;
+                switch (action)
+                {
+                    case ExecuteAction.Install:
+                        applicationExecutable.Installed = state;
+                        break;
+                    case ExecuteAction.Reinstall:
+                        applicationExecutable.ReInstalled = state;
+                        break;
+                    case ExecuteAction.Uninstall:
+                        applicationExecutable.UnInstalled = state;
+                        break;
+
+                }    
+            }
+            else if(executable is ScriptExecutable)
+            {
+                var scriptExecutable = (ScriptExecutable)executable;
+                if(action == ExecuteAction.Run)
+                    scriptExecutable.Runned = state;
+            }
+            
+        }
+
         private async Task newExecutableReceivedAsync(Executable executable)
         {
             Log.Debug("Executable received {id}", executable.Id);
@@ -104,7 +146,7 @@ namespace Installation_Agent.Controller
         {
             
         }
-        public void mapJob(Job source, Job target)
+        private void mapExecutable(Executable executable)
         {
             
         }

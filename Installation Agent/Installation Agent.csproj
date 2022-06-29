@@ -112,6 +112,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ExecutionStateToIconColorConverter.cs" />
     <Compile Include="StatusStateToColorConverter.cs" />
     <Compile Include="StatusStateToTextConverter.cs" />
     <Page Include="MainWindow.xaml">

@@ -80,23 +80,6 @@ namespace Installation_Agent
 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void ButtonInstallSoftware_Click(object sender, RoutedEventArgs e)
-        {
-            DependencyObject parent = VisualTreeHelper.GetParent((DependencyObject)sender);
-            DependencyObject parentparent = VisualTreeHelper.GetParent((DependencyObject)parent);
-            DependencyObject parentparentparent = VisualTreeHelper.GetParent((DependencyObject)parentparent);
-            DependencyObject parentparentparentparent = VisualTreeHelper.GetParent((DependencyObject)parentparentparent);
-            ListBoxItem item = (ListBoxItem)parentparentparentparent;
-            ScriptExecutable scriptExecutable = (ScriptExecutable)item.DataContext;
-            //Job job = (Job)item.DataContext;
-            await viewController.RunJob(scriptExecutable);
-        }
-
         private async void ButtonRunScript_Click(object sender, RoutedEventArgs e)
         {
 
@@ -160,24 +143,27 @@ namespace Installation_Agent
 
         private void ListBoxJobs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            makeAllButtonsInvisible();
-            //InnerGrid.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Star);
-            InnerGrid.ColumnDefinitions[1].Width = GridLength.Auto;
             var listbox = (ListBox)sender;
-            
+
             var item = listbox.SelectedItem;
-            if(item != null)
+            if (item != null)
             {
-                if(item is IRunnable)
+                InnerGrid.ColumnDefinitions[1].Width = GridLength.Auto;
+                makeAllButtonsInvisible();
+
+                if (item is IRunnable)
                     RunButton.Visibility = Visibility.Visible;
                 if (item is IInstalable)
                     InstallButton.Visibility = Visibility.Visible;
-                if(item is IReinstallable)
+                if (item is IReinstallable)
                     ReinstallButton.Visibility = Visibility.Visible;
-                if(item is IUninstallable)
+                if (item is IUninstallable)
                     UninstallButton.Visibility = Visibility.Visible;
             }
-            Log.Information(item.GetType().ToString());
+            else
+            {
+                InnerGrid.ColumnDefinitions[1].Width = new GridLength(0);
+            }
         }
         private void makeAllButtonsInvisible()
         {

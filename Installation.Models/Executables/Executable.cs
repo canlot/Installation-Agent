@@ -58,6 +58,7 @@ namespace Installation.Models
         public string statusMessage;
         public string StatusMessage { get => statusMessage; set { statusMessage = value; OnPropertyChanged("StatusMessage"); } }
 
+
         public Executable()
         {
 
@@ -108,7 +109,9 @@ namespace Installation.Models
             else
             {
                 if(successfulReturnCodes.Contains(executor.LastReturnCode))
+                {
                     StatusState = StatusState.Success;
+                }
                 else
                 {
                     StatusState = StatusState.Error;
@@ -117,6 +120,7 @@ namespace Installation.Models
             }
 
         }
+
 
     }
 }

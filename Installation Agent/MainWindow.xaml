@@ -15,6 +15,7 @@
     <Window.Resources>
         <local:StatusStateToColorConverter x:Key="StatusStateToColorConverter" />
         <local:StatusStateToTextConverter x:Key="StatusStateToTextConverter" />
+        <local:ExecutionStateToIconColorConverter x:Key="ExecutionStateToIconColorConverter" />
         <sys:Double x:Key="ButtonIconSize">24</sys:Double>
     </Window.Resources>
     <Window.DataContext>
@@ -47,8 +48,13 @@
                     <DataTemplate DataType="{x:Type models:Executable}">
                         <ui:SimpleStackPanel Orientation="Horizontal" Margin="5">
                             <Image Source="{Binding Path=IconPath}" Width="64" Height="64"></Image>
+                            <DockPanel Height="16" Width="16" Margin="10">
+                                <Path x:Name="HookIcon" Data="M 110,240 L 170,310 C 200,340,210,360,260,300 L 370,150 C 400,120,450,160,430,190 L 280,390 C 230,450,210,430,160,390 L 60,280 C 30,250,90,210,110,240 Z M 70,90 A 237.12,237.12,180,0,0,420,410 A 237.12,237.12,180,0,0,70,90 Z" 
+                                      Fill="{Binding Path=., Converter={StaticResource ExecutionStateToIconColorConverter}}" Stretch="Fill"/>
+                            </DockPanel>
+
                             <Ellipse Fill="{Binding StatusState, Converter={StaticResource StatusStateToColorConverter}}" Width="10" Height="10" Margin="10"/>
-                                <Label FontSize="20" Margin="5" VerticalAlignment="Center">
+                            <Label FontSize="20" Margin="5" VerticalAlignment="Center" FontFamily="Bahnschrift">
                                     <Label.Content>
                                         <AccessText>
                                             <MultiBinding StringFormat="{}{0} {1}">

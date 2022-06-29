@@ -16,7 +16,7 @@ namespace Installation.Models
         [ExecutableSetting]
         public string RunFilePath { get; set; }
         private bool runned;
-        public bool Runned { get => runned; set => runned = value; }
+        public bool Runned { get => runned; set { runned = value; OnPropertyChanged("Runned"); } }
 
         [ExecutableSetting(Mandatory = false)]
         public List<int> SuccessfullRunReturnCodes { get; set; }
@@ -29,11 +29,24 @@ namespace Installation.Models
             using (var executor = Executor.GetExecutor(RunFilePath, "",  ExecutableDirectory, cancellationToken))
             {
                 checkExecutor(executor);
-
                 await (executor as IScriptExecutor).RunAsync();
-
-
                 setExecutionStateFromExecutor(executor, SuccessfullRunReturnCodes);
+            }
+
+            switch(StatusState)
+            {
+                case StatusState.Success:
+                    Runned = true;
+                    break;
+                case StatusState.Warning:
+                    Runned = true;
+                    break;
+                case StatusState.Error:
+                    Runned = false;
+                    break;
+                default:
+                    Runned = false;
+                    break;
             }
         }
         private void checkExecutor(Executor executor)
