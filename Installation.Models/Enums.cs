@@ -36,4 +36,9 @@ namespace Installation.Models
         NotInstalled,
         Installed
     }
+    public enum RunState
+    {
+        NotRunned,
+        Runned
+    }
 }

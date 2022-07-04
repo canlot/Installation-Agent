@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Installation.Models
 {
     
-    public class Executable : INotifyPropertyChanged
+    abstract public class Executable : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string name)
@@ -49,7 +49,7 @@ namespace Installation.Models
             }
             set => iconPath = value;
         }
-        public bool CurrentlyRunning { get => currentlyRunning; set { currentlyRunning = value; OnPropertyChanged("CurrentlyRunning"); } }
+        public bool CurrentlyRunning { get => currentlyRunning; set { currentlyRunning = value;  OnPropertyChanged("CurrentlyRunning"); } }
         public StatusState StatusState { get => statusState; set { statusState = value; OnPropertyChanged("StatusState"); } }
         public string ExecutableDirectory { get => executableDirectory; set => executableDirectory = value; }
         [ExecutableSetting(Mandatory = false)]
@@ -58,6 +58,10 @@ namespace Installation.Models
         public string statusMessage;
         public string StatusMessage { get => statusMessage; set { statusMessage = value; OnPropertyChanged("StatusMessage"); } }
 
+        protected bool successfulRollout;
+        public bool SuccessfulRollout { get { return successfulRollout; } set { successfulRollout = value;  OnPropertyChanged("SuccessfulRollout"); } }
+
+        abstract protected void setSuccessfulRolloutState();
 
         public Executable()
         {

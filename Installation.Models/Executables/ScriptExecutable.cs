@@ -16,12 +16,22 @@ namespace Installation.Models
         [ExecutableSetting]
         public string RunFilePath { get; set; }
         private bool runned;
-        public bool Runned { get => runned; set { runned = value; OnPropertyChanged("Runned"); } }
+        public bool Runned { get => runned; set { runned = value; setSuccessfulRolloutState(); OnPropertyChanged("Runned"); } }
+
 
         [ExecutableSetting(Mandatory = false)]
         public List<int> SuccessfullRunReturnCodes { get; set; }
 
+        protected override void setSuccessfulRolloutState()
+        {
+            if (runned)
+                successfulRollout = true;
+            else
+                successfulRollout = false;
 
+        }
+
+        
         public async Task RunAsync(CancellationToken cancellationToken)
         {
             Log.Information("Running Script {file} from {dir}", RunFilePath, ExecutableDirectory);

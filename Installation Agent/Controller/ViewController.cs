@@ -114,13 +114,13 @@ namespace Installation_Agent.Controller
                 switch (action)
                 {
                     case ExecuteAction.Install:
-                        applicationExecutable.Installed = state;
+                        applicationExecutable.SuccessfulRollout = state;
                         break;
                     case ExecuteAction.Reinstall:
-                        applicationExecutable.ReInstalled = state;
+                        applicationExecutable.SuccessfulRollout = state;
                         break;
                     case ExecuteAction.Uninstall:
-                        applicationExecutable.UnInstalled = state;
+                        applicationExecutable.SuccessfulRollout = state;
                         break;
 
                 }    
@@ -129,7 +129,7 @@ namespace Installation_Agent.Controller
             {
                 var scriptExecutable = (ScriptExecutable)executable;
                 if(action == ExecuteAction.Run)
-                    scriptExecutable.Runned = state;
+                    scriptExecutable.SuccessfulRollout = state;
             }
             
         }

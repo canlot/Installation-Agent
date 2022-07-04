@@ -36,9 +36,10 @@ namespace Installation.Models
         private bool reinstalled;
         private bool uninstalled;
         
-        public bool Installed { get => installed; set { installed = value; OnPropertyChanged("Installed"); } }
-        public bool ReInstalled { get => reinstalled; set { reinstalled = value; OnPropertyChanged("ReInstalled"); } }
-        public bool UnInstalled { get => uninstalled; set { uninstalled = value; OnPropertyChanged("UnInstalled"); } }
+        public bool Installed { get => installed; set { installed = value; setSuccessfulRolloutState(); OnPropertyChanged("Installed");  } }
+        public bool ReInstalled { get => reinstalled; set { reinstalled = value; setSuccessfulRolloutState(); OnPropertyChanged("ReInstalled"); } }
+        public bool UnInstalled { get => uninstalled; set { uninstalled = value; setSuccessfulRolloutState(); OnPropertyChanged("UnInstalled"); } }
+
 
         [ExecutableSetting(Mandatory = false)]
         public List<int> SuccessfullInstallReturnCodes { get; set; }
@@ -47,6 +48,13 @@ namespace Installation.Models
         [ExecutableSetting(Mandatory = false)]
         public List<int> SuccessfullUnInstallReturnCodes { get; set; }
 
+        protected override void setSuccessfulRolloutState()
+        {
+            if ((Installed || ReInstalled) && !UnInstalled)
+                successfulRollout = true;
+            else
+                successfulRollout = false;
+        }
         private void checkExecutor(Executor executor)
         {
             if (executor == null)
