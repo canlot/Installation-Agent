@@ -72,8 +72,8 @@ namespace Installation.Models
                 await (executor as IApplicationExecutor).InstallAsync();
                 setExecutionStateFromExecutor(executor, SuccessfullInstallReturnCodes);
             }
-
-            switch(StatusState)
+            setStateToFalse();
+            switch (StatusState)
             {
                 case StatusState.Success:
                     Installed = true;
@@ -105,6 +105,7 @@ namespace Installation.Models
                 await (executor as IApplicationExecutor).ReinstallAsync();
                 setExecutionStateFromExecutor(executor, SuccessfullReInstallReturnCodes);
             }
+            setStateToFalse();
             switch (StatusState)
             {
                 case StatusState.Success:
@@ -134,6 +135,7 @@ namespace Installation.Models
 
                 setExecutionStateFromExecutor(executor, SuccessfullUnInstallReturnCodes);
             }
+            setStateToFalse();
             switch (StatusState)
             {
                 case StatusState.Success:
@@ -149,6 +151,12 @@ namespace Installation.Models
                     UnInstalled = false;
                     break;
             }
+        }
+        private void setStateToFalse()
+        {
+            installed = false;
+            reinstalled = false;
+            uninstalled = false;
         }
     }
 }
