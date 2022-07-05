@@ -106,13 +106,13 @@
                             <TextBlock TextWrapping="Wrap" Text="{Binding ExecutableCollection/Description}" />
                         </ScrollViewer>
                     </Border>
-                    <Expander Grid.Row="2"  HorizontalAlignment="Stretch" >
+                    <Expander Grid.Row="2" >
                         <Expander.Header>
                             <DockPanel Margin="0,12,12,12">
                                 <Border BorderBrush="{Binding ExecutableCollection/StatusState, Converter={StaticResource StatusStateToColorConverter}}" CornerRadius="3" Padding="5" BorderThickness="2"
                                         Background="{Binding ExecutableCollection/StatusState, Converter={StaticResource StatusStateToColorConverter}}">
                                     <TextBlock Text="{Binding ExecutableCollection/StatusState, Converter={StaticResource StatusStateToTextConverter}}" FontSize="14" TextWrapping="Wrap" 
-                                           Foreground="WhiteSmoke" FontFamily="Bahnschrift"/>
+                                           Foreground="WhiteSmoke" FontFamily="Bahnschrift" />
                                 </Border>
                             </DockPanel>
                         </Expander.Header>

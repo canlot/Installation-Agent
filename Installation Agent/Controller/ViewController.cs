@@ -120,7 +120,7 @@ namespace Installation_Agent.Controller
                         applicationExecutable.SuccessfulRollout = state;
                         break;
                     case ExecuteAction.Uninstall:
-                        applicationExecutable.SuccessfulRollout = state;
+                        applicationExecutable.SuccessfulRollout = !state;
                         break;
 
                 }    
