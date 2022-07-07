@@ -1,30 +1,120 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Installation.Installer" Language="1033" Version="1.0.0.0" Manufacturer="" UpgradeCode="3bb224be-c9f1-441c-9db2-13f45b4ba8bf">
+	<Product Id="*" Name="Installation Agent" Language="1033" Version="1.0.0.0" Manufacturer="JakeOS" UpgradeCode="3bb224be-c9f1-441c-9db2-13f45b4ba8bf">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-		<MediaTemplate />
+		<MediaTemplate EmbedCab="yes" />
 
-		<Feature Id="ProductFeature" Title="Installation.Installer" Level="1">
-			<ComponentGroupRef Id="ProductComponents" />
+		<Feature Id="Agent" Title="Installation Agent" Level="1" >
+			<ComponentGroupRef Id="Agent" />
 		</Feature>
+    <Feature Id="SharedLibraries" Title="Shared Libraries" Level="1">
+      <ComponentGroupRef Id="SharedLibraries"/>
+    </Feature>
+    <Feature Id="Service" Title="Installation Agent Service" Level="1">
+      <ComponentGroupRef Id="Service"/>
+    </Feature>
+    <Feature Id="LogFolder">
+      <ComponentRef Id="LogFolder"/>
+    </Feature>
+    <Feature Id="LogServerFolder">
+      <ComponentRef Id="ServerFolder"/>
+    </Feature>
+    <Feature Id="LogClientFolder">
+      <ComponentRef Id="ClientFolder"/>
+    </Feature>
 	</Product>
 
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="Installation.Installer" />
+        <Directory Id="INSTALLFOLDER" Name="Installation Agent" >
+          <Directory Id="Logs" Name="Logs">
+            
+            <Component Id="LogFolder" Guid="{429163E5-3FA3-49D7-AAF7-285FC1AA2D1B}">
+              <CreateFolder/>
+            </Component>
+            
+            <Directory Id="ServerLogs" Name="Server">
+              <Component Id="ServerFolder" Guid="{1B5088E3-D0CD-46FE-B2FD-B2A04DA741E7}">
+                <CreateFolder/>
+              </Component>
+            </Directory>
+            
+            <Directory Id="ClientLogs" Name="Client">
+              <Component Id="ClientFolder" Guid="{0385C1A8-40C8-432B-9A97-337FCCEF1597}">
+                <CreateFolder/>
+              </Component>
+            </Directory>
+            
+          </Directory>
+        </Directory>
 			</Directory>
 		</Directory>
 	</Fragment>
 
 	<Fragment>
-		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
-			<!-- <Component Id="ProductComponent"> -->
-				<!-- TODO: Insert files, registry keys, and other resources here. -->
-			<!-- </Component> -->
+		<ComponentGroup Id="Agent" Directory="INSTALLFOLDER">
+      <Component Id="InstallerAgentExe" Guid="*">
+        <File Source="$(var.Installation Agent.TargetDir)Installation Agent.exe" />
+      </Component>
+      
+      <Component Id="ModernWpf.Controls" Guid="*">
+        <File Source="$(var.Installation Agent.TargetDir)ModernWpf.Controls.dll" />
+      </Component>
+      <Component Id="ModernWpf" Guid="*">
+        <File Source="$(var.Installation Agent.TargetDir)ModernWpf.dll" />
+      </Component>
 		</ComponentGroup>
+    
+    <ComponentGroup Id="SharedLibraries" Directory="INSTALLFOLDER">
+      <Component Id="Newtonsoft.Json" Guid="*">
+        <File Source="$(var.Installation Agent.TargetDir)Newtonsoft.Json.dll" />
+      </Component>
+      <Component Id="Serilog" Guid="*">
+        <File Source="$(var.Installation Agent.TargetDir)Serilog.dll" />
+      </Component>
+      <Component Id="Serilog.Sinks.File" Guid="*">
+        <File Source="$(var.Installation Agent.TargetDir)Serilog.Sinks.File.dll" />
+      </Component>
+      <Component Id="System.ValueTuple" Guid="*">
+        <File Source="$(var.Installation Agent.TargetDir)System.ValueTuple.dll" />
+      </Component>
+      <Component Id="Installation.Communication" Guid="*">
+        <File Source="$(var.Installation Agent.TargetDir)Installation.Communication.dll" />
+      </Component>
+      <Component Id="Installation.Models" Guid="*">
+        <File Source="$(var.Installation Agent.TargetDir)Installation.Models.dll" />
+      </Component>
+      <Component Id="Installation.Executors" Guid="*">
+        <File Source="$(var.Installation Agent.TargetDir)Installation.Executors.dll" />
+      </Component>
+    </ComponentGroup>
+    
+    <ComponentGroup Id="Service" Directory="INSTALLFOLDER">
+      <Component Id="Installation.Service" Guid="*">
+        <File Source="$(var.Installation.Service.TargetDir)Installation.Service.exe"/>
+          <ServiceInstall Id="ServiceInstaller" Type="ownProcess" Name="InstallationAgent" DisplayName="Installation Agent"
+          Description="Installiert Software" Start="auto" ErrorControl="normal">
+          </ServiceInstall>
+        <ServiceControl Id="ServiceConroller" Name="InstallationAgent" Remove="both" Start="install" Stop="both"  />
+      </Component>
+      <Component Id="Installation.Controller" Guid="*">
+        <File Source="$(var.Installation.Service.TargetDir)Installation.Controller.dll" />
+      </Component>
+      <Component Id="Installation.Storage" Guid="*">
+        <File Source="$(var.Installation.Service.TargetDir)Installation.Storage.dll" />
+      </Component>
+      <Component Id="INIFileParser" Guid="*">
+        <File Source="$(var.Installation.Service.TargetDir)INIFileParser.dll" />
+      </Component>
+      <Component Id="Installation.Parser" Guid="*">
+        <File Source="$(var.Installation.Service.TargetDir)Installation.Parser.dll" />
+      </Component>
+      <Component Id="Serilog.Sinks.Console" Guid="*">
+        <File Source="$(var.Installation.Service.TargetDir)Serilog.Sinks.Console.dll" />
+      </Component>
+    </ComponentGroup>
 	</Fragment>
 </Wix>
