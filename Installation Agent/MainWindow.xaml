@@ -51,12 +51,12 @@
                 <ListBox.Resources>
                     <DataTemplate DataType="{x:Type models:Executable}">
                         <ui:SimpleStackPanel Orientation="Horizontal" Margin="5">
-                            <Image Source="{Binding Path=IconPath}" Width="64" Height="64"></Image>
                             <DockPanel Height="16" Width="16" Margin="10">
                                 <Path  Data="M 110,240 L 170,310 C 200,340,210,360,260,300 L 370,150 C 400,120,450,160,430,190 L 280,390 C 230,450,210,430,160,390 L 60,280 C 30,250,90,210,110,240 Z M 70,90 A 237.12,237.12,180,0,0,420,410 A 237.12,237.12,180,0,0,70,90 Z" 
                                       Fill="{Binding Path=SuccessfulRollout, Converter={StaticResource SuccessToColorConverter}}" Stretch="Fill"/>
                             </DockPanel>
-
+                            <Image Source="{Binding Path=IconPath}" Width="64" Height="64" Margin="5"></Image>
+                            
                             <Ellipse Fill="{Binding StatusState, Converter={StaticResource StatusStateToColorConverter}}" Width="10" Height="10" Margin="10"/>
                             <Label FontSize="20" Margin="5" VerticalAlignment="Center" FontFamily="Bahnschrift">
                                     <Label.Content>
@@ -85,6 +85,10 @@
                     </Grid.RowDefinitions>
                     <Border Grid.Row="0" BorderThickness="2" CornerRadius="5"  Background="#FFF2F2F2" Padding="5" Margin="5">
                         <StackPanel Orientation="Horizontal">
+                            <DockPanel Height="16" Width="16" Margin="10">
+                                <Path  Data="M 110,240 L 170,310 C 200,340,210,360,260,300 L 370,150 C 400,120,450,160,430,190 L 280,390 C 230,450,210,430,160,390 L 60,280 C 30,250,90,210,110,240 Z M 70,90 A 237.12,237.12,180,0,0,420,410 A 237.12,237.12,180,0,0,70,90 Z" 
+                                      Fill="{Binding Path=ExecutableCollection/SuccessfulRollout, Converter={StaticResource SuccessToColorConverter}}" Stretch="Fill"/>
+                            </DockPanel>
                             <Image Source="{Binding ExecutableCollection/IconPath}" Width="64" Height="64" Margin="5"></Image>
                             <Ellipse Fill="{Binding ExecutableCollection/StatusState, Converter={StaticResource StatusStateToColorConverter}}" Width="10" Height="10" Margin="5"/>
                             <Label FontSize="20" Margin="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontFamily="Bahnschrift" >
