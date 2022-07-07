@@ -1,2 +1,2 @@
-"C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" /property:Configuration=Release,OutputPath="..\build\BackgroundAgent" "C:\Users\Jakob\source\repos\Installation-Agent\Installation.BackgroundAgent\Installation.BackgroundAgent.csproj"
-"C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" /property:Configuration=Release,OutputPath="..\build\GUI" "C:\Users\Jakob\source\repos\Installation-Agent\Installation Agent\Installation Agent.csproj"
+"C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" /property:Configuration=Release,OutputPath="..\build\BackgroundAgent" "Installation.BackgroundAgent\Installation.BackgroundAgent.csproj"
+"C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" /property:Configuration=Release,OutputPath="..\build\GUI" "Installation Agent\Installation Agent.csproj"
