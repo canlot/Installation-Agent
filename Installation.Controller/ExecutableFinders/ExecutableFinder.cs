@@ -26,7 +26,9 @@ namespace Installation.Controller.ExecutableFinders
             Log.Verbose("Searching for Executables");
 
             List<string> executablePaths = new List<string>();
+            executablePaths.Add(globalSettings.ExecutablesPath);
             executablePaths.AddRange(globalSettings.ExecutablesSettings.Select(n => n.ExecutablesPath));
+            executablePaths = executablePaths.Distinct().Where(n => !string.IsNullOrEmpty(n)).ToList();
             if(executablePaths.Count > 0)
             {
                 Log.Debug("Following executable paths found {paths}", executablePaths);

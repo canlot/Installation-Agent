@@ -139,7 +139,8 @@ namespace Installation_Agent.Controller
             Log.Debug("Executable received {id}", executable.Id);
             if(executable != null)
             {
-                Executables.Add(executable);
+                if(!Executables.Contains(executable))
+                    Executables.Add(executable);
             }
         }
         public void SendJob(Job job)

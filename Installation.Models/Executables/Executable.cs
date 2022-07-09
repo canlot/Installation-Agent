@@ -74,8 +74,18 @@ namespace Installation.Models
         }
         public override bool Equals(object obj)
         {
-            if(this.id.Equals(obj)) return true;
-            else return false;
+            if(obj == null)
+                return false;
+            if (obj is Executable)
+            {
+                if (this.id.Equals((obj as Executable).Id)) 
+                    return true;
+                else 
+                    return false;
+            }
+            else
+                return false;
+            
         }
 
         public static bool operator ==(Executable a, Executable b)

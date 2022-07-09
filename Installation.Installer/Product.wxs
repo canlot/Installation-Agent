@@ -8,7 +8,8 @@
 
 		<Feature Id="Agent" Title="Installation Agent" Level="1" >
 			<ComponentGroupRef Id="Agent" />
-		</Feature>
+      <ComponentRef Id="ApplicationShortcut"/>
+    </Feature>
     <Feature Id="SharedLibraries" Title="Shared Libraries" Level="1">
       <ComponentGroupRef Id="SharedLibraries"/>
     </Feature>
@@ -24,6 +25,12 @@
     <Feature Id="LogClientFolder">
       <ComponentRef Id="ClientFolder"/>
     </Feature>
+
+    <Feature Id="SettingsFile">
+      <ComponentRef Id="CreateSettingsFile"/>
+    </Feature>
+
+    <Property Id="SETTINGSFILEPATH" Value="something" />
 	</Product>
 
 	<Fragment>
@@ -51,13 +58,35 @@
           </Directory>
         </Directory>
 			</Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="Installation Agent"/>
+      </Directory>
 		</Directory>
 	</Fragment>
 
+  <Fragment>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="{9256D07A-34FA-4EC8-9107-AEB2C83D9026}">
+        <Shortcut Id="ApplicationStartMenuShortcut"
+                  Name="Installation Agent"
+                  Target="[#InstallerAgentExe]"
+                  WorkingDirectory="INSTALLFOLDER"/>
+        <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\JakeOS\Installation Agent" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment>
+    <Component Id="CreateSettingsFile" Guid="{87937DBA-20DA-48B8-BC09-9F51AB3DC241}" Directory="INSTALLFOLDER">
+      <CreateFolder/>
+      <IniFile Id="SettingFile" Action="createLine" Key="FilePath" Name="SettingsFilePath.ini" Value="[SETTINGSFILEPATH]" Section="Global" Directory="INSTALLFOLDER"/>
+    </Component>
+  </Fragment>
 	<Fragment>
 		<ComponentGroup Id="Agent" Directory="INSTALLFOLDER">
       <Component Id="InstallerAgentExe" Guid="*">
-        <File Source="$(var.Installation Agent.TargetDir)Installation Agent.exe" />
+        <File Id="InstallerAgentExe" Source="$(var.Installation Agent.TargetDir)Installation Agent.exe" />
       </Component>
       
       <Component Id="ModernWpf.Controls" Guid="*">

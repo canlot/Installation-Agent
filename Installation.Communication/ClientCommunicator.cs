@@ -18,19 +18,24 @@ namespace Installation.Communication
 
         public async Task ConnectAsync()
         {
-            using (pipeStream = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous))
+            while (true)
             {
-                try
+                if (cancellationToken.IsCancellationRequested)
+                    break;
+                using (pipeStream = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous))
                 {
-                    await (pipeStream as NamedPipeClientStream).ConnectAsync(cancellationToken);
-                }
-                catch (Exception ex)
-                {
+                    try
+                    {
+                        await (pipeStream as NamedPipeClientStream).ConnectAsync(cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    await OnClientConnected();
+                    await ReadAsync();
 
                 }
-                await OnClientConnected();
-                await ReadAsync();
-
             }
         }
     }

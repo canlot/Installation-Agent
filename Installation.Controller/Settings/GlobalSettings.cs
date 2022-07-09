@@ -18,6 +18,8 @@ namespace Installation.Controller.Settings
         public string ApplicationSettingsFileName { get => applicationSettingsFileName; private set => applicationSettingsFileName = value; }
         public List<ISettings> ExecutablesSettings = new List<ISettings>();
 
+        private string executablesPath;
+        public string ExecutablesPath { get => executablesPath; }
 
         private string serverLogsFilePath;
         public string ServerLogsFilePath { get => serverLogsFilePath; private set => serverLogsFilePath = value; }
@@ -57,6 +59,7 @@ namespace Installation.Controller.Settings
         private void parseSettings()
         {
             matchEntry("AppSettingsFileName", ref applicationSettingsFileName);
+            matchEntry("ExecutablesPath", ref executablesPath, "Global");
         }
 
         private void addExecutableSetting(ISettings settings)
@@ -64,16 +67,24 @@ namespace Installation.Controller.Settings
             
         }
 
-        private void matchEntry(string entry, ref string field)
+        private void matchEntry(string entry, ref string field, string section = "")
         {
-            var temp = IniData.GetKey(entry);
-            if (temp == null || temp == "")
+            string value = "";
+            if(section == "")
+            {
+                value = IniData.GetKey(entry);
+            }
+            else
+            {
+                value = IniData[section].GetKeyData(entry).Value;
+            }
+            if (value == ""  || value == null)
             {
                 Log.Error("Setting {section} for GlobalSettings not found.", entry);
                 throw new SettingNotFoundException(entry);
             }
             else
-                field = temp;
+                field = value;
 
         }
 

@@ -63,7 +63,7 @@ namespace Installation.Controller
             }
             catch(Exception ex)
             {
-                Log.Error(ex, "Could not load settings file or executables");
+                Log.Fatal(ex, "Could not load settings file or executables");
                 return;
             }
 
