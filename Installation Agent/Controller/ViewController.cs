@@ -137,10 +137,12 @@ namespace Installation_Agent.Controller
         private async Task newExecutableReceivedAsync(Executable executable)
         {
             Log.Debug("Executable received {id}", executable.Id);
-            if(executable != null)
+            if (executable != null)
             {
-                if(!Executables.Contains(executable))
+                if (!Executables.Contains(executable))
                     Executables.Add(executable);
+                else
+                    Executables[Executables.IndexOf(executable)].CurrentlyRunning = executable.CurrentlyRunning;
             }
         }
         public void SendJob(Job job)
