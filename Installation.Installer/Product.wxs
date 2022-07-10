@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Product Id="*" Name="Installation Agent" Language="1033" Version="1.0.0.0" Manufacturer="JakeOS" UpgradeCode="3bb224be-c9f1-441c-9db2-13f45b4ba8bf">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate EmbedCab="yes" />
@@ -32,27 +32,28 @@
 
     <Property Id="EXECUTABLESPATH" Value="." />
     <Property Id="APPSETTINGSFILENAME" Value="setting.ini" />
+    <Property Id="AUTOMATICSTARTUP" Value="1" />
 	</Product>
 
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
+			<Directory Id="ProgramFiles64Folder">
         <Directory Id="INSTALLFOLDER" Name="Installation Agent" >
           <Directory Id="Logs" Name="Logs">
             
-            <Component Id="LogFolder" Guid="{429163E5-3FA3-49D7-AAF7-285FC1AA2D1B}">
+            <Component Id="LogFolder" Guid="{429163E5-3FA3-49D7-AAF7-285FC1AA2D1B}" Win64="yes">
               <CreateFolder>
               </CreateFolder>
             </Component>
             
             <Directory Id="ServerLogs" Name="Server">
-              <Component Id="ServerFolder" Guid="{1B5088E3-D0CD-46FE-B2FD-B2A04DA741E7}">
+              <Component Id="ServerFolder" Guid="{1B5088E3-D0CD-46FE-B2FD-B2A04DA741E7}" Win64="yes">
                 <CreateFolder/>
               </Component>
             </Directory>
             
             <Directory Id="ClientLogs" Name="Client">
-              <Component Id="ClientFolder" Guid="{0385C1A8-40C8-432B-9A97-337FCCEF1597}">
+              <Component Id="ClientFolder" Guid="{0385C1A8-40C8-432B-9A97-337FCCEF1597}" Win64="yes">
                 <CreateFolder/>
               </Component>
             </Directory>
@@ -63,12 +64,13 @@
       <Directory Id="ProgramMenuFolder">
         <Directory Id="ApplicationProgramsFolder" Name="Installation Agent"/>
       </Directory>
-		</Directory>
+    </Directory>
 	</Fragment>
 
+  
   <Fragment>
     <DirectoryRef Id="ApplicationProgramsFolder">
-      <Component Id="ApplicationShortcut" Guid="{9256D07A-34FA-4EC8-9107-AEB2C83D9026}">
+      <Component Id="ApplicationShortcut" Guid="{9256D07A-34FA-4EC8-9107-AEB2C83D9026}" Win64="yes">
         <Shortcut Id="ApplicationStartMenuShortcut"
                   Name="Installation Agent"
                   Target="[#InstallerAgentExe]"
@@ -80,7 +82,7 @@
   </Fragment>
 
   <Fragment>
-    <Component Id="CreateSettingsFile" Guid="{87937DBA-20DA-48B8-BC09-9F51AB3DC241}" Directory="INSTALLFOLDER">
+    <Component Id="CreateSettingsFile" Guid="{87937DBA-20DA-48B8-BC09-9F51AB3DC241}" Directory="INSTALLFOLDER" Win64="yes">
       <CreateFolder/>
       <IniFile Id="SettingFileExecutablePath" Action="createLine" Key="ExecutablesPath" Name="Settings.ini" Value="[EXECUTABLESPATH]" Section="Global" Directory="INSTALLFOLDER"/>
       <IniFile Id="SettingFileSettingsName" Action="createLine" Key="AppSettingsFileName" Name="Settings.ini" Value="[APPSETTINGSFILENAME]" Section="Global" Directory="INSTALLFOLDER"/>
@@ -88,63 +90,63 @@
   </Fragment>
 	<Fragment>
 		<ComponentGroup Id="Agent" Directory="INSTALLFOLDER">
-      <Component Id="InstallerAgentExe" Guid="*">
+      <Component Id="InstallerAgentExe" Guid="*" Win64="yes">
         <File Id="InstallerAgentExe" Source="$(var.Installation Agent.TargetDir)Installation Agent.exe" />
       </Component>
       
-      <Component Id="ModernWpf.Controls" Guid="*">
+      <Component Id="ModernWpf.Controls" Guid="*" Win64="yes">
         <File Source="$(var.Installation Agent.TargetDir)ModernWpf.Controls.dll" />
       </Component>
-      <Component Id="ModernWpf" Guid="*">
+      <Component Id="ModernWpf" Guid="*" Win64="yes">
         <File Source="$(var.Installation Agent.TargetDir)ModernWpf.dll" />
       </Component>
 		</ComponentGroup>
     
     <ComponentGroup Id="SharedLibraries" Directory="INSTALLFOLDER">
-      <Component Id="Newtonsoft.Json" Guid="*">
+      <Component Id="Newtonsoft.Json" Guid="*" Win64="yes">
         <File Source="$(var.Installation Agent.TargetDir)Newtonsoft.Json.dll" />
       </Component>
-      <Component Id="Serilog" Guid="*">
+      <Component Id="Serilog" Guid="*" Win64="yes">
         <File Source="$(var.Installation Agent.TargetDir)Serilog.dll" />
       </Component>
-      <Component Id="Serilog.Sinks.File" Guid="*">
+      <Component Id="Serilog.Sinks.File" Guid="*" Win64="yes">
         <File Source="$(var.Installation Agent.TargetDir)Serilog.Sinks.File.dll" />
       </Component>
-      <Component Id="System.ValueTuple" Guid="*">
+      <Component Id="System.ValueTuple" Guid="*" Win64="yes">
         <File Source="$(var.Installation Agent.TargetDir)System.ValueTuple.dll" />
       </Component>
-      <Component Id="Installation.Communication" Guid="*">
+      <Component Id="Installation.Communication" Guid="*" Win64="yes">
         <File Source="$(var.Installation Agent.TargetDir)Installation.Communication.dll" />
       </Component>
-      <Component Id="Installation.Models" Guid="*">
+      <Component Id="Installation.Models" Guid="*" Win64="yes">
         <File Source="$(var.Installation Agent.TargetDir)Installation.Models.dll" />
       </Component>
-      <Component Id="Installation.Executors" Guid="*">
+      <Component Id="Installation.Executors" Guid="*" Win64="yes">
         <File Source="$(var.Installation Agent.TargetDir)Installation.Executors.dll" />
       </Component>
     </ComponentGroup>
     
     <ComponentGroup Id="Service" Directory="INSTALLFOLDER">
-      <Component Id="Installation.Service" Guid="*">
+      <Component Id="Installation.Service" Guid="*" Win64="yes">
         <File Source="$(var.Installation.Service.TargetDir)Installation.Service.exe"/>
           <ServiceInstall Id="ServiceInstaller" Type="ownProcess" Name="InstallationAgent" DisplayName="Installation Agent"
           Description="Installiert Software" Start="auto" ErrorControl="normal">
           </ServiceInstall>
         <ServiceControl Id="ServiceConroller" Name="InstallationAgent" Remove="both" Start="install" Stop="both"  />
       </Component>
-      <Component Id="Installation.Controller" Guid="*">
+      <Component Id="Installation.Controller" Guid="*" Win64="yes">
         <File Source="$(var.Installation.Service.TargetDir)Installation.Controller.dll" />
       </Component>
-      <Component Id="Installation.Storage" Guid="*">
+      <Component Id="Installation.Storage" Guid="*" Win64="yes">
         <File Source="$(var.Installation.Service.TargetDir)Installation.Storage.dll" />
       </Component>
-      <Component Id="INIFileParser" Guid="*">
+      <Component Id="INIFileParser" Guid="*" Win64="yes">
         <File Source="$(var.Installation.Service.TargetDir)INIFileParser.dll" />
       </Component>
-      <Component Id="Installation.Parser" Guid="*">
+      <Component Id="Installation.Parser" Guid="*" Win64="yes">
         <File Source="$(var.Installation.Service.TargetDir)Installation.Parser.dll" />
       </Component>
-      <Component Id="Serilog.Sinks.Console" Guid="*">
+      <Component Id="Serilog.Sinks.Console" Guid="*" Win64="yes">
         <File Source="$(var.Installation.Service.TargetDir)Serilog.Sinks.Console.dll" />
       </Component>
     </ComponentGroup>
