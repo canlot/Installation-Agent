@@ -20,20 +20,22 @@
         <converter:InstallationStateToColorConverter x:Key="InstallationStateToColorConverter" />
         <converter:RunStateToColorConverter x:Key="RunStateToColorConverter" />
         <converter:SuccessToColorConverter x:Key="SuccessToColorConverter" />
+        <converter:BoolStateToColorConverter x:Key="BoolStateToColorConverter" />
         <sys:Double x:Key="ButtonIconSize">24</sys:Double>
     </Window.Resources>
     <Window.DataContext>
         <controller:ViewController x:Name="viewController"/>
     </Window.DataContext>
-    <Grid Background="#FFF2F2F2" Margin="30">
+    <Grid Background="#FFF2F2F2" Margin="0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
-        <ui:AutoSuggestBox x:Name="AutoSuggestBoxSearchExecutables" Grid.Row="0" PlaceholderText="Search" QueryIcon="Find" Margin="5,10" Background="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" TextChanged="AutoSuggestBoxSearchExecutables_TextChanged" >
+        <ui:AutoSuggestBox x:Name="AutoSuggestBoxSearchExecutables" Grid.Row="0" PlaceholderText="Search" QueryIcon="Find" Margin="10" Background="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" TextChanged="AutoSuggestBoxSearchExecutables_TextChanged" >
 
         </ui:AutoSuggestBox>
         <Grid Name="InnerGrid" Grid.Row="1">
@@ -56,18 +58,18 @@
                                       Fill="{Binding Path=SuccessfulRollout, Converter={StaticResource SuccessToColorConverter}}" Stretch="Fill"/>
                             </DockPanel>
                             <Image Source="{Binding Path=IconPath}" Width="64" Height="64" Margin="5"></Image>
-                            
+
                             <Ellipse Fill="{Binding StatusState, Converter={StaticResource StatusStateToColorConverter}}" Width="10" Height="10" Margin="10"/>
                             <Label FontSize="20" Margin="5" VerticalAlignment="Center" FontFamily="Bahnschrift">
-                                    <Label.Content>
-                                        <AccessText>
-                                            <MultiBinding StringFormat="{}{0} {1}">
-                                                <Binding Path="Name"/>
-                                                <Binding Path="Version"/>
-                                            </MultiBinding>
-                                        </AccessText>
-                                    </Label.Content>
-                                </Label>
+                                <Label.Content>
+                                    <AccessText>
+                                        <MultiBinding StringFormat="{}{0} {1}">
+                                            <Binding Path="Name"/>
+                                            <Binding Path="Version"/>
+                                        </MultiBinding>
+                                    </AccessText>
+                                </Label.Content>
+                            </Label>
                             <ui:ProgressRing Name = "ProgressRing" Margin="5" IsActive="{Binding CurrentlyRunning, Mode=TwoWay }">
                             </ui:ProgressRing>
                         </ui:SimpleStackPanel>
@@ -164,12 +166,15 @@
                                     </Expander.Content>
                                 </Expander>
                             </StackPanel>
-                            
+
                         </Border>
                     </Grid>
                 </Grid>
             </Border>
-            
         </Grid>
+        <StatusBar Grid.Row="2">
+            <Label Content="Dienststatus: " HorizontalAlignment="Center" FontFamily="Bahnschrift"/>
+            <Ellipse Fill="{Binding ServiceConnected, Converter={StaticResource BoolStateToColorConverter}}" Width="10" Height="10" HorizontalAlignment="Center"  />
+        </StatusBar>
     </Grid>
 </Window>

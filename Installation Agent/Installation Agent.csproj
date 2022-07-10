@@ -112,6 +112,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converter\BoolStateToColorConverter.cs" />
     <Compile Include="Converter\InstallationStateToColorConverter.cs" />
     <Compile Include="Converter\RunStateToColorConverter.cs" />
     <Compile Include="Converter\SuccessToColorConverter.cs" />

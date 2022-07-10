@@ -10,7 +10,10 @@ namespace Installation.Communication
     public class ClientCommunicator : Communicator
     {
         public delegate Task ClientConnected();
+        public delegate Task ClientDisconnected();
         public event ClientConnected OnClientConnected;
+        public event ClientDisconnected OnClientDisconnected;
+
         public ClientCommunicator(CancellationToken cancellationToken) : base(cancellationToken)
         {
 
@@ -34,7 +37,7 @@ namespace Installation.Communication
                     }
                     await OnClientConnected();
                     await ReadAsync();
-
+                    await OnClientDisconnected();
                 }
             }
         }

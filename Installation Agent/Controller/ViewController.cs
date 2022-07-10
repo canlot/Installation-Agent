@@ -14,7 +14,7 @@ using System.ComponentModel;
 
 namespace Installation_Agent.Controller
 {
-    public class ViewController
+    public class ViewController : INotifyPropertyChanged
     {
         public ObservableCollection<Executable> Executables = new ObservableCollection<Executable>();
         public CollectionViewSource ExecutablesViewSource { get; set; } = new CollectionViewSource();
@@ -28,6 +28,22 @@ namespace Installation_Agent.Controller
         private readonly object _lock = new object();
         public string SearchText = "";
 
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        private bool serviceConnected = false;
+        public bool ServiceConnected
+        {
+            get => serviceConnected;
+            set
+            {
+                serviceConnected = value;
+                OnPropertyChanged("ServiceConnected");
+            }
+        }
         public ViewController()
         {
 
@@ -42,6 +58,7 @@ namespace Installation_Agent.Controller
             clientCommunicator.OnExecutableReceived += newExecutableReceivedAsync;
             clientCommunicator.OnJobReceived += newJobReceivedAsync;
             clientCommunicator.OnClientConnected += OnClientConnectedAsync;
+            clientCommunicator.OnClientDisconnected += OnClientDisconnectedAsync;
 
 
             Log.Logger = new LoggerConfiguration()
@@ -53,7 +70,12 @@ namespace Installation_Agent.Controller
         
         private async Task OnClientConnectedAsync()
         {
+            ServiceConnected = true;
             await clientCommunicator.SendCommandAsync(Command.SendExecutables);
+        }
+        private async Task OnClientDisconnectedAsync()
+        {
+            ServiceConnected = false;
         }
         private bool ExecutableFilter(object item)
         {
