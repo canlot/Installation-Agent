@@ -30,7 +30,8 @@
       <ComponentRef Id="CreateSettingsFile"/>
     </Feature>
 
-    <Property Id="SETTINGSFILEPATH" Value="something" />
+    <Property Id="EXECUTABLESPATH" Value="." />
+    <Property Id="APPSETTINGSFILENAME" Value="setting.ini" />
 	</Product>
 
 	<Fragment>
@@ -40,7 +41,8 @@
           <Directory Id="Logs" Name="Logs">
             
             <Component Id="LogFolder" Guid="{429163E5-3FA3-49D7-AAF7-285FC1AA2D1B}">
-              <CreateFolder/>
+              <CreateFolder>
+              </CreateFolder>
             </Component>
             
             <Directory Id="ServerLogs" Name="Server">
@@ -80,7 +82,8 @@
   <Fragment>
     <Component Id="CreateSettingsFile" Guid="{87937DBA-20DA-48B8-BC09-9F51AB3DC241}" Directory="INSTALLFOLDER">
       <CreateFolder/>
-      <IniFile Id="SettingFile" Action="createLine" Key="FilePath" Name="SettingsFilePath.ini" Value="[SETTINGSFILEPATH]" Section="Global" Directory="INSTALLFOLDER"/>
+      <IniFile Id="SettingFileExecutablePath" Action="createLine" Key="ExecutablesPath" Name="Settings.ini" Value="[EXECUTABLESPATH]" Section="Global" Directory="INSTALLFOLDER"/>
+      <IniFile Id="SettingFileSettingsName" Action="createLine" Key="AppSettingsFileName" Name="Settings.ini" Value="[APPSETTINGSFILENAME]" Section="Global" Directory="INSTALLFOLDER"/>
     </Component>
   </Fragment>
 	<Fragment>

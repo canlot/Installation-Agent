@@ -58,7 +58,7 @@ namespace Installation.Controller.Settings
         }
         private void parseSettings()
         {
-            matchEntry("AppSettingsFileName", ref applicationSettingsFileName);
+            matchEntry("AppSettingsFileName", ref applicationSettingsFileName, "Global");
             matchEntry("ExecutablesPath", ref executablesPath, "Global");
         }
 
