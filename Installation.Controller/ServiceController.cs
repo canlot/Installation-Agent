@@ -86,10 +86,10 @@ namespace Installation.Controller
             cancellationTokenSource.Cancel();
             Log.Verbose("Waiting for all task to finish");
 
-            //Task.WaitAll(communicatorTask, executionTask);
             try
             {
-                await Task.WhenAll(communicatorTask, executionTask);
+                //communicatorTask will not be aborted with cancellationToken because it is not working.
+                await executionTask;
             }
             catch (Exception ex)
             {
