@@ -30,9 +30,17 @@
       <ComponentRef Id="CreateSettingsFile"/>
     </Feature>
 
-    <Property Id="EXECUTABLESPATH" Value="." />
+    <Property Id="EXECUTABLESPATH" Value="C:\" Secure="yes"  />
     <Property Id="APPSETTINGSFILENAME" Value="setting.ini" />
-    <Property Id="AUTOMATICSTARTUP" Value="1" />
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <Property Id="WIXUI_EXECUTABLESPATH" Value="EXECUTABLESPATH" />
+    <WixVariable Id="WixUILicenseRtf" Value="licence.rtf" />
+
+    <UIRef Id="Installer_Dialog" />
+      
+
+    
+    
 	</Product>
 
 	<Fragment>
