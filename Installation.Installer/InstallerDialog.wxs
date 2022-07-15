@@ -45,7 +45,7 @@
       <Publish Dialog="ExecutablesDialog" Control="SelectExecutables" Property="_BrowseExecutables" Value="[WIXUI_EXECUTABLESPATH]" Order="1">1</Publish>
       <Publish Dialog="ExecutablesDialog" Control="SelectExecutables" Event="SpawnDialog" Value="BrowseExecutablesDialog" Order="2">1</Publish>
 
-      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="InstallDirDlg" Order="1">NOT Installed</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="ExecutablesDialog" Order="1">NOT Installed</Publish>
       <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="2">Installed AND NOT PATCH</Publish>
       <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2">Installed AND PATCH</Publish>
 

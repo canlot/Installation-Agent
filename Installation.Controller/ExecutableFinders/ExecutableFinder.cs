@@ -15,13 +15,12 @@ namespace Installation.Controller.ExecutableFinders
     class ExecutableFinder
     {
         private GlobalSettings globalSettings;
-        private Dictionary<Guid, Executable> executables = new Dictionary<Guid, Executable>();
 
         public ExecutableFinder(GlobalSettings settings)
         {
             this.globalSettings = settings;
         }
-        public Dictionary<Guid, Executable> FindExecutables()
+        public void FindExecutables(Dictionary<Guid, Executable> executables)
         {
             Log.Verbose("Searching for Executables");
 
@@ -36,14 +35,14 @@ namespace Installation.Controller.ExecutableFinders
 
                 foreach (var executable in executableStorage.GetExecutables())
                 {
-                    ExecutionStateSettings executionStateSettings = new ExecutionStateSettings();
-                    executionStateSettings.LoadExecutableState(executable);
                     if(executables.ContainsKey(executable.Id))
                     {
-                        Log.Error("Executable {name} with the id {id} alreade exist, executable not added",executable.Name, executable.Id);
+                        Log.Error("Executable {name} with the id {id} already exist, executable not added",executable.Name, executable.Id);
                     }
                     else
                     {
+                        ExecutionStateSettings executionStateSettings = new ExecutionStateSettings();
+                        executionStateSettings.LoadExecutableState(executable);
                         executables.Add(executable.Id, executable);
                         Log.Debug("Executable added {@executable}", executable);
                     }
@@ -54,7 +53,6 @@ namespace Installation.Controller.ExecutableFinders
                 Log.Fatal("No executable paths found");
                 throw new Exception("No executable paths found");
             }
-            return executables;
         }
         
 

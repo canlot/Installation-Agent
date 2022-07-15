@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Installation Agent" Language="1033" Version="1.0.0.0" Manufacturer="JakeOS" UpgradeCode="3bb224be-c9f1-441c-9db2-13f45b4ba8bf">
+	<Product Id="*" Name="Installation Agent" Language="1033" Version="!(bind.FileVersion.InstallationServiceExe)" Manufacturer="JakeOS" UpgradeCode="3bb224be-c9f1-441c-9db2-13f45b4ba8bf">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -136,7 +136,7 @@
     
     <ComponentGroup Id="Service" Directory="INSTALLFOLDER">
       <Component Id="Installation.Service" Guid="*" Win64="yes">
-        <File Source="$(var.Installation.Service.TargetDir)Installation.Service.exe"/>
+        <File Id="InstallationServiceExe" Source="$(var.Installation.Service.TargetDir)Installation.Service.exe"/>
           <ServiceInstall Id="ServiceInstaller" Type="ownProcess" Name="InstallationAgent" DisplayName="Installation Agent"
           Description="Installiert Software" Start="auto" ErrorControl="normal">
           </ServiceInstall>

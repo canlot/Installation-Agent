@@ -27,10 +27,17 @@ namespace Installation.Controller.Settings
         private string programPath;
         public string ProgramPath { get => programPath; private set => programPath = value; }
 
+        private int pullIntervalTimeInSeconds = 600;
+        
+        public int PullIntervalTimeInSeconds { get => pullIntervalTimeInSeconds; private set => pullIntervalTimeInSeconds = value; }
+
         public IniData IniData;
 
         public GlobalSettings()
         {
+#if DEBUG
+            pullIntervalTimeInSeconds = 10;
+#endif
             programPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             serverLogsFilePath = Path.Combine(programPath, @"Logs\Server\log.txt");
         }
@@ -60,6 +67,20 @@ namespace Installation.Controller.Settings
         {
             matchEntry("AppSettingsFileName", ref applicationSettingsFileName, "Global");
             matchEntry("ExecutablesPath", ref executablesPath, "Global");
+
+            try
+            {
+                string time = "";
+                matchEntry("PullIntervalTimeInSeconds", ref time, "Global");
+                pullIntervalTimeInSeconds = (int)Convert.ChangeType(time, pullIntervalTimeInSeconds.GetType());
+            }
+            catch (Exception ex)
+            {
+                if (ex is SettingNotFoundException)
+                    Log.Debug(ex, "{VarName} not found in config file", nameof(PullIntervalTimeInSeconds));
+                else
+                    Log.Debug(ex, "{VarName} cannot be converted", nameof(PullIntervalTimeInSeconds));
+            }
         }
 
         private void addExecutableSetting(ISettings settings)

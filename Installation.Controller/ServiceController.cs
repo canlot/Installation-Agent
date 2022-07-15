@@ -59,7 +59,7 @@ namespace Installation.Controller
             {
                 globalSettings.LoadSettings();
                 globalSettings.ExecutablesSettings.Add(globalSettings.GetSettings<ScriptSettings>());
-                Executables = finder.FindExecutables();
+                finder.FindExecutables(Executables);
             }
             catch(Exception ex)
             {
