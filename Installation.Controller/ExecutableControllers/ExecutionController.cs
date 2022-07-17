@@ -25,7 +25,7 @@ namespace Installation.Controller.ExecutableControllers
             this.executables = executables;
             this.jobsQueue = jobsQueue;
         }
-        public async Task RunController(CancellationToken cancellationToken)
+        public async Task RunControllerAsync(CancellationToken cancellationToken)
         {
             while(true)
             {
@@ -38,7 +38,7 @@ namespace Installation.Controller.ExecutableControllers
                     {
                         try
                         {
-                            await runJob(job, cancellationToken).ConfigureAwait(false);
+                            await runJobAsync(job, cancellationToken).ConfigureAwait(false);
                         }
                         catch(Exception ex)
                         {
@@ -50,7 +50,7 @@ namespace Installation.Controller.ExecutableControllers
                 await Task.Delay(500).ConfigureAwait(false);
             }
         }
-        private async Task runJob(Job job, CancellationToken cancellationToken)
+        private async Task runJobAsync(Job job, CancellationToken cancellationToken)
         {
             Log.Debug("Execute job with job id {jid} and executable id {eid} and installation state {state}", job.JobID, job.ExecutableID, job.ExecutionState);
             if (job == null)
@@ -81,25 +81,25 @@ namespace Installation.Controller.ExecutableControllers
                     {
                         Log.Verbose("Install {id} with name {name}", executable.Id, executable.Name);
                         await (executable as IInstalable).InstallAsync(cancellationToken);
-                        await executionCompleted(job, executable.StatusState, executable.statusMessage);
+                        await executionCompletedAsync(job, executable.StatusState, executable.statusMessage);
                     }
                     else if (job.Action == ExecuteAction.Reinstall && executable is IReinstallable)
                     {
                         Log.Verbose("Reinstall {id} with name {name}", executable.Id, executable.Name);
                         await (executable as IReinstallable).ReinstallAsync(cancellationToken);
-                        await executionCompleted(job, executable.StatusState, executable.statusMessage);
+                        await executionCompletedAsync(job, executable.StatusState, executable.statusMessage);
                     }
                     else if (job.Action == ExecuteAction.Uninstall && executable is IUninstallable)
                     {
                         Log.Verbose("Uninstall {id} with name {name}", executable.Id, executable.Name);
                         await (executable as IUninstallable).UninstallAsync(cancellationToken);
-                        await executionCompleted(job, executable.StatusState, executable.statusMessage);
+                        await executionCompletedAsync(job, executable.StatusState, executable.statusMessage);
                     }
                     else if (job.Action == ExecuteAction.Run && executable is IRunnable)
                     {
                         Log.Debug("RunAsync {id} with name {name}", executable.Id, executable.Name);
                         await (executable as IRunnable).RunAsync(cancellationToken);
-                        await executionCompleted(job, executable.StatusState, executable.statusMessage);
+                        await executionCompletedAsync(job, executable.StatusState, executable.statusMessage);
                     }
                     else
                     {
@@ -111,13 +111,13 @@ namespace Installation.Controller.ExecutableControllers
                 catch (Exception ex)
                 {
                     Log.Error(ex, "Executable could't be executed");
-                    await executionCompleted(job, StatusState.Error, ex.Message);
+                    await executionCompletedAsync(job, StatusState.Error, ex.Message);
                 }
                 
             }
             
         }
-        async Task executionCompleted(Job job, StatusState state, string message)
+        async Task executionCompletedAsync(Job job, StatusState state, string message)
         {
             job.StatusState = state;
             if (state == StatusState.Success)

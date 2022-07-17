@@ -66,29 +66,27 @@ namespace Installation.Models
         {
             Log.Information("Installing application: {name}, file: {file}, dir {dir}", Name, InstallFilePath, ExecutableDirectory);
 
-            using (var executor = Executor.GetExecutor(installFilePath, InstallArguments, ExecutableDirectory, cancellationToken))
+            var executor = Executor.GetExecutor(installFilePath, InstallArguments, ExecutableDirectory, cancellationToken);
+            try
             {
+                CurrentlyRunning = true;
+
                 checkExecutor(executor);
                 await (executor as IApplicationExecutor).InstallAsync();
-                setExecutionStateFromExecutor(executor, SuccessfullInstallReturnCodes);
-            }
-            setStateToFalse();
-            switch (StatusState)
-            {
-                case StatusState.Success:
-                    Installed = true;
-                    break;
-                case StatusState.Warning:
-                    Installed = true;
-                    break;
-                case StatusState.Error:
-                    Installed = false;
-                    break;
-                default:
-                    Installed = false;
-                    break;
-            }
 
+                setExecutionStateFromExecutor(executor, SuccessfullInstallReturnCodes);
+                Installed = getStateFromResult();
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                executor?.Dispose();
+                CurrentlyRunning = false;
+            }
+            
         }
         
 
@@ -98,28 +96,27 @@ namespace Installation.Models
                 throw new ArgumentNullException(nameof(ReinstallFilePath));
 
             Log.Information("Reinstalling application: {name}, file: {file}, dir {dir}", ReinstallFilePath, ExecutableDirectory);
+            
 
-            using (var executor = Executor.GetExecutor(ReinstallFilePath, ReinstallArguments, ExecutableDirectory, cancellationToken))
+            var executor = Executor.GetExecutor(ReinstallFilePath, ReinstallArguments, ExecutableDirectory, cancellationToken);
+            try
             {
+                CurrentlyRunning = true;
+
                 checkExecutor(executor);
                 await (executor as IApplicationExecutor).ReinstallAsync();
+
                 setExecutionStateFromExecutor(executor, SuccessfullReInstallReturnCodes);
+                ReInstalled = getStateFromResult();
             }
-            setStateToFalse();
-            switch (StatusState)
+            catch
             {
-                case StatusState.Success:
-                    ReInstalled = true;
-                    break;
-                case StatusState.Warning:
-                    ReInstalled = true;
-                    break;
-                case StatusState.Error:
-                    ReInstalled = false;
-                    break;
-                default:
-                    ReInstalled = false;
-                    break;
+                throw;
+            }
+            finally
+            {
+                executor?.Dispose();
+                CurrentlyRunning = false;
             }
         }
 
@@ -128,28 +125,42 @@ namespace Installation.Models
         {
             Log.Information("Uninstalling application: {name}, file: {file}, dir: {dir}", Name, UninstallFilePath, ExecutableDirectory);
 
-            using (var executor = Executor.GetExecutor(UninstallFilePath, UninstallArguments, ExecutableDirectory, cancellationToken))
+
+            var executor = Executor.GetExecutor(UninstallFilePath, UninstallArguments, ExecutableDirectory, cancellationToken);
+            try
             {
+                CurrentlyRunning = true;
+
                 checkExecutor(executor);
                 await (executor as IApplicationExecutor).UninstallAsync();
 
                 setExecutionStateFromExecutor(executor, SuccessfullUnInstallReturnCodes);
+                UnInstalled = getStateFromResult();
             }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                executor?.Dispose();
+                CurrentlyRunning = false;
+            }
+
+        }
+        private bool getStateFromResult()
+        {
             setStateToFalse();
             switch (StatusState)
             {
                 case StatusState.Success:
-                    UnInstalled = true;
-                    break;
+                    return true;
                 case StatusState.Warning:
-                    UnInstalled = true;
-                    break;
+                    return true;
                 case StatusState.Error:
-                    UnInstalled = false;
-                    break;
+                    return false;
                 default:
-                    UnInstalled = false;
-                    break;
+                    return false;
             }
         }
         private void setStateToFalse()

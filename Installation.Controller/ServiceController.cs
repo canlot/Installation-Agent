@@ -78,7 +78,7 @@ namespace Installation.Controller
 
 
             communicatorTask = Task.Run(() => serverCommunicator.ListenAsync());
-            executionTask = Task.Run(() => executionController.RunController(cancellationTokenSource.Token));
+            executionTask = Task.Run(() => executionController.RunControllerAsync(cancellationTokenSource.Token));
 
         }
         public async Task Stop()
