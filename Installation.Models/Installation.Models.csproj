@@ -72,6 +72,9 @@
     <Compile Include="Interfaces\IRunnable.cs" />
     <Compile Include="Interfaces\IUninstallable.cs" />
     <Compile Include="Job.cs" />
+    <Compile Include="Mappers\ApplicationExecutableMapper.cs" />
+    <Compile Include="Mappers\ExecutableMapper.cs" />
+    <Compile Include="Mappers\ScriptExecutableMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

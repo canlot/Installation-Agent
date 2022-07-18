@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExecutableControllers\ExecutionController.cs" />
+    <Compile Include="ExecutableFinders\ExecutableFileInfo.cs" />
     <Compile Include="ExecutableFinders\ExecutableFinder.cs" />
     <Compile Include="ExecutableFinders\ExecutableStorageProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
