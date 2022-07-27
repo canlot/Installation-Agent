@@ -69,7 +69,7 @@ namespace Installation.Models
             var executor = Executor.GetExecutor(installFilePath, InstallArguments, ExecutableDirectory, cancellationToken);
             try
             {
-                CurrentlyRunning = true;
+                CurrentlyExecuting = true;
 
                 checkExecutor(executor);
                 await (executor as IApplicationExecutor).InstallAsync();
@@ -84,7 +84,7 @@ namespace Installation.Models
             finally
             {
                 executor?.Dispose();
-                CurrentlyRunning = false;
+                CurrentlyExecuting = false;
             }
             
         }
@@ -101,7 +101,7 @@ namespace Installation.Models
             var executor = Executor.GetExecutor(ReinstallFilePath, ReinstallArguments, ExecutableDirectory, cancellationToken);
             try
             {
-                CurrentlyRunning = true;
+                CurrentlyExecuting = true;
 
                 checkExecutor(executor);
                 await (executor as IApplicationExecutor).ReinstallAsync();
@@ -116,7 +116,7 @@ namespace Installation.Models
             finally
             {
                 executor?.Dispose();
-                CurrentlyRunning = false;
+                CurrentlyExecuting = false;
             }
         }
 
@@ -129,7 +129,7 @@ namespace Installation.Models
             var executor = Executor.GetExecutor(UninstallFilePath, UninstallArguments, ExecutableDirectory, cancellationToken);
             try
             {
-                CurrentlyRunning = true;
+                CurrentlyExecuting = true;
 
                 checkExecutor(executor);
                 await (executor as IApplicationExecutor).UninstallAsync();
@@ -144,7 +144,7 @@ namespace Installation.Models
             finally
             {
                 executor?.Dispose();
-                CurrentlyRunning = false;
+                CurrentlyExecuting = false;
             }
 
         }

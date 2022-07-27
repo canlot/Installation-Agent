@@ -12,9 +12,10 @@ namespace Installation.Communication
 {
     public class ServerCommunicator : Communicator
     {
+        public bool ClientConnected { get; set; }
         public ServerCommunicator(CancellationToken cancellationToken) : base(cancellationToken)
         {
-
+            ClientConnected = false;
         }
         public async Task ListenAsync()
         {
@@ -34,7 +35,10 @@ namespace Installation.Communication
                             if (pipeStream != null)
                             {
                                 if (pipeStream.IsConnected)
+                                {
                                     Log.Debug("Client connected to Pipe");
+                                    ClientConnected = true;
+                                }
                             }
                         }
                         catch (Exception ex)
@@ -43,7 +47,7 @@ namespace Installation.Communication
                         }
 
                         await ReadAsync();
-                
+                        ClientConnected = false;
                 }
             }
 

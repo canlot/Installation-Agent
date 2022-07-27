@@ -34,21 +34,20 @@ namespace Installation.Controller
 
         private Task communicatorTask;
         private Task executionTask;
+        private Task finderTask;
 
 
         public ServiceController()
         {
-            
+            cancellationTokenSource = new CancellationTokenSource();
+
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Console()
                 .WriteTo.File(globalSettings.ServerLogsFilePath, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
                 .CreateLogger();
 
-            finder = new ExecutableFinder(globalSettings);
-            
-            
-            cancellationTokenSource = new CancellationTokenSource();
+
             
         }
         
@@ -59,13 +58,16 @@ namespace Installation.Controller
             {
                 globalSettings.LoadSettings();
                 globalSettings.ExecutablesSettings.Add(globalSettings.GetSettings<ScriptSettings>());
-                finder.FindExecutables(Executables);
+                //finder.FindExecutables(Executables);
             }
             catch(Exception ex)
             {
                 Log.Fatal(ex, "Could not load settings file or executables");
                 return;
             }
+            finder = new ExecutableFinder(globalSettings, Executables, cancellationTokenSource.Token);
+
+            finder.OnExecutableAddedOrModified += newExecutableAsync;
 
             serverCommunicator = new ServerCommunicator(cancellationTokenSource.Token);
             serverCommunicator.OnJobReceived += newJob;
@@ -79,6 +81,7 @@ namespace Installation.Controller
 
             communicatorTask = Task.Run(() => serverCommunicator.ListenAsync());
             executionTask = Task.Run(() => executionController.RunControllerAsync(cancellationTokenSource.Token));
+            finderTask = Task.Run(() => finder.RunAsync());
 
         }
         public async Task Stop()
@@ -90,6 +93,7 @@ namespace Installation.Controller
             {
                 //communicatorTask will not be aborted with cancellationToken because it is not working.
                 await executionTask;
+                await finderTask;
             }
             catch (Exception ex)
             {
@@ -119,6 +123,11 @@ namespace Installation.Controller
                     await serverCommunicator.SendExecutableAsync(executable.Value);
                 }
             }
+        }
+        private async Task newExecutableAsync(Executable executable)
+        {
+            if(serverCommunicator.ClientConnected)
+                await serverCommunicator.SendExecutableAsync(executable);
         }
 
     }

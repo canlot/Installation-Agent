@@ -70,7 +70,7 @@
                                     </AccessText>
                                 </Label.Content>
                             </Label>
-                            <ui:ProgressRing Name = "ProgressRing" Margin="5" IsActive="{Binding CurrentlyRunning, Mode=TwoWay }">
+                            <ui:ProgressRing Name = "ProgressRing" Margin="5" IsActive="{Binding CurrentlyExecuting, Mode=TwoWay }">
                             </ui:ProgressRing>
                         </ui:SimpleStackPanel>
                     </DataTemplate>
@@ -108,7 +108,7 @@
                                             </AccessText>
                                         </Label.Content>
                                     </Label>
-                                    <ui:ProgressRing Name = "ProgressRing" Margin="5" IsActive="{Binding ExecutableCollection/CurrentlyRunning, Mode=TwoWay }">
+                                    <ui:ProgressRing Name = "ProgressRing" Margin="5" IsActive="{Binding ExecutableCollection/CurrentlyExecuting, Mode=TwoWay }">
                                     </ui:ProgressRing>
                                 </StackPanel>
                             </Border>

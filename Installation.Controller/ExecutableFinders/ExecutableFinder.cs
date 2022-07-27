@@ -15,6 +15,10 @@ namespace Installation.Controller.ExecutableFinders
 {
     class ExecutableFinder
     {
+        public delegate Task ExecutableAddedOrModified(Executable executable);
+
+        public event ExecutableAddedOrModified OnExecutableAddedOrModified;
+
         private GlobalSettings globalSettings;
         private Dictionary<Guid, ExecutableFileInfo> executableFileInformation = new Dictionary<Guid, ExecutableFileInfo>();
         private Dictionary<Guid, Executable> executables;
@@ -24,7 +28,7 @@ namespace Installation.Controller.ExecutableFinders
 
         List<string> executablePaths = new List<string>();
 
-        private bool firstRun = true;
+        //private bool firstRun = true;
 
         public ExecutableFinder(GlobalSettings settings, Dictionary<Guid, Executable> executables, CancellationToken cancellationToken)
         {
@@ -51,12 +55,15 @@ namespace Installation.Controller.ExecutableFinders
 
                     foreach (var executableBundle in executableStorage.GetExecutables())
                     {
+                        if (cancellationToken.IsCancellationRequested)
+                            return;
+
                         if(executableFileInformation.ContainsKey(executableBundle.executable.Id))
                         {
                             var existingFileInformation = executableFileInformation[executableBundle.executable.Id];
                             var givenFileInformation = (FilePath: executableBundle.filePath, FileHash: executableBundle.fileHash);
 
-                            handleFileInformation(executableBundle.executable, existingFileInformation, givenFileInformation);
+                            await handleFileInformation(executableBundle.executable, existingFileInformation, givenFileInformation);
                         }
                         else
                         {
@@ -67,6 +74,7 @@ namespace Installation.Controller.ExecutableFinders
                                 CycleGeneration = RefreshCycleCounter
                             }) ;
                             addExecutable(executableBundle.executable);
+                            await this?.OnExecutableAddedOrModified(executableBundle.executable);
                         }
 
                     }
@@ -77,13 +85,14 @@ namespace Installation.Controller.ExecutableFinders
                     throw new Exception("No executable paths found");
                 }
 
-                await Task.Delay(globalSettings.PullIntervalTimeInSeconds, cancellationToken);
-                firstRun = false;
+                await Task.Delay(globalSettings.PullIntervalTimeInSeconds * 1000, cancellationToken);
+                //firstRun = false;
             }
         }
 
-        private void handleFileInformation(Executable givenExecutable, ExecutableFileInfo existingFileInformation, (string filePath, string fileHash) givenFileInformation)
+        private async Task handleFileInformation(Executable givenExecutable, ExecutableFileInfo existingFileInformation, (string filePath, string fileHash) givenFileInformation)
         {
+            Executable currentExecutable = executables[givenExecutable.Id];
             if (existingFileInformation == null)
                 return; // this case should not exist, but if it will than this information will be deleted at the end
             
@@ -93,20 +102,22 @@ namespace Installation.Controller.ExecutableFinders
             }
             else if (existingFileInformation.FilePath == givenFileInformation.filePath && existingFileInformation.FileHash != givenFileInformation.fileHash) // fileHash is different, so the configuration file has changed, it should be remapped 
             {
-                mappingExecutable(executables[givenExecutable.Id], givenExecutable);
+                mappingExecutable(currentExecutable, givenExecutable);
+                await this?.OnExecutableAddedOrModified(currentExecutable);
             }
             else if(existingFileInformation.FileHash == givenFileInformation.fileHash && existingFileInformation.FilePath != givenFileInformation.filePath) // filePath is different, so the files propably were moved
             {
-                changeDirectory(executables[givenExecutable.Id], givenExecutable);
+                changeDirectory(currentExecutable, givenExecutable);
+                await this?.OnExecutableAddedOrModified(currentExecutable);
             }
-            else // could be double, we cannot say for sure that it is unique
+            else // could be double, we cannot say for sure that it is unique, so it had to be deleted
             {
 
             }
 
 
             //map new values, like Sha1 Hash of the application config file and the path anyway, so we don't need aditional if statements
-                existingFileInformation.FilePath = givenFileInformation.filePath;
+            existingFileInformation.FilePath = givenFileInformation.filePath;
             existingFileInformation.FileHash = givenFileInformation.fileHash;
         }
 
@@ -114,7 +125,7 @@ namespace Installation.Controller.ExecutableFinders
         {
             if (existingExecutable.Id == newExecutable.Id)
             {
-                if (!existingExecutable.CurrentlyRunning)
+                if (!existingExecutable.CurrentlyExecuting)
                 {
                     existingExecutable.ExecutableDirectory = newExecutable.ExecutableDirectory;
                 }
@@ -125,7 +136,7 @@ namespace Installation.Controller.ExecutableFinders
         {
             if(existingExecutable.Id == newExecutable.Id)
             {
-                if(!existingExecutable.CurrentlyRunning)
+                if(!existingExecutable.CurrentlyExecuting)
                 {
                     existingExecutable = newExecutable;
                 }

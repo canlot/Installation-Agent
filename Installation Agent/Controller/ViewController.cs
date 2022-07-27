@@ -105,7 +105,7 @@ namespace Installation_Agent.Controller
                     {
                         executable.StatusState = job.StatusState;
                         executable.StatusMessage = job.StatusMessage;
-                        executable.CurrentlyRunning = false;
+                        executable.CurrentlyExecuting = false;
 
                         switch(job.StatusState)
                         {
@@ -164,7 +164,7 @@ namespace Installation_Agent.Controller
                 if (!Executables.Contains(executable))
                     Executables.Add(executable);
                 else
-                    Executables[Executables.IndexOf(executable)].CurrentlyRunning = executable.CurrentlyRunning;
+                    Executables[Executables.IndexOf(executable)] = executable;
             }
         }
         public void SendJob(Job job)
