@@ -36,28 +36,27 @@ namespace Installation.Models
         {
             Log.Information("Running Script {file} from {dir}", RunFilePath, ExecutableDirectory);
 
-            using (var executor = Executor.GetExecutor(RunFilePath, "",  ExecutableDirectory, cancellationToken))
+            var executor = Executor.GetExecutor(RunFilePath, "", ExecutableDirectory, cancellationToken);
+            try
             {
+                CurrentlyRunning = true;
+                
                 checkExecutor(executor);
                 await (executor as IScriptExecutor).RunAsync();
+
                 setExecutionStateFromExecutor(executor, SuccessfullRunReturnCodes);
+                Runned = getStateFromResult();
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                executor?.Dispose();
+                CurrentlyRunning = false;
             }
 
-            switch(StatusState)
-            {
-                case StatusState.Success:
-                    Runned = true;
-                    break;
-                case StatusState.Warning:
-                    Runned = true;
-                    break;
-                case StatusState.Error:
-                    Runned = false;
-                    break;
-                default:
-                    Runned = false;
-                    break;
-            }
         }
         private void checkExecutor(Executor executor)
         {
@@ -65,6 +64,11 @@ namespace Installation.Models
                 throw new NullReferenceException("No executor for this file type found");
             if (!(executor is IScriptExecutor))
                 throw new InvalidOperationException("This operation is not supported for this file type");
+        }
+
+        protected override void setStateToFalse()
+        {
+            Runned = false;
         }
     }
 }

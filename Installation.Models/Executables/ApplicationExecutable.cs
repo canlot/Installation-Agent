@@ -148,22 +148,9 @@ namespace Installation.Models
             }
 
         }
-        private bool getStateFromResult()
-        {
-            setStateToFalse();
-            switch (StatusState)
-            {
-                case StatusState.Success:
-                    return true;
-                case StatusState.Warning:
-                    return true;
-                case StatusState.Error:
-                    return false;
-                default:
-                    return false;
-            }
-        }
-        private void setStateToFalse()
+        
+
+        protected override void setStateToFalse()
         {
             installed = false;
             reinstalled = false;

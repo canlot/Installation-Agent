@@ -59,7 +59,6 @@ namespace Installation.Controller
             {
                 globalSettings.LoadSettings();
                 globalSettings.ExecutablesSettings.Add(globalSettings.GetSettings<ScriptSettings>());
-                finder.FindExecutables(Executables);
             }
             catch(Exception ex)
             {
@@ -112,7 +111,17 @@ namespace Installation.Controller
         private async Task newCommand(Command command)
         {
             Log.Debug("Command received {command}", command);
-            if(command == Command.SendExecutables)
+            
+            try
+            {
+                finder.FindExecutables(Executables);
+            }
+            catch(Exception ex)
+            {
+                Log.Error(ex, "Could not find executables");
+            }
+
+            if (command == Command.SendExecutables)
             {
                 foreach(var executable in Executables)
                 {

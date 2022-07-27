@@ -119,23 +119,23 @@
                             </Border>
                             <Border Grid.Row="2"  BorderThickness="2" CornerRadius="5" Padding="5" Margin="5">
                                 <ui:CommandBar Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"  >
-                                    <ui:AppBarButton Label="Ausführen" Click="ButtonRunScript_Click" x:Name="RunButton" Visibility="Collapsed">
+                                    <ui:AppBarButton Label="Run" Click="ButtonRunScript_Click" x:Name="RunButton" Visibility="Collapsed">
                                         <ui:AppBarButton.Icon>
                                             <ui:BitmapIcon UriSource="/play_512px.png"/>
                                         </ui:AppBarButton.Icon>
                                     </ui:AppBarButton>
-                                    <ui:AppBarButton Label="Installieren" Click="ButtonInstallApplication_Click" x:Name="InstallButton" Visibility="Collapsed">
+                                    <ui:AppBarButton Label="Install" Click="ButtonInstallApplication_Click" x:Name="InstallButton" Visibility="Collapsed">
                                         <ui:AppBarButton.Icon>
                                             <ui:BitmapIcon UriSource="/installing_512px.png"/>
                                         </ui:AppBarButton.Icon>
                                     </ui:AppBarButton>
-                                    <ui:AppBarButton Label="Neuinstallieren" Click="ButtonReinstallApplication_Click" x:Name="ReinstallButton" Visibility="Collapsed">
+                                    <ui:AppBarButton Label="Reinstall" Click="ButtonReinstallApplication_Click" x:Name="ReinstallButton" Visibility="Collapsed">
                                         <ui:AppBarButton.Icon>
                                             <ui:BitmapIcon UriSource="/reboot_512px.png"/>
                                         </ui:AppBarButton.Icon>
                                     </ui:AppBarButton>
 
-                                    <ui:AppBarButton Label="Deinstallieren" Click="ButtonUninstallApplication_Click" x:Name="UninstallButton" Visibility="Collapsed">
+                                    <ui:AppBarButton Label="Uninstall" Click="ButtonUninstallApplication_Click" x:Name="UninstallButton" Visibility="Collapsed">
                                         <ui:AppBarButton.Icon>
                                             <ui:BitmapIcon UriSource="/Remove_512px.png"/>
                                         </ui:AppBarButton.Icon>
@@ -173,7 +173,7 @@
             </Border>
         </Grid>
         <StatusBar Grid.Row="2">
-            <Label Content="Dienststatus: " HorizontalAlignment="Center" FontFamily="Bahnschrift"/>
+            <Label Content="Service: " HorizontalAlignment="Center" FontFamily="Bahnschrift"/>
             <Ellipse Fill="{Binding ServiceConnected, Converter={StaticResource BoolStateToColorConverter}}" Width="10" Height="10" HorizontalAlignment="Center"  />
         </StatusBar>
     </Grid>

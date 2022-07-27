@@ -22,11 +22,11 @@ namespace Installation_Agent
                 switch (value)
                 {
                     case StatusState.Success:
-                        return "Erfogreich ausgeführt";
+                        return "Successfully executed";
                     case StatusState.Warning:
-                        return "Ausgeführt mit Warnungen";
+                        return "Executed with warnings";
                     case StatusState.Error:
-                        return "Fehler beim Ausführen aufgetreten";
+                        return "Error has occured";
                     default:
                         return "";
                 }

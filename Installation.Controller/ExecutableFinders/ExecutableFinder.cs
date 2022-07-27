@@ -20,9 +20,24 @@ namespace Installation.Controller.ExecutableFinders
         {
             this.globalSettings = settings;
         }
+        private bool isLeastOneExecutableExecuting(Dictionary<Guid, Executable> executables)
+        {
+            foreach (var executable in executables)
+            {
+                if(executable.Value.CurrentlyRunning)
+                    return true;
+            }
+            return false;
+        }
         public void FindExecutables(Dictionary<Guid, Executable> executables)
         {
             Log.Verbose("Searching for Executables");
+
+            if(isLeastOneExecutableExecuting(executables))
+                return;
+            executables.Clear();
+
+
 
             List<string> executablePaths = new List<string>();
             executablePaths.Add(globalSettings.ExecutablesPath);

@@ -135,6 +135,22 @@ namespace Installation.Models
 
         }
 
+        protected bool getStateFromResult()
+        {
+            setStateToFalse();
+            switch (StatusState)
+            {
+                case StatusState.Success:
+                    return true;
+                case StatusState.Warning:
+                    return true;
+                case StatusState.Error:
+                    return false;
+                default:
+                    return false;
+            }
+        }
+        abstract protected void setStateToFalse();
 
     }
 }

@@ -31,7 +31,7 @@ namespace Installation_Agent
         {
             //this.DataContext = viewController;
             InitializeComponent();
-            initializeTrayIcon();
+            //initializeTrayIcon();
             
             //ListBoxJobs.ItemsSource = viewController.ExecutableCollection;
             //ListBoxJobs.IsSynchronizedWithCurrentItem = true;
