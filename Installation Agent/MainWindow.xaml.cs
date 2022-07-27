@@ -29,6 +29,11 @@ namespace Installation_Agent
         private bool closingFromContextMenu = false;
         public MainWindow()
         {
+            var processes = System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location));
+            foreach(var process in processes)
+                if (process.Id != System.Diagnostics.Process.GetCurrentProcess().Id)
+                    process.Kill();
+
             //this.DataContext = viewController;
             InitializeComponent();
             //initializeTrayIcon();
