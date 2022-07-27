@@ -6,7 +6,7 @@
     <ProductVersion>3.10</ProductVersion>
     <ProjectGuid>8589a005-ee28-477f-8c8d-c718adb62944</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>Installation.Installer</OutputName>
+    <OutputName>Installation Agent</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">

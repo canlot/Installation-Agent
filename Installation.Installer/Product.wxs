@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Installation Agent" Language="1033" Version="!(bind.FileVersion.InstallationServiceExe)" Manufacturer="JakeOS" UpgradeCode="3bb224be-c9f1-441c-9db2-13f45b4ba8bf">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64" />
+	<Product Id="*" Name="Installation Agent" Language="1033" Version="1.0.1" Manufacturer="JakeOS" UpgradeCode="3bb224be-c9f1-441c-9db2-13f45b4ba8bf">
+		<Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" Platform="x64" />
 
-		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." AllowSameVersionUpgrades="yes"  AllowDowngrades="no" />
 		<MediaTemplate EmbedCab="yes" />
 
 		<Feature Id="Agent" Title="Installation Agent" Level="1" >
