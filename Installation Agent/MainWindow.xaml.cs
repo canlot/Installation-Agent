@@ -70,11 +70,13 @@ namespace Installation_Agent
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            /*
             if (!closingFromContextMenu)
             {
                 e.Cancel = true;
                 this.Hide();
             }
+            */
                 
         }
 
