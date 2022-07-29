@@ -12,7 +12,7 @@
         xmlns:converter="clr-namespace:Installation_Agent.Converter"
         mc:Ignorable="d"
         Background="#FFF2F2F2"
-        Title="Installation Agent" Height="450" Width="1000" Closing="Window_Closing" Loaded="Window_Loaded" Icon="/InstallationAgent.ico" WindowStyle="SingleBorderWindow" >
+        Title="Installation Agent" Height="450" Width="1000" Closing="Window_Closing" Loaded="Window_Loaded" Icon="/InstallationAgent.ico" WindowStyle="SingleBorderWindow" WindowStartupLocation="CenterScreen" WindowState="Maximized" >
     <Window.Resources>
         <local:StatusStateToColorConverter x:Key="StatusStateToColorConverter" />
         <local:StatusStateToTextConverter x:Key="StatusStateToTextConverter" />
