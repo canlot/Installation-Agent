@@ -77,7 +77,7 @@
                 </ListBox.Resources>
 
             </ListBox>
-            <Border Grid.Column="1" CornerRadius="5" MaxWidth="500">
+            <Border Grid.Column="1" CornerRadius="5">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="4*"/>
