@@ -95,7 +95,7 @@ namespace Installation_Agent
                 if(ListBoxJobs.SelectedItem is ScriptExecutable)
                 {
                     ScriptExecutable scriptExecutable = (ScriptExecutable)ListBoxJobs.SelectedItem;
-                    scriptExecutable.CurrentlyRunning = true;
+                    scriptExecutable.CurrentlyExecuting = true;
                     await viewController.RunJob(scriptExecutable);
                 }
             }
@@ -108,7 +108,7 @@ namespace Installation_Agent
                 if (ListBoxJobs.SelectedItem is ApplicationExecutable)
                 {
                     ApplicationExecutable applicationExecutable = (ApplicationExecutable)ListBoxJobs.SelectedItem;
-                    applicationExecutable.CurrentlyRunning = true;
+                    applicationExecutable.CurrentlyExecuting = true;
                     await viewController.InstallApplication(applicationExecutable);
                 }
             }
@@ -121,7 +121,7 @@ namespace Installation_Agent
                 if (ListBoxJobs.SelectedItem is ApplicationExecutable)
                 {
                     ApplicationExecutable applicationExecutable = (ApplicationExecutable)ListBoxJobs.SelectedItem;
-                    applicationExecutable.CurrentlyRunning = true;
+                    applicationExecutable.CurrentlyExecuting = true;
                     await viewController.ReinstallApplication(applicationExecutable);
                 }
             }
@@ -134,7 +134,7 @@ namespace Installation_Agent
                 if (ListBoxJobs.SelectedItem is ApplicationExecutable)
                 {
                     ApplicationExecutable applicationExecutable = (ApplicationExecutable)ListBoxJobs.SelectedItem;
-                    applicationExecutable.CurrentlyRunning = true;
+                    applicationExecutable.CurrentlyExecuting = true;
                     await viewController.UninstallApplication(applicationExecutable);
                 }
             }

@@ -25,7 +25,7 @@ namespace Installation.Models
         private string description;
 
         private StatusState statusState;
-        private bool currentlyRunning;
+        private bool currentlyExecuting;
         private string category;
 
         [ExecutableSetting]
@@ -49,7 +49,7 @@ namespace Installation.Models
             }
             set => iconPath = value;
         }
-        public bool CurrentlyRunning { get => currentlyRunning; set { currentlyRunning = value;  OnPropertyChanged("CurrentlyRunning"); } }
+        public bool CurrentlyExecuting { get => currentlyExecuting; set { currentlyExecuting = value;  OnPropertyChanged("CurrentlyExecuting"); } }
         public StatusState StatusState { get => statusState; set { statusState = value; OnPropertyChanged("StatusState"); } }
         public string ExecutableDirectory { get => executableDirectory; set => executableDirectory = value; }
         [ExecutableSetting(Mandatory = false)]

@@ -4,11 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using IniParser;
-using Installation.Parser.Exceptions;
-using Installation.Storage;
 using Serilog;
 
 namespace Installation.Controller.ExecutableFinders
@@ -23,19 +21,31 @@ namespace Installation.Controller.ExecutableFinders
             this.executablePaths = executablePaths;
             this.executableSettingsFileName = applicationSettingsFileName;
         }
-        public IEnumerable<Executable> GetExecutables()
+        public IEnumerable<(Executable executable, string filePath, string fileHash)> GetExecutables()
         {
             foreach (var path in executablePaths)
             {
                 foreach (var directory in getDirectoriesInExecutablePath(path))
                 {
+                    string fileHash = null;
+                    string filePath = directory + @"\" + executableSettingsFileName;
                     Executable executable = executable = null; //sets the executable to null because last executable could get different directory
                     try
                     {
                         if(searchForSettingFile(directory))
                         {
-                            ExecutableParser executableParser = new ExecutableParser(directory + @"\" + executableSettingsFileName);
+                            ExecutableParser executableParser = new ExecutableParser(filePath);
                             executable = executableParser.ParseObject();
+
+                            using(var sha1 = SHA1Managed.Create())
+                            {
+                                using (var reader = File.OpenRead(filePath))
+                                {
+                                    fileHash = sha1.ComputeHash(reader).ToString();
+                                    Log.Debug("Hash for file {file} computed: {hash} ", filePath, fileHash);
+                                }
+                            }
+                            
                         }
                         else
                         {
@@ -46,10 +56,10 @@ namespace Installation.Controller.ExecutableFinders
                     {
                         Log.Debug(ex, "Exception occured in folder {folder}", directory);
                     }
-                    if (executable != null)
+                    if (executable != null && filePath != null && fileHash != null)
                     {
                         executable.ExecutableDirectory = directory;
-                        yield return executable;
+                        yield return (executable, filePath, fileHash);
                     }    
                     else
                         Log.Debug("settings could not be parsed from {dir}", directory);
