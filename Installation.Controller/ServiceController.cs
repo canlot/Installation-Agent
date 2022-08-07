@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Installation.Communication;
-using Installation.Models;
+﻿using Installation.Communication;
 using Installation.Controller.ExecutableControllers;
-using System.Threading;
-using Installation.Controller.Settings;
 using Installation.Controller.ExecutableFinders;
-using System.Collections.Concurrent;
+using Installation.Controller.Settings;
+using Installation.Models;
 using Serilog;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Installation.Controller
 {
@@ -38,7 +36,7 @@ namespace Installation.Controller
 
         public ServiceController()
         {
-            
+
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Console()
@@ -46,12 +44,12 @@ namespace Installation.Controller
                 .CreateLogger();
 
             finder = new ExecutableFinder(globalSettings);
-            
-            
+
+
             cancellationTokenSource = new CancellationTokenSource();
-            
+
         }
-        
+
         public void Start()
         {
             Log.Information("------PROGRAM STARTED------");
@@ -60,7 +58,7 @@ namespace Installation.Controller
                 globalSettings.LoadSettings();
                 globalSettings.ExecutablesSettings.Add(globalSettings.GetSettings<ScriptSettings>());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Fatal(ex, "Could not load settings file or executables");
                 return;
@@ -111,19 +109,19 @@ namespace Installation.Controller
         private async Task newCommand(Command command)
         {
             Log.Debug("Command received {command}", command);
-            
+
             try
             {
                 finder.FindExecutables(Executables);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Error(ex, "Could not find executables");
             }
 
             if (command == Command.SendExecutables)
             {
-                foreach(var executable in Executables)
+                foreach (var executable in Executables)
                 {
                     await serverCommunicator.SendExecutableAsync(executable.Value);
                 }

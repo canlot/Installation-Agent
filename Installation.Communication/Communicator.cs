@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Pipes;
 using System.Text;
 using System.Threading;
@@ -70,6 +71,7 @@ namespace Installation.Communication
         private async Task handleIncomingDataAsync(string data)
         {
             Log.Debug("Data received");
+            File.WriteAllText("data.json", data);
             try
             {
                 var jsonObject = deserializeObject(data);
