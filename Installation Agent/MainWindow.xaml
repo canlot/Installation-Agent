@@ -121,23 +121,23 @@
                                 <ui:CommandBar Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"  >
                                     <ui:AppBarButton Label="Run" Click="ButtonRunScript_Click" x:Name="RunButton" Visibility="Collapsed">
                                         <ui:AppBarButton.Icon>
-                                            <ui:BitmapIcon UriSource="/play_512px.png"/>
+                                            <ui:PathIcon Data="M 140,80 L 140,420 L 403,250 L 140,80 Z M 172,138 L 172,361 L 345,250 L 172,138 Z" ></ui:PathIcon>
                                         </ui:AppBarButton.Icon>
                                     </ui:AppBarButton>
                                     <ui:AppBarButton Label="Install" Click="ButtonInstallApplication_Click" x:Name="InstallButton" Visibility="Collapsed">
                                         <ui:AppBarButton.Icon>
-                                            <ui:BitmapIcon UriSource="/installing_512px.png"/>
+                                            <ui:PathIcon Data="M 31,359 L 62,359 L 62,406 L 437,406 L 437,359 L 468,359 L 468,437 L 31,437 L 31,359 Z M 250,374 L 176,301 L 198,279 L 234,315 L 234,62 L 265,62 L 265,315 L 301,279 L 323,301 L 250,374 Z" ></ui:PathIcon>
                                         </ui:AppBarButton.Icon>
                                     </ui:AppBarButton>
                                     <ui:AppBarButton Label="Reinstall" Click="ButtonReinstallApplication_Click" x:Name="ReinstallButton" Visibility="Collapsed">
                                         <ui:AppBarButton.Icon>
-                                            <ui:BitmapIcon UriSource="/reboot_512px.png"/>
+                                            <ui:PathIcon Data="M 453,78 L 453,187 L 343,187 L 386,145 A 172.36,171.92,168.23,1,0,422,250 L 453,250 A 202.36,200.96,166.66,1,1,408,122 L 453,78 Z" ></ui:PathIcon>
                                         </ui:AppBarButton.Icon>
                                     </ui:AppBarButton>
 
                                     <ui:AppBarButton Label="Uninstall" Click="ButtonUninstallApplication_Click" x:Name="UninstallButton" Visibility="Collapsed">
                                         <ui:AppBarButton.Icon>
-                                            <ui:BitmapIcon UriSource="/Remove_512px.png"/>
+                                            <ui:PathIcon Data="M 312,477 L 334,500 L 407,427 L 478,498 L 499,476 L 428,405 L 499,334 L 478,312 L 406,383 L 334,311 L 312,332 L 385,405 L 312,477 Z M 359,291 L 390,322 L 390,140 L 406,140 L 406,109 L 312,109 L 312,90 C 312,77,300,62,285,62 L 213,62 C 200,62,187,74,187,90 L 187,109 L 93,109 L 93,140 L 109,140 L 109,395 C 109,413,133,437,151,437 L 309,437 L 340,406 L 153,406 C 148,406,140,399,140,393 L 140,140 L 359,140 L 359,291 Z M 297,303 L 328,272 L 328,187 L 297,187 L 297,303 Z M 265,359 L 265,187 L 234,187 L 234,359 L 265,359 Z M 203,359 L 203,187 L 172,187 L 172,359 L 203,359 Z M 218,93 L 281,93 L 281,109 L 218,109 L 218,93 Z" ></ui:PathIcon>
                                         </ui:AppBarButton.Icon>
                                     </ui:AppBarButton>
                                 </ui:CommandBar>

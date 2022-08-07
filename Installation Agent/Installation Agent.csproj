@@ -184,9 +184,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="runscript.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icons\installing_512px.png" />
     <Resource Include="Icons\Remove_512px.png" />
   </ItemGroup>
@@ -195,18 +192,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\reboot_512px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="installing_512px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="reboot_512px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Remove_512px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="play_512px.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

@@ -39,7 +39,7 @@ namespace Installation.Models
             var executor = Executor.GetExecutor(RunFilePath, "", ExecutableDirectory, cancellationToken);
             try
             {
-                CurrentlyRunning = true;
+                CurrentlyExecuting = true;
                 
                 checkExecutor(executor);
                 await (executor as IScriptExecutor).RunAsync();
@@ -54,7 +54,7 @@ namespace Installation.Models
             finally
             {
                 executor?.Dispose();
-                CurrentlyRunning = false;
+                CurrentlyExecuting = false;
             }
 
         }
