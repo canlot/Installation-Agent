@@ -7,10 +7,22 @@ using Newtonsoft.Json.Converters;
 
 namespace Installation.Communication
 {
-    [JsonConverter(typeof(StringEnumConverter))] //Hacky Way, should be wrapped inside a class
-    public enum Command
+    
+    public enum CommandVerb
     {
-        [EnumMember(Value = "SendExecutables")]
-        SendExecutables
+        get,
+        update,
+        add,
+        remove,
+    }
+    public enum CommandStatement
+    {
+        Executable,
+
+    }
+    public class Command
+    {
+        public CommandVerb Verb;
+        public CommandStatement Statement;
     }
 }
