@@ -25,9 +25,12 @@ namespace Installation.Communication
         protected CancellationToken cancellationToken;
         protected PipeStream pipeStream;
         protected string pipeName = "pipe";
+
+        protected ObjectConverter converter;
         
         public Communicator(CancellationToken cancellationToken)
         {
+            converter = new ObjectConverter();
             this.cancellationToken = cancellationToken;
             
         }
