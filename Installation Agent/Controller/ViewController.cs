@@ -60,10 +60,10 @@ namespace Installation_Agent.Controller
             clientCommunicator.OnClientConnected += OnClientConnectedAsync;
             clientCommunicator.OnClientDisconnected += OnClientDisconnectedAsync;
 
-
+            var logFile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Installation Agent\" + "log.txt";
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
-                .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
+                .WriteTo.File(logFile, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
                 .CreateLogger();
             
         }
