@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Installation.Communication
 {
-    public class ClientCommunicator : Communicator
+    public class IPCClient : IPCBase
     {
         public delegate Task ClientConnected();
         public delegate Task ClientDisconnected();
         public event ClientConnected OnClientConnected;
         public event ClientDisconnected OnClientDisconnected;
 
-        public ClientCommunicator(CancellationToken cancellationToken) : base(cancellationToken)
+        public IPCClient(string pipeName, CancellationToken cancellationToken, Func<string, Task> receivedData) : base(pipeName, cancellationToken, receivedData)
         {
 
         }
