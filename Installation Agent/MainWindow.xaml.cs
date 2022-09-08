@@ -155,7 +155,7 @@ namespace Installation_Agent
             var item = listbox.SelectedItem;
             if (item != null)
             {
-                InnerGrid.ColumnDefinitions[1].Width = GridLength.Auto;
+                InnerGrid.ColumnDefinitions[2].Width = new GridLength(4, GridUnitType.Star);
                 makeAllButtonsInvisible();
 
                 if (item is IRunnable)
@@ -169,7 +169,7 @@ namespace Installation_Agent
             }
             else
             {
-                InnerGrid.ColumnDefinitions[1].Width = new GridLength(0);
+                InnerGrid.ColumnDefinitions[2].Width = new GridLength(0);
             }
         }
         private void makeAllButtonsInvisible()

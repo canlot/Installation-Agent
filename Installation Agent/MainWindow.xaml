@@ -27,29 +27,31 @@
         <controller:ViewController x:Name="viewController"/>
     </Window.DataContext>
     <Grid Background="#FFF2F2F2" Margin="0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
-        <ui:AutoSuggestBox x:Name="AutoSuggestBoxSearchExecutables" Grid.Row="0" PlaceholderText="Search" QueryIcon="Find" Margin="10" Background="{Binding Path=Background, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" TextChanged="AutoSuggestBoxSearchExecutables_TextChanged" >
-
-        </ui:AutoSuggestBox>
-        <Grid Name="InnerGrid" Grid.Row="1">
+        
+        <Grid Name="InnerGrid" Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="6*"/>
                 <ColumnDefinition Width="0" />
             </Grid.ColumnDefinitions>
-            <ListBox  x:Name="ListBoxJobs" Grid.Column="0" SelectionChanged="ListBoxJobs_SelectionChanged" ItemsSource="{Binding ExecutableCollection}" IsSynchronizedWithCurrentItem="True">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment"
-                        Value="Stretch"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
+            <ui:NavigationView Grid.Row="0" PaneDisplayMode="Left" ui:IsBackButtonVisible="Collapsed" ui:IsPaneToggleButtonVisible="False">
+                <ui:NavigationView.AutoSuggestBox>
+                    <ui:AutoSuggestBox x:Name="AutoSuggestBoxSearchExecutables" PlaceholderText="Search" QueryIcon="Find" TextChanged="AutoSuggestBoxSearchExecutables_TextChanged">
+
+                    </ui:AutoSuggestBox>
+                </ui:NavigationView.AutoSuggestBox>
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem Content="Apps"/>
+                    <ui:NavigationViewItem Content="Scripts"/>
+                    <ui:NavigationViewItem Content="Das wird ein langer Text weil ich es gerne so hätte."/>
+                </ui:NavigationView.MenuItems>
+            </ui:NavigationView>
+
+            <ListBox  x:Name="ListBoxJobs" Grid.Column="1" SelectionChanged="ListBoxJobs_SelectionChanged" ItemsSource="{Binding ExecutableCollection}" IsSynchronizedWithCurrentItem="True">
                 <ListBox.Resources>
                     <DataTemplate DataType="{x:Type models:Executable}">
                         <ui:SimpleStackPanel Orientation="Horizontal" Margin="5">
@@ -57,7 +59,7 @@
                                 <Path  Data="M 110,240 L 170,310 C 200,340,210,360,260,300 L 370,150 C 400,120,450,160,430,190 L 280,390 C 230,450,210,430,160,390 L 60,280 C 30,250,90,210,110,240 Z M 70,90 A 237.12,237.12,180,0,0,420,410 A 237.12,237.12,180,0,0,70,90 Z" 
                                       Fill="{Binding Path=SuccessfulRollout, Converter={StaticResource SuccessToColorConverter}}" Stretch="Fill"/>
                             </DockPanel>
-                            <Image Source="{Binding Path=IconPath}" Width="64" Height="64" Margin="5"></Image>
+                            <Image Source="{Binding Path=IconPath}" Width="32" Height="32" Margin="5"></Image>
 
                             <Ellipse Fill="{Binding StatusState, Converter={StaticResource StatusStateToColorConverter}}" Width="10" Height="10" Margin="10"/>
                             <Label FontSize="20" Margin="5" VerticalAlignment="Center" FontFamily="Bahnschrift">
@@ -77,7 +79,7 @@
                 </ListBox.Resources>
 
             </ListBox>
-            <Border Grid.Column="1" CornerRadius="5">
+            <Border Grid.Column="2" CornerRadius="5">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="4*"/>
@@ -172,7 +174,7 @@
                 </Grid>
             </Border>
         </Grid>
-        <StatusBar Grid.Row="2">
+        <StatusBar Grid.Row="1">
             <Label Content="Service: " HorizontalAlignment="Center" FontFamily="Bahnschrift"/>
             <Ellipse Fill="{Binding ServiceConnected, Converter={StaticResource BoolStateToColorConverter}}" Width="10" Height="10" HorizontalAlignment="Center"  />
         </StatusBar>

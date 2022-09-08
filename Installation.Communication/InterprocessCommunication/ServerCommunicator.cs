@@ -38,6 +38,7 @@ namespace Installation.Communication
                                 {
                                     Log.Debug("Client connected to Pipe");
                                     ClientConnected = true;
+                                    
                                 }
                             }
                         }
