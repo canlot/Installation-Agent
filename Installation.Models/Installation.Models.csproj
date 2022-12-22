@@ -63,11 +63,18 @@
   <ItemGroup>
     <Compile Include="Attributes\ExecutableAttribute.cs" />
     <Compile Include="Attributes\ExecutableSettingAttribute.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\ExecutableCommand.cs" />
+    <Compile Include="Commands\ICommandReceiver.cs" />
+    <Compile Include="Commands\JobCommand.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Executables\ApplicationExecutable.cs" />
     <Compile Include="Executables\Executable.cs" />
     <Compile Include="Executables\ScriptExecutable.cs" />
+    <Compile Include="Interfaces\ICommandAndObjectReceiver.cs" />
     <Compile Include="Interfaces\IInstalable.cs" />
+    <Compile Include="Interfaces\ICommandReceiver.cs" />
+    <Compile Include="Interfaces\IObjectReceiver.cs" />
     <Compile Include="Interfaces\IReinstallable.cs" />
     <Compile Include="Interfaces\IRunnable.cs" />
     <Compile Include="Interfaces\IUninstallable.cs" />
@@ -94,6 +101,8 @@
       <Name>Installation.Executors</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
