@@ -15,6 +15,8 @@ namespace Installation.Controller
 
         public CommandDispatcher RegisterReceiver<T>(object receiver, CommandVerb commandVerb)
         {
+            if (checkIfReceiverAlreadyRegisteredForCommand<T>(receiver, commandVerb))
+                throw new Exception("Object already registered");
             receivers.Add(new Receiver
             {
                 ReceiverObject = receiver,
@@ -23,14 +25,37 @@ namespace Installation.Controller
             });
             return this;
         }
+        private bool checkIfReceiverAlreadyRegisteredForCommand<T>(object receiver, CommandVerb commandVerb)
+        {
+            var alreadyRegisteredObjects = receivers.Where(r => r.ReceivingType == typeof(T)).Where(r => (r.CommandVerb & commandVerb) == commandVerb);
+            foreach (Receiver r in alreadyRegisteredObjects)
+            {
+
+                if (r.ReceiverObject == receiver)
+                    return true;
+            }
+            return false;
+        }
         public CommandDispatcher RegisterReceiver<T>(object receiver)
         {
+            if (checkIfReceiverAlreadyRegisteredForCommand<T>(receiver))
+                throw new Exception("Object already registered");
             receivers.Add(new Receiver
             {
                 ReceiverObject = receiver,
                 ReceivingType = typeof(T)
             });
             return this;
+        }
+        private bool checkIfReceiverAlreadyRegisteredForCommand<T>(object receiver)
+        {
+            var alreadyRegisteredObjects = receivers.Where(r => r.ReceivingType == typeof(T)).Where(r => r.CommandVerb == null);
+            foreach (Receiver r in alreadyRegisteredObjects)
+            {
+                if (r.ReceiverObject == receiver)
+                    return true;
+            }
+            return false;
         }
         public void Send<T>(Command command)
         {
