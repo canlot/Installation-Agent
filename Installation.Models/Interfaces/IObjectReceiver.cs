@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Installation.Models.Interfaces
 {
-    public interface IObjectReceiver
+    public interface IObjectReceiver<T>
     {
-        void Receive(object rObject);
+        void Receive(T rObject);
     }
 }

@@ -11,9 +11,8 @@ namespace Installation.Controller
     public class CommandDispatcher
     {
         private List<Receiver> receivers = new List<Receiver>();
-        public delegate void SubscribeMethod(Command objectToSend);
 
-        public CommandDispatcher RegisterReceiver<T>(object receiver, CommandVerb commandVerb)
+        public CommandDispatcher RegisterReceiver<T>(object receiver, CommandAction commandVerb)
         {
             if (checkIfReceiverAlreadyRegisteredForCommand<T>(receiver, commandVerb))
                 throw new Exception("Object already registered");
@@ -25,7 +24,7 @@ namespace Installation.Controller
             });
             return this;
         }
-        private bool checkIfReceiverAlreadyRegisteredForCommand<T>(object receiver, CommandVerb commandVerb)
+        private bool checkIfReceiverAlreadyRegisteredForCommand<T>(object receiver, CommandAction commandVerb)
         {
             var alreadyRegisteredObjects = receivers.Where(r => r.ReceivingType == typeof(T)).Where(r => (r.CommandVerb & commandVerb) == commandVerb);
             foreach (Receiver r in alreadyRegisteredObjects)
@@ -57,37 +56,37 @@ namespace Installation.Controller
             }
             return false;
         }
-        public void Send<T>(Command command)
+        public void Send<T>(Command<T> command)
         {
-            var receiverObjects = receivers.Where(r => r.ReceivingType == typeof(T)).Where(r => (r.CommandVerb & command.CommandVerb) == command.CommandVerb);
+            var receiverObjects = receivers.Where(r => r.ReceivingType == typeof(T)).Where(r => (r.CommandVerb & command.CommandAction) == command.CommandAction);
             foreach (var receiverObject in receiverObjects)
             {
-                if (receiverObject.ReceiverObject is ICommandReceiver)
+                if (receiverObject.ReceiverObject is ICommandReceiver<T>)
                 {
-                    (receiverObject.ReceiverObject as ICommandReceiver).Receive(command);
+                    (receiverObject.ReceiverObject as ICommandReceiver<T>).Receive(command);
                 }
             }
         }
-        public void Send<T>(object obj)
+        public void Send<T>(T obj)
         {
             var receiverObjects = receivers.Where(r => r.ReceivingType == typeof(T)).Where(r => r.CommandVerb == null);
             foreach (var receiverObject in receiverObjects)
             {
-                if (receiverObject.ReceiverObject is IObjectReceiver)
+                if (receiverObject.ReceiverObject is IObjectReceiver<T>)
                 {
-                    (receiverObject.ReceiverObject as IObjectReceiver).Receive(obj);
+                    (receiverObject.ReceiverObject as IObjectReceiver<T>).Receive(obj);
                 }
 
             }
         }
-        public void Send<T>(object obj, Command command)
+        public void Send<T>(T obj, Command<T> command)
         {
-            var receiverObjects = receivers.Where(r => r.ReceivingType == typeof(T)).Where(r => (r.CommandVerb & command.CommandVerb) == command.CommandVerb);
+            var receiverObjects = receivers.Where(r => r.ReceivingType == typeof(T)).Where(r => (r.CommandVerb & command.CommandAction) == command.CommandAction);
             foreach (var receiverObject in receiverObjects)
             {
-                if (receiverObject.ReceiverObject is ICommandAndObjectReceiver)
+                if (receiverObject.ReceiverObject is ICommandAndObjectReceiver<T>)
                 {
-                    (receiverObject.ReceiverObject as ICommandAndObjectReceiver).Receive(obj, command);
+                    (receiverObject.ReceiverObject as ICommandAndObjectReceiver<T>).Receive(obj, command);
                 }
 
             }

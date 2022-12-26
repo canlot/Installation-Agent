@@ -11,6 +11,6 @@ namespace Installation.Controller
     {
         public object ReceiverObject { get; set; }
         public Type ReceivingType { get; set; }
-        public CommandVerb? CommandVerb { get; set; }
+        public CommandAction? CommandVerb { get; set; }
     }
 }

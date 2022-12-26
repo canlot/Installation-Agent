@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Installation.Models.Interfaces
 {
-    public interface ICommandAndObjectReceiver
+    public interface ICommandAndObjectReceiver<T>
     {
-        void Receive(object rObject, Command command);
+        void Receive(T rObject, Command<T> command);
     }
 }

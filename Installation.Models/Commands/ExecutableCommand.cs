@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace Installation.Models
 {
-    public class ExecutableCommand : Command
+    public class CommandGetExecutable : Command<Executable>
     {
+        public CommandGetExecutable()
+        {
+            commandAction = CommandAction.Get;
+        }
+        
         private ExecuteAction action;
         public ExecuteAction Action { get => action; set { action = value;} }
 
@@ -22,5 +27,7 @@ namespace Installation.Models
 
         private Guid executableID;
         public Guid ExecutableID { get => executableID; set { executableID = value;  } }
+
+        public override CommandAction CommandAction { get => commandAction; }
     }
 }

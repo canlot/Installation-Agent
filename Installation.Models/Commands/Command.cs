@@ -8,19 +8,22 @@ using Newtonsoft.Json.Converters;
 namespace Installation.Models
 {
     
-    public enum CommandVerb
+    public enum CommandAction
     {
         Get = 1,
         Update = 2,
         Abort = 4,
         Add = 8,
         Remove = 16,
-        Execute = 32
+        Install = 32,
+        Reinstall = 64,
+        Uninstall = 128,
+        Run = 256,
     }
 
-    public class Command
+    abstract public class Command<T>
     {
-
+        abstract public CommandAction CommandAction { get; }
         public Command()
         {
             
@@ -34,11 +37,6 @@ namespace Installation.Models
         }
 
 
-        protected CommandVerb commandVerb;
-        public CommandVerb CommandVerb
-        { 
-            get { return commandVerb; } 
-            set { commandVerb = value; } 
-        }
+        protected CommandAction commandAction;
     }
 }
