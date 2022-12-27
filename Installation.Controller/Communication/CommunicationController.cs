@@ -8,7 +8,7 @@ using Installation.Models.Interfaces;
 
 namespace Installation.Controller.Communication
 {
-    public class CommunicationController
+    public class CommunicationController : IObjectReceiver<>
     {
         private EventDispatcher eventDispatcher;
 
