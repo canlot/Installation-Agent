@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Installation.Models
 {
-    public class JobCommand<T> : Command<T> where T : Job
+    public class JobCommand<T> 
     {
 
     }

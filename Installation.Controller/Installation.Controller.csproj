@@ -61,8 +61,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandDispatcher.cs" />
+    <Compile Include="EventDispatcher.cs" />
     <Compile Include="Communication\CommunicationController.cs" />
+    <Compile Include="ExecutableControllers\ExecutableController.cs" />
     <Compile Include="ExecutableControllers\ExecutionController.cs" />
     <Compile Include="ExecutableFinders\ExecutableFileInfo.cs" />
     <Compile Include="ExecutableFinders\ExecutableFinder.cs" />

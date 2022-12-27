@@ -65,14 +65,13 @@
     <Compile Include="Attributes\ExecutableSettingAttribute.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandGetExecutable.cs" />
+    <Compile Include="Commands\CommandInstallExecutable.cs" />
     <Compile Include="Commands\JobCommand.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Executables\ApplicationExecutable.cs" />
     <Compile Include="Executables\Executable.cs" />
     <Compile Include="Executables\ScriptExecutable.cs" />
-    <Compile Include="Interfaces\ICommandAndObjectReceiver.cs" />
     <Compile Include="Interfaces\IInstalable.cs" />
-    <Compile Include="Interfaces\ICommandReceiver.cs" />
     <Compile Include="Interfaces\IObjectReceiver.cs" />
     <Compile Include="Interfaces\IReinstallable.cs" />
     <Compile Include="Interfaces\IRunnable.cs" />
