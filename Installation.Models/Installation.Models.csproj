@@ -66,10 +66,14 @@
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\CommandGetExecutable.cs" />
     <Compile Include="Commands\CommandInstallExecutable.cs" />
+    <Compile Include="Commands\CommandReinstallExecutable.cs" />
+    <Compile Include="Commands\CommandRunExecutable.cs" />
+    <Compile Include="Commands\CommandUninstallExecutable.cs" />
     <Compile Include="Commands\JobCommand.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Executables\ApplicationExecutable.cs" />
     <Compile Include="Executables\Executable.cs" />
+    <Compile Include="Executables\ExecutableUnit.cs" />
     <Compile Include="Executables\ScriptExecutable.cs" />
     <Compile Include="Interfaces\IInstalable.cs" />
     <Compile Include="Interfaces\IObjectReceiver.cs" />

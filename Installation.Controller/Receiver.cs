@@ -11,5 +11,6 @@ namespace Installation.Controller
     {
         public object ReceiverObject { get; set; }
         public Type ReceivingType { get; set; }
+        public Type ReturningType { get; set; }
     }
 }

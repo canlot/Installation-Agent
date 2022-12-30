@@ -41,7 +41,7 @@ namespace Installation.Parser
 				if (att != null)
 				{
 					string propertyName;
-					if (att.ConfigName != null) // if custom Name is not specified in the executable, then it take the variable name
+					if (att.ConfigName != null) // if custom Name is not specified in the executable, then it takes the variable name
 						propertyName = att.ConfigName;
 					else
 						propertyName = property.Name;

@@ -62,9 +62,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventDispatcher.cs" />
-    <Compile Include="Communication\CommunicationController.cs" />
-    <Compile Include="ExecutableControllers\ExecutableController.cs" />
-    <Compile Include="ExecutableControllers\ExecutionController.cs" />
+    <Compile Include="Controllers\CommunicationController.cs" />
+    <Compile Include="Controllers\ExecutableController.cs" />
+    <Compile Include="Controllers\ExecutionController.cs" />
     <Compile Include="ExecutableFinders\ExecutableFileInfo.cs" />
     <Compile Include="ExecutableFinders\ExecutableFinder.cs" />
     <Compile Include="ExecutableFinders\ExecutableStorageProvider.cs" />
