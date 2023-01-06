@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Installation.Models.Commands
 {
-    public class CommandUninstallExecutable : Command
+    public class CommandUninstallExecutable : CommandExecutableExecution
     {
-        private Guid executableID;
-        public Guid ExecutableID { get => executableID; set { executableID = value; } }
+
+        public override ExecuteAction ExecuteAction { get => ExecuteAction.Uninstall; }
+
     }
 }

@@ -8,22 +8,52 @@ using System.Threading;
 using System.Threading.Tasks;
 using Serilog;
 using Installation.Storage.StateStorage;
+using Installation.Models.Commands;
+using Installation.Models.Interfaces;
 
 namespace Installation.Controller.ExecutableControllers
 {
-    public class ExecutionController
+    public class ExecutionController :  IObjectReceiver<CommandInstallExecutable>,
+                                        IObjectReceiver<CommandReinstallExecutable>,
+                                        IObjectReceiver<CommandUninstallExecutable>,
+                                        IObjectReceiver<CommandRunExecutable>
     {
         public delegate Task ExecutionCompleted(Job job);
         public event ExecutionCompleted OnCompleted;
 
         public Dictionary<Guid, Executable> executables;
 
-        private ConcurrentQueue<Job> jobsQueue;
+        private ManualResetEventSlim executionWaiting = new ManualResetEventSlim(false);
+        private EventDispatcher eventDispatcher;
+        private ConcurrentQueue<CommandExecutableExecution> commandQueue;
 
-        public ExecutionController(Dictionary<Guid, Executable> executables, ConcurrentQueue<Job> jobsQueue)
+        public ExecutionController(EventDispatcher eventDispatcher)
         {
-            this.executables = executables;
-            this.jobsQueue = jobsQueue;
+            this.eventDispatcher = eventDispatcher;
+        }
+
+        public void Receive(CommandInstallExecutable command)
+        {
+            commandQueue.Enqueue(command);
+            executionWaiting.Set();
+        }
+
+        public void Receive(CommandReinstallExecutable command)
+        {
+            commandQueue.Enqueue(command);
+            executionWaiting.Set();
+        }
+
+        public void Receive(CommandUninstallExecutable command)
+        {
+            commandQueue.Enqueue(command);
+            executionWaiting.Set();
+        }
+
+        public void Receive(CommandRunExecutable command)
+        {
+            commandQueue.Enqueue(command);
+            executionWaiting.Set();
         }
         public async Task RunControllerAsync(CancellationToken cancellationToken)
         {
@@ -31,14 +61,14 @@ namespace Installation.Controller.ExecutableControllers
             {
                 if(cancellationToken.IsCancellationRequested)
                     return;
-                if(jobsQueue.Count > 0)
+                if(commandQueue.Count > 0)
                 {
-                    Job job;
-                    if(jobsQueue.TryDequeue(out job))
+                    CommandExecutableExecution executionCommand;
+                    if(commandQueue.TryDequeue(out executionCommand))
                     {
                         try
                         {
-                            await runJobAsync(job, cancellationToken).ConfigureAwait(false);
+                            await runJobAsync(executionCommand, cancellationToken).ConfigureAwait(false);
                         }
                         catch(Exception ex)
                         {
@@ -47,11 +77,16 @@ namespace Installation.Controller.ExecutableControllers
                         
                     }
                 }
-                await Task.Delay(500).ConfigureAwait(false);
+                executionWaiting.Wait(cancellationToken);
+                executionWaiting.Reset();
+                //await Task.Delay(500).ConfigureAwait(false);
             }
         }
-        private async Task runJobAsync(Job job, CancellationToken cancellationToken)
+        private async Task runJobAsync(CommandExecutableExecution executionCommand, CancellationToken cancellationToken)
         {
+            var executable = eventDispatcher.Send<CommandGetExecutable, Executable>(new CommandGetExecutable
+            { ExecutableID = executionCommand.ExecutableID });
+
             Log.Debug("Execute job with job id {jid} and executable id {eid} and installation state {state}", job.JobID, job.ExecutableID, job.ExecutionState);
             if (job == null)
             {

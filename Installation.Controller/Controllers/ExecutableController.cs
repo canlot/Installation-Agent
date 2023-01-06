@@ -8,10 +8,7 @@ using System.Threading.Tasks;
 
 namespace Installation.Controller.ExecutableControllers
 {
-    public class ExecutableController : IObjectReceiver<CommandInstallExecutable>,
-                                        IObjectReceiver<CommandReinstallExecutable>,
-                                        IObjectReceiver<CommandUninstallExecutable>,
-                                        IObjectReceiver<CommandRunExecutable>
+    public class ExecutableController 
     {
         private EventDispatcher eventDispatcher;
         public ExecutableController(EventDispatcher eventDispatcher)
@@ -19,24 +16,5 @@ namespace Installation.Controller.ExecutableControllers
             this.eventDispatcher = eventDispatcher;
         }
 
-        public void Receive(CommandInstallExecutable command)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Receive(CommandReinstallExecutable rObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Receive(CommandUninstallExecutable rObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Receive(CommandRunExecutable rObject)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
