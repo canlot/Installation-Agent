@@ -10,7 +10,6 @@ namespace Installation.Models
     public interface IUninstallable
     {
         bool UnInstalled { get; set; }
-        string UninstallFilePath { get; set; }
         Task UninstallAsync(CancellationToken cancellationToken);
     }
 }

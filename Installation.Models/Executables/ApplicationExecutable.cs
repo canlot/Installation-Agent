@@ -10,27 +10,15 @@ using System.Threading.Tasks;
 namespace Installation.Models
 {
     [Executable("App")]
-    public class ApplicationExecutable : Executable, IInstalable, IReinstallable, IUninstallable
+    public class ApplicationExecutable : Executable, IInstallable, IReinstallable, IUninstallable
     {
         private string installFilePath;
         private string installArguments;
+
+        public List<ExecutableUnit> InstallUnits = new List<ExecutableUnit>();
+        public List<ExecutableUnit> UninstallUnits = new List<ExecutableUnit>();
+        public List<ExecutableUnit> ReinstallUnits = new List<ExecutableUnit>();
         
-        [ExecutableSetting]
-        public string InstallFilePath { get => installFilePath; set => installFilePath = value; }
-
-        [ExecutableSetting(Mandatory = false)]
-        public string ReinstallFilePath { get ; set ; }
-        
-        [ExecutableSetting]
-        public string UninstallFilePath { get ; set; }
-
-
-        [ExecutableSetting(Mandatory = false)]
-        public string InstallArguments { get => installArguments; set => installArguments = value; }
-        [ExecutableSetting(Mandatory = false)]
-        public string ReinstallArguments { get; set; }
-        [ExecutableSetting(Mandatory = false)]
-        public string UninstallArguments { get; set; }
 
         private bool installed;
         private bool reinstalled;
@@ -41,12 +29,6 @@ namespace Installation.Models
         public bool UnInstalled { get => uninstalled; set { uninstalled = value; setSuccessfulRolloutState(); OnPropertyChanged("UnInstalled"); } }
 
 
-        [ExecutableSetting(Mandatory = false)]
-        public List<int> SuccessfullInstallReturnCodes { get; set; }
-        [ExecutableSetting(Mandatory = false)]
-        public List<int> SuccessfullReInstallReturnCodes { get; set; }
-        [ExecutableSetting(Mandatory = false)]
-        public List<int> SuccessfullUnInstallReturnCodes { get; set; }
 
         protected override void setSuccessfulRolloutState()
         {

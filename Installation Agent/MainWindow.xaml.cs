@@ -160,7 +160,7 @@ namespace Installation_Agent
 
                 if (item is IRunnable)
                     RunButton.Visibility = Visibility.Visible;
-                if (item is IInstalable)
+                if (item is IInstallable)
                     InstallButton.Visibility = Visibility.Visible;
                 if (item is IReinstallable)
                     ReinstallButton.Visibility = Visibility.Visible;

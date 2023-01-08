@@ -10,6 +10,7 @@ using Serilog;
 using Installation.Storage.StateStorage;
 using Installation.Models.Commands;
 using Installation.Models.Interfaces;
+using Installation.Models.Executables;
 
 namespace Installation.Controller.ExecutableControllers
 {
@@ -21,7 +22,6 @@ namespace Installation.Controller.ExecutableControllers
         public delegate Task ExecutionCompleted(Job job);
         public event ExecutionCompleted OnCompleted;
 
-        public Dictionary<Guid, Executable> executables;
 
         private ManualResetEventSlim executionWaiting = new ManualResetEventSlim(false);
         private EventDispatcher eventDispatcher;
@@ -87,24 +87,12 @@ namespace Installation.Controller.ExecutableControllers
             var executable = eventDispatcher.Send<CommandGetExecutable, Executable>(new CommandGetExecutable
             { ExecutableID = executionCommand.ExecutableID });
 
-            Log.Debug("Execute job with job id {jid} and executable id {eid} and installation state {state}", job.JobID, job.ExecutableID, job.ExecutionState);
-            if (job == null)
-            {
-                Log.Debug("Job is null");
-                return;
-            }
+            Log.Debug("Execute executable with executable id {id} and installation action {action}", executionCommand.ExecutableID, executionCommand.ExecuteAction );
 
-            if(executables.Count == 0)
-            {
-                Log.Error("Executables empty");
-                return;
-            }
-            var executable = executables[job.ExecutableID];
-            
 
             if (executable == null)
             {
-                Log.Debug("No executable with id: {eid}", job.ExecutableID);
+                Log.Debug("No executable with id: {eid}", executionCommand.ExecutableID);
                 return;
             }
 
@@ -112,10 +100,10 @@ namespace Installation.Controller.ExecutableControllers
             {
                 try
                 {
-                    if (job.Action == ExecuteAction.Install && executable is IInstalable)
+                    if (job.Action == ExecuteAction.Install && executable is IInstallable)
                     {
                         Log.Verbose("Install {id} with name {name}", executable.Id, executable.Name);
-                        await (executable as IInstalable).InstallAsync(cancellationToken);
+                        await (executable as IInstallable).InstallAsync(cancellationToken);
                         await executionCompletedAsync(job, executable.StatusState, executable.statusMessage);
                     }
                     else if (job.Action == ExecuteAction.Reinstall && executable is IReinstallable)
@@ -152,6 +140,8 @@ namespace Installation.Controller.ExecutableControllers
             }
             
         }
+
+
         async Task executionCompletedAsync(Job job, StatusState state, string message)
         {
             job.StatusState = state;

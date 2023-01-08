@@ -65,6 +65,8 @@
     <Compile Include="Controllers\CommunicationController.cs" />
     <Compile Include="Controllers\ExecutableController.cs" />
     <Compile Include="Controllers\ExecutionController.cs" />
+    <Compile Include="Exceptions\EventAlreadyRegisteredException.cs" />
+    <Compile Include="Exceptions\EventNotRegisteredException.cs" />
     <Compile Include="ExecutableFinders\ExecutableFileInfo.cs" />
     <Compile Include="ExecutableFinders\ExecutableFinder.cs" />
     <Compile Include="ExecutableFinders\ExecutableStorageProvider.cs" />
@@ -97,9 +99,7 @@
       <Name>Installation.Storage</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <PackageReference Include="ini-parser">
       <Version>2.5.2</Version>

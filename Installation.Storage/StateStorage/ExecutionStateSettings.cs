@@ -26,8 +26,8 @@ namespace Installation.Storage.StateStorage
 
         public void LoadExecutableState(Executable executable)
         {
-            if (executable is IInstalable)
-                (executable as IInstalable).Installed = stateStorageProvider.GetStateValue(installedKey, executable.Id.ToString());
+            if (executable is IInstallable)
+                (executable as IInstallable).Installed = stateStorageProvider.GetStateValue(installedKey, executable.Id.ToString());
             if (executable is IReinstallable)
                 (executable as IReinstallable).ReInstalled = stateStorageProvider.GetStateValue(reinstalledKey, executable.Id.ToString());
             if (executable is IRunnable)
@@ -38,8 +38,8 @@ namespace Installation.Storage.StateStorage
 
         public void SaveExecutableState(Executable executable)
         {
-            if (executable is IInstalable)
-                stateStorageProvider.SaveStateValue(installedKey, executable.Id.ToString(), (executable as IInstalable).Installed);
+            if (executable is IInstallable)
+                stateStorageProvider.SaveStateValue(installedKey, executable.Id.ToString(), (executable as IInstallable).Installed);
             if (executable is IReinstallable)
                 stateStorageProvider.SaveStateValue(reinstalledKey, executable.Id.ToString(), (executable as IReinstallable).ReInstalled);
             if (executable is IRunnable)

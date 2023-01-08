@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace Installation.Models
 {
-    public interface IInstalable
+    public interface IInstallable
     {
         bool Installed { get; set; }
-        string InstallFilePath { get; set; }
         Task InstallAsync(CancellationToken cancellationToken);
     }
 }

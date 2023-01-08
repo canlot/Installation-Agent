@@ -10,7 +10,6 @@ namespace Installation.Models
     public interface IReinstallable
     {
         bool ReInstalled { get; set; }
-        string ReinstallFilePath { get; set; }
         Task ReinstallAsync(CancellationToken cancellationToken);
     }
 }

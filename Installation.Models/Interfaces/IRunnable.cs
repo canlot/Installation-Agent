@@ -11,7 +11,6 @@ namespace Installation.Models
     public interface IRunnable
     {
         bool Runned { get; set; }
-        string RunFilePath { get; set; }
 
         Task RunAsync(CancellationToken cancellationToken);
     }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Installation.Models.Executables
+namespace Installation.Models
 {
 	public enum ExecuteContext
 	{
@@ -15,11 +15,20 @@ namespace Installation.Models.Executables
     {
 		private Guid id;
 
-		public Guid ID
+		public Guid Id
 		{
 			get { return id; }
 			set { id = value; }
 		}
+
+		private Guid executableId;
+
+		public Guid ExecutableId
+		{
+			get { return executableId; }
+			set { executableId = value; }
+		}
+
 
 		private string executableFilePath;
 

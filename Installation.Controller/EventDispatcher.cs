@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Installation.Controller
 {
@@ -22,6 +23,8 @@ namespace Installation.Controller
                     ReceivingType = typeof(T)
                 });
             }
+            else
+                throw new EventAlreadyRegisteredException();
             return this;
         }
         public EventDispatcher RegisterReceiver<T, TReturn>(object receiver)
@@ -35,6 +38,8 @@ namespace Installation.Controller
                     ReturningType = typeof(TReturn),
                 });
             }
+            else
+                throw new EventAlreadyRegisteredException();
             return this;
         }
         private bool checkIfReceiverAlreadyRegisteredForClass<T>(object receiver)
@@ -62,7 +67,7 @@ namespace Installation.Controller
         }
         public void Send<T>(T obj)
         {
-            var receiverObjects = receivers.Where(r => r.ReceivingType == typeof(T));
+            var receiverObjects = receivers.Where(r => r.ReceivingType == typeof(T)).Where(r => r.ReturningType == null);
             foreach (var receiverObject in receiverObjects)
             {
                 if (receiverObject.ReceiverObject is IObjectReceiver<T>)
@@ -71,6 +76,7 @@ namespace Installation.Controller
                 }
 
             }
+            throw new EventNotRegisteredException();
         }
         public TReturn Send<T, TReturn>(T obj)
         {
@@ -82,7 +88,7 @@ namespace Installation.Controller
                      return (receiverObject.ReceiverObject as IObjectReceiver<T, TReturn>).Receive(obj);
                 }
             }
-            return default(TReturn);
+            throw new EventNotRegisteredException();
         }
 
     }
