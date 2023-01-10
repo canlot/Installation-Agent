@@ -1,17 +1,15 @@
-﻿using System;
+﻿using Installation.Executors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Installation.Models
 {
-	public enum ExecuteContext
-	{
-		Machine = 1,
-		User = 2,
-	}
-    public class ExecutableUnit
+	
+    abstract public class ExecutableUnit
     {
 		private Guid id;
 
@@ -104,12 +102,27 @@ namespace Installation.Models
 			set { returnCode = value; }
 		}
 
+		private StatusState statusState;
 
-		public void Execute()
-		{
-
+		public StatusState StatusState
+        {
+			get { return statusState; }
+			set { statusState = value; }
 		}
 
 
-	}
+		public abstract Task Execute(CancellationToken cancellationToken);
+
+        protected void checkExecutor(Executor executor)
+        {
+            if (executor == null)
+                throw new NullReferenceException("No executor for this file type found");
+            if (!(executor is IApplicationExecutor))
+                throw new InvalidOperationException("This operation is not supported for this file type");
+        }
+
+
+
+
+    }
 }

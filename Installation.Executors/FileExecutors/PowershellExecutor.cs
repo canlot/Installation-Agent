@@ -12,14 +12,14 @@ namespace Installation.Executors
         public PowershellExecutor(string executableFile, string arguments, string baseFolder, CancellationToken token)
             : base(executableFile, arguments, baseFolder, token)
         {
+            SuccessfullRunReturnCodes = new List<int>();
+            SuccessfullRunReturnCodes.Add(0);
         }
 
+        public List<int> SuccessfullRunReturnCodes { get; }
 
         public async Task RunAsync()
         {
-            SuccessfullReturnCodes.Clear();
-            SuccessfullReturnCodes.Add(0);
-
             arguments = $"-NoProfile -ExecutionPolicy bypass -File \"{executableFile}\"";
             executableFile = "powershell.exe";
             await ExecuteAsync();

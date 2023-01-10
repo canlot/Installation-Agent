@@ -41,4 +41,9 @@ namespace Installation.Models
         NotRunned,
         Runned
     }
+    public enum ExecuteContext
+    {
+        Machine = 1,
+        User = 2,
+    }
 }

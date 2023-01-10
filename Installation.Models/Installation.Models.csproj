@@ -75,6 +75,7 @@
     <Compile Include="Executables\ApplicationExecutable.cs" />
     <Compile Include="Executables\Executable.cs" />
     <Compile Include="Executables\ExecutableUnit.cs" />
+    <Compile Include="Executables\ExecutableUnitInstallable.cs" />
     <Compile Include="Executables\ScriptExecutable.cs" />
     <Compile Include="Interfaces\IInstallable.cs" />
     <Compile Include="Interfaces\IObjectReceiver.cs" />

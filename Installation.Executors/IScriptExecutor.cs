@@ -9,5 +9,7 @@ namespace Installation.Executors
     public interface IScriptExecutor
     {
         Task RunAsync();
+
+        List<int> SuccessfullRunReturnCodes { get; }
     }
 }

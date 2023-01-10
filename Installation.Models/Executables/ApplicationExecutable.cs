@@ -46,29 +46,32 @@ namespace Installation.Models
         }
         public async Task InstallAsync(CancellationToken cancellationToken)
         {
-            Log.Information("Installing application: {name}, file: {file}, dir {dir}", Name, InstallFilePath, ExecutableDirectory);
+            Log.Information("Installing application: {name}", Name);
 
-            var executor = Executor.GetExecutor(installFilePath, InstallArguments, ExecutableDirectory, cancellationToken);
-            try
+            foreach (var unit in InstallUnits)
             {
-                CurrentlyExecuting = true;
+                
+                try
+                {
+                    CurrentlyExecuting = true;
 
-                checkExecutor(executor);
-                await (executor as IApplicationExecutor).InstallAsync();
+                    checkExecutor(executor);
+                    await (executor as IApplicationExecutor).InstallAsync();
 
-                setExecutionStateFromExecutor(executor, SuccessfullInstallReturnCodes);
-                Installed = getStateFromResult();
+                    setExecutionStateFromExecutor(executor, SuccessfullInstallReturnCodes);
+                    Installed = getStateFromResult();
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    executor?.Dispose();
+                    CurrentlyExecuting = false;
+                }
             }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                executor?.Dispose();
-                CurrentlyExecuting = false;
-            }
-            
+
         }
         
 

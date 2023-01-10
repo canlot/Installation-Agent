@@ -21,10 +21,9 @@ namespace Installation.Executors
         public int LastReturnCode { get; private set; }
         public string LastReturnMessage { get; private set; }
 
-        public List<int> SuccessfullReturnCodes { get; set; }
         private Executor()
         {
-            SuccessfullReturnCodes = new List<int>();
+
         }
         protected Executor(string executableFile, string arguments, string baseFolder, CancellationToken cancellationToken) : this()
         {
