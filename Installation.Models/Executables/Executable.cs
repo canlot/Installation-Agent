@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Installation.Models
 {
-    
+
     abstract public class Executable : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -22,7 +22,7 @@ namespace Installation.Models
         private Guid id;
         private string executableDirectory;
         private string iconPath;
-        private string description;
+        private Dictionary<string, string> descriptions;
 
         private StatusState statusState;
         private bool currentlyExecuting;
@@ -35,7 +35,14 @@ namespace Installation.Models
         [ExecutableSetting]
         public string Version { get => version; set => version = value; }
         [ExecutableSetting(Mandatory = false)]
-        public string Description { get => description; set => description = value; }
+        public Dictionary<string, string> Descriptions { get => descriptions; set => descriptions = value; }
+
+        public string Description { get => getDescription(); }
+
+        private string getDescription()
+        {
+            return "kjd";
+        }
         [ExecutableSetting(Mandatory = false)]
         public string IconPath 
         { get

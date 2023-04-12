@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Installation.Models.Commands
 {
-    public class CommandReinstallExecutable : CommandExecutableExecution
+    public class CommandReinstallExecutable : CommandExecuteExecutable
     {
         public override ExecuteAction ExecuteAction { get => ExecuteAction.Reinstall; }
 

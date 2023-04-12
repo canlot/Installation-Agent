@@ -8,11 +8,11 @@ using Installation.Models.Interfaces;
 
 namespace Installation.Controller.Communication
 {
-    public class CommunicationController : IObjectReceiver<>
+    public class InternalCommunicationController
     {
         private EventDispatcher eventDispatcher;
 
-        public CommunicationController(EventDispatcher eventDispatcher)
+        public InternalCommunicationController(EventDispatcher eventDispatcher)
         {
             this.eventDispatcher = eventDispatcher;
         }

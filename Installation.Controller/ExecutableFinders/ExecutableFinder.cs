@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Installation.Parser;
 using Installation.Storage.StateStorage;
 using Serilog;
 using System.Threading;
@@ -19,26 +18,22 @@ namespace Installation.Controller.ExecutableFinders
 
         public event ExecutableAddedOrModified OnExecutableAddedOrModified;
 
-        private GlobalSettings globalSettings;
+        private SettingsContainer settingsContainer;
         private Dictionary<Guid, ExecutableFileInfo> executableFileInformation = new Dictionary<Guid, ExecutableFileInfo>();
         private Dictionary<Guid, Executable> executables;
         private CancellationToken cancellationToken;
 
         public int RefreshCycleCounter = 0; //for every Run the counter will be incremented 
 
-        List<string> executablePaths = new List<string>();
 
         //private bool firstRun = true;
 
-        public ExecutableFinder(GlobalSettings settings, Dictionary<Guid, Executable> executables, CancellationToken cancellationToken)
+        public ExecutableFinder(SettingsContainer settings, Dictionary<Guid, Executable> executables, CancellationToken cancellationToken)
         {
-            this.globalSettings = settings;
+            this.settingsContainer = settings;
             this.executables = executables;
             this.cancellationToken = cancellationToken;
 
-            executablePaths.Add(globalSettings.ExecutablesPath);
-            executablePaths.AddRange(globalSettings.ExecutablesSettings.Select(n => n.ExecutablesPath));
-            executablePaths = executablePaths.Distinct().Where(n => !string.IsNullOrEmpty(n)).ToList();
         }
         public async Task RunAsync()
         {
@@ -48,44 +43,38 @@ namespace Installation.Controller.ExecutableFinders
 
                 Log.Verbose("Searching for Executables");
 
-                if (executablePaths.Count > 0)
-                {
-                    Log.Debug("Following executable paths found {paths}", executablePaths);
-                    ExecutableStorageProvider executableStorage = new ExecutableStorageProvider(executablePaths, globalSettings.ApplicationSettingsFileName);
+                Log.Debug("Following executable paths found {paths}", settingsContainer.GlobalSettings.ExecutablesPath);
+                ExecutableStorageProvider executableStorage = new ExecutableStorageProvider(settingsContainer.GlobalSettings.ExecutablesPath, 
+                    settingsContainer.GlobalSettings.ApplicationSettingsFileName);
 
-                    foreach (var executableBundle in executableStorage.GetExecutables())
+                foreach (var executableBundle in executableStorage.GetExecutables())
+                {
+                    if (cancellationToken.IsCancellationRequested)
+                        return;
+
+                    if(executableFileInformation.ContainsKey(executableBundle.executable.Id))
                     {
-                        if (cancellationToken.IsCancellationRequested)
-                            return;
+                        var existingFileInformation = executableFileInformation[executableBundle.executable.Id];
+                        var givenFileInformation = (FilePath: executableBundle.filePath, FileHash: executableBundle.fileHash);
 
-                        if(executableFileInformation.ContainsKey(executableBundle.executable.Id))
-                        {
-                            var existingFileInformation = executableFileInformation[executableBundle.executable.Id];
-                            var givenFileInformation = (FilePath: executableBundle.filePath, FileHash: executableBundle.fileHash);
-
-                            await handleFileInformation(executableBundle.executable, existingFileInformation, givenFileInformation);
-                        }
-                        else
-                        {
-                            executableFileInformation.Add(executableBundle.executable.Id, new ExecutableFileInfo
-                            {
-                                FilePath = executableBundle.filePath,
-                                FileHash = executableBundle.fileHash,
-                                CycleGeneration = RefreshCycleCounter
-                            }) ;
-                            addExecutable(executableBundle.executable);
-                            await this?.OnExecutableAddedOrModified(executableBundle.executable);
-                        }
-
+                        await handleFileInformation(executableBundle.executable, existingFileInformation, givenFileInformation);
                     }
-                }
-                else
-                {
-                    Log.Fatal("No executable paths found");
-                    throw new Exception("No executable paths found");
+                    else
+                    {
+                        executableFileInformation.Add(executableBundle.executable.Id, new ExecutableFileInfo
+                        {
+                            FilePath = executableBundle.filePath,
+                            FileHash = executableBundle.fileHash,
+                            CycleGeneration = RefreshCycleCounter
+                        }) ;
+                        addExecutable(executableBundle.executable);
+                        await this?.OnExecutableAddedOrModified(executableBundle.executable);
+                    }
+
                 }
 
-                await Task.Delay(globalSettings.PullIntervalTimeInSeconds * 1000, cancellationToken);
+
+                await Task.Delay(settingsContainer.GlobalSettings.PullIntervalTimeInSeconds * 1000, cancellationToken);
                 //firstRun = false;
             }
         }
@@ -162,30 +151,23 @@ namespace Installation.Controller.ExecutableFinders
         {
             Log.Verbose("Searching for Executables");
 
-            if(executablePaths.Count > 0)
-            {
-                Log.Debug("Following executable paths found {paths}", executablePaths);
-                ExecutableStorageProvider executableStorage = new ExecutableStorageProvider(executablePaths, globalSettings.ApplicationSettingsFileName);
+            Log.Debug("Search in following executable path {path}", settingsContainer.GlobalSettings.ExecutablesPath);
+            ExecutableStorageProvider executableStorage = new ExecutableStorageProvider(settingsContainer.GlobalSettings.ExecutablesPath,
+                settingsContainer.GlobalSettings.ApplicationSettingsFileName);
 
-                foreach (var executableBundle in executableStorage.GetExecutables())
-                {
-                    if(executables.ContainsKey(executableBundle.executable.Id))
-                    {
-                        Log.Error("Executable {name} with the id {id} already exist, executable not added", executableBundle.executable.Name, executableBundle.executable.Id);
-                    }
-                    else
-                    {
-                        ExecutionStateSettings executionStateSettings = new ExecutionStateSettings();
-                        executionStateSettings.LoadExecutableState(executableBundle.executable);
-                        executables.Add(executableBundle.executable.Id, executableBundle.executable);
-                        Log.Debug("Executable added {@executable}", executableBundle.executable);
-                    }
-                }
-            }
-            else
+            foreach (var executableBundle in executableStorage.GetExecutables())
             {
-                Log.Fatal("No executable paths found");
-                throw new Exception("No executable paths found");
+                if (executables.ContainsKey(executableBundle.executable.Id))
+                {
+                    Log.Error("Executable {name} with the id {id} already exist, executable not added", executableBundle.executable.Name, executableBundle.executable.Id);
+                }
+                else
+                {
+                    ExecutionStateSettings executionStateSettings = new ExecutionStateSettings();
+                    executionStateSettings.LoadExecutableState(executableBundle.executable);
+                    executables.Add(executableBundle.executable.Id, executableBundle.executable);
+                    Log.Debug("Executable added {@executable}", executableBundle.executable);
+                }
             }
         }
         

@@ -7,11 +7,11 @@ using Serilog;
 
 namespace Installation.Parser.Exceptions
 {
-    public class SettingNotFoundException : Exception
+    public class SettingException : Exception
     {
-        public SettingNotFoundException(string setting) : base()
+        public SettingException(string setting) : base()
         {
-            Log.Error("Could not find {setting} in settings", setting);
+            Log.Error("Error in setting: {setting} ", setting);
         }
     }
 }

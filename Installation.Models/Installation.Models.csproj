@@ -64,7 +64,9 @@
     <Compile Include="Attributes\ExecutableAttribute.cs" />
     <Compile Include="Attributes\ExecutableSettingAttribute.cs" />
     <Compile Include="Commands\Command.cs" />
-    <Compile Include="Commands\CommandExecutableExecution.cs" />
+    <Compile Include="Commands\CommandExecute.cs" />
+    <Compile Include="Commands\CommandExecuteExecutable.cs" />
+    <Compile Include="Commands\CommandExecuteUnit.cs" />
     <Compile Include="Commands\CommandGetExecutable.cs" />
     <Compile Include="Commands\CommandInstallExecutable.cs" />
     <Compile Include="Commands\CommandReinstallExecutable.cs" />
@@ -77,6 +79,8 @@
     <Compile Include="Executables\ExecutableUnit.cs" />
     <Compile Include="Executables\ExecutableUnitInstallable.cs" />
     <Compile Include="Executables\ScriptExecutable.cs" />
+    <Compile Include="GlobalRepository.cs" />
+    <Compile Include="Helpers\DictionaryHelper.cs" />
     <Compile Include="Interfaces\IInstallable.cs" />
     <Compile Include="Interfaces\IObjectReceiver.cs" />
     <Compile Include="Interfaces\IReinstallable.cs" />
@@ -87,6 +91,9 @@
     <Compile Include="Mappers\ExecutableMapper.cs" />
     <Compile Include="Mappers\ScriptExecutableMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Responses\Response.cs" />
+    <Compile Include="Responses\ResponseExecution.cs" />
+    <Compile Include="Responses\ResponseExecutionUnit.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

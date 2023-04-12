@@ -62,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventDispatcher.cs" />
-    <Compile Include="Controllers\CommunicationController.cs" />
+    <Compile Include="Controllers\InternalCommunicationController.cs" />
     <Compile Include="Controllers\ExecutableController.cs" />
     <Compile Include="Controllers\ExecutionController.cs" />
     <Compile Include="Exceptions\EventAlreadyRegisteredException.cs" />
@@ -73,10 +73,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Receiver.cs" />
     <Compile Include="ServiceController.cs" />
-    <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="Settings\GlobalSettings.cs" />
     <Compile Include="Settings\ISettings.cs" />
-    <Compile Include="Settings\ScriptSettings.cs" />
+    <Compile Include="Settings\SettingsBuilder.cs" />
+    <Compile Include="Settings\SettingsContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

@@ -13,60 +13,56 @@ namespace Installation.Controller.ExecutableFinders
 {
     public class ExecutableStorageProvider
     {
-        private List<string> executablePaths;
+        private string executablePath;
         private readonly string executableSettingsFileName;
 
-        public ExecutableStorageProvider(List<string> executablePaths, string applicationSettingsFileName)
+        public ExecutableStorageProvider(string executablePath, string applicationSettingsFileName)
         {
-            this.executablePaths = executablePaths;
+            this.executablePath = executablePath;
             this.executableSettingsFileName = applicationSettingsFileName;
         }
         public IEnumerable<(Executable executable, string filePath, string fileHash)> GetExecutables()
         {
-            foreach (var path in executablePaths)
+            foreach (var directory in getDirectoriesInExecutablePath(executablePath))
             {
-                foreach (var directory in getDirectoriesInExecutablePath(path))
+                string fileHash = null;
+                string filePath = directory + @"\" + executableSettingsFileName;
+                Executable executable = executable = null; //sets the executable to null because last executable could get different directory
+                try
                 {
-                    string fileHash = null;
-                    string filePath = directory + @"\" + executableSettingsFileName;
-                    Executable executable = executable = null; //sets the executable to null because last executable could get different directory
-                    try
+                    if(searchForSettingFile(directory))
                     {
-                        if(searchForSettingFile(directory))
-                        {
-                            ExecutableParser executableParser = new ExecutableParser(filePath);
-                            executable = executableParser.ParseObject();
+                        ExecutableParser executableParser = new ExecutableParser(filePath);
+                        executable = executableParser.ParseObject();
 
-                            using(var sha1 = SHA1Managed.Create())
-                            {
-                                using (var reader = File.OpenRead(filePath))
-                                {
-                                    fileHash = sha1.ComputeHash(reader).ToString();
-                                    Log.Debug("Hash for file {file} computed: {hash} ", filePath, fileHash);
-                                }
-                            }
-                            
-                        }
-                        else
+                        using(var sha1 = SHA1Managed.Create())
                         {
-                            Log.Debug("Could not find any settings file in folder {folder}", directory);
+                            using (var reader = File.OpenRead(filePath))
+                            {
+                                fileHash = sha1.ComputeHash(reader).ToString();
+                                Log.Debug("Hash for file {file} computed: {hash} ", filePath, fileHash);
+                            }
                         }
+                            
                     }
-                    catch (Exception ex)
-                    {
-                        Log.Debug(ex, "Exception occured in folder {folder}", directory);
-                    }
-                    if (executable != null && filePath != null && fileHash != null)
-                    {
-                        executable.ExecutableDirectory = directory;
-                        yield return (executable, filePath, fileHash);
-                    }    
                     else
-                        Log.Debug("settings could not be parsed from {dir}", directory);
+                    {
+                        Log.Debug("Could not find any settings file in folder {folder}", directory);
+                    }
                 }
-                
+                catch (Exception ex)
+                {
+                    Log.Debug(ex, "Exception occured in folder {folder}", directory);
+                }
+                if (executable != null && filePath != null && fileHash != null)
+                {
+                    executable.ExecutableDirectory = directory;
+                    yield return (executable, filePath, fileHash);
+                }    
+                else
+                    Log.Debug("settings could not be parsed from {dir}", directory);
             }
-                
+
         }
 
         public string[] getDirectoriesInExecutablePath(string executablePath)

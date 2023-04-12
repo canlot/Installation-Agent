@@ -10,14 +10,12 @@ using Serilog;
 using Installation.Storage.StateStorage;
 using Installation.Models.Commands;
 using Installation.Models.Interfaces;
-using Installation.Models.Executables;
+using Installation.Models.Responses;
+using System.Dynamic;
 
 namespace Installation.Controller.ExecutableControllers
 {
-    public class ExecutionController :  IObjectReceiver<CommandInstallExecutable>,
-                                        IObjectReceiver<CommandReinstallExecutable>,
-                                        IObjectReceiver<CommandUninstallExecutable>,
-                                        IObjectReceiver<CommandRunExecutable>
+    public class ExecutionController :  IObjectReceiver<CommandExecute>
     {
         public delegate Task ExecutionCompleted(Job job);
         public event ExecutionCompleted OnCompleted;
@@ -25,36 +23,21 @@ namespace Installation.Controller.ExecutableControllers
 
         private ManualResetEventSlim executionWaiting = new ManualResetEventSlim(false);
         private EventDispatcher eventDispatcher;
-        private ConcurrentQueue<CommandExecutableExecution> commandQueue;
+        private ConcurrentQueue<CommandExecute> commandQueue;
+        private ConcurrentQueue<ExecutableUnit> executableUnitQueue;
 
         public ExecutionController(EventDispatcher eventDispatcher)
         {
             this.eventDispatcher = eventDispatcher;
+            this.eventDispatcher.RegisterReceiver<CommandExecute>(this);
         }
 
-        public void Receive(CommandInstallExecutable command)
+        public void Receive(CommandExecute command)
         {
             commandQueue.Enqueue(command);
             executionWaiting.Set();
         }
 
-        public void Receive(CommandReinstallExecutable command)
-        {
-            commandQueue.Enqueue(command);
-            executionWaiting.Set();
-        }
-
-        public void Receive(CommandUninstallExecutable command)
-        {
-            commandQueue.Enqueue(command);
-            executionWaiting.Set();
-        }
-
-        public void Receive(CommandRunExecutable command)
-        {
-            commandQueue.Enqueue(command);
-            executionWaiting.Set();
-        }
         public async Task RunControllerAsync(CancellationToken cancellationToken)
         {
             while(true)
@@ -63,16 +46,19 @@ namespace Installation.Controller.ExecutableControllers
                     return;
                 if(commandQueue.Count > 0)
                 {
-                    CommandExecutableExecution executionCommand;
+                    CommandExecute executionCommand;
                     if(commandQueue.TryDequeue(out executionCommand))
                     {
                         try
                         {
-                            await runJobAsync(executionCommand, cancellationToken).ConfigureAwait(false);
-                        }
+                            if (executionCommand is CommandExecute)
+                                await ExecuteExecutableAsync(executionCommand as CommandExecuteExecutable, cancellationToken).ConfigureAwait(false);
+                            else if (executionCommand is CommandExecuteUnit)
+                                await executeExecutableUnitAsync(executionCommand as CommandExecuteUnit, cancellationToken).ConfigureAwait(false);
+                                                    }
                         catch(Exception ex)
                         {
-                            Log.Error(ex, "Could't run the job {jid}", job.JobID);
+                            Log.Error(ex, "Could't execute the command with this ID {id}", executionCommand.ExecutableID);
                         }
                         
                     }
@@ -82,7 +68,7 @@ namespace Installation.Controller.ExecutableControllers
                 //await Task.Delay(500).ConfigureAwait(false);
             }
         }
-        private async Task runJobAsync(CommandExecutableExecution executionCommand, CancellationToken cancellationToken)
+        private async Task ExecuteExecutableAsync(CommandExecuteExecutable executionCommand, CancellationToken cancellationToken)
         {
             var executable = eventDispatcher.Send<CommandGetExecutable, Executable>(new CommandGetExecutable
             { ExecutableID = executionCommand.ExecutableID });
@@ -95,72 +81,78 @@ namespace Installation.Controller.ExecutableControllers
                 Log.Debug("No executable with id: {eid}", executionCommand.ExecutableID);
                 return;
             }
-
-            if (job.ExecutionState == ExecutionState.Started)
+            try
             {
-                try
+                if(executionCommand is CommandInstallExecutable && executable is IInstallable)
                 {
-                    if (job.Action == ExecuteAction.Install && executable is IInstallable)
-                    {
-                        Log.Verbose("Install {id} with name {name}", executable.Id, executable.Name);
-                        await (executable as IInstallable).InstallAsync(cancellationToken);
-                        await executionCompletedAsync(job, executable.StatusState, executable.statusMessage);
-                    }
-                    else if (job.Action == ExecuteAction.Reinstall && executable is IReinstallable)
-                    {
-                        Log.Verbose("Reinstall {id} with name {name}", executable.Id, executable.Name);
-                        await (executable as IReinstallable).ReinstallAsync(cancellationToken);
-                        await executionCompletedAsync(job, executable.StatusState, executable.statusMessage);
-                    }
-                    else if (job.Action == ExecuteAction.Uninstall && executable is IUninstallable)
-                    {
-                        Log.Verbose("Uninstall {id} with name {name}", executable.Id, executable.Name);
-                        await (executable as IUninstallable).UninstallAsync(cancellationToken);
-                        await executionCompletedAsync(job, executable.StatusState, executable.statusMessage);
-                    }
-                    else if (job.Action == ExecuteAction.Run && executable is IRunnable)
-                    {
-                        Log.Debug("RunAsync {id} with name {name}", executable.Id, executable.Name);
-                        await (executable as IRunnable).RunAsync(cancellationToken);
-                        await executionCompletedAsync(job, executable.StatusState, executable.statusMessage);
-                    }
-                    else
-                    {
-                        Log.Error("Executable {name} has no {state} execution state", executable.Name, job.Action);
-                    }
-                    var executionStateSettings = new ExecutionStateSettings();
-                    executionStateSettings.SaveExecutableState(executable);
+                    Log.Verbose("Install {id} with name {name}", executable.Id, executable.Name);
+                    await (executable as IInstallable).InstallAsync(cancellationToken);
+                    await sendExecutableState(executable);
                 }
-                catch (Exception ex)
+                else if(executionCommand is CommandReinstallExecutable && executable is IReinstallable)
                 {
-                    Log.Error(ex, "Executable could't be executed");
-                    await executionCompletedAsync(job, StatusState.Error, ex.Message);
+                    Log.Verbose("Reinstall {id} with name {name}", executable.Id, executable.Name);
+                    await (executable as IReinstallable).ReinstallAsync(cancellationToken);
+                    await sendExecutableState(executable);
                 }
-                
+                else if(executionCommand is CommandUninstallExecutable && executable is IUninstallable)
+                {
+                    Log.Verbose("Uninstall {id} with name {name}", executable.Id, executable.Name);
+                    await (executable as IUninstallable).UninstallAsync(cancellationToken);
+                    await sendExecutableState(executable);
+                }
+                else if(executionCommand is CommandRunExecutable && executable is IRunnable)
+                {
+                    Log.Debug("RunAsync {id} with name {name}", executable.Id, executable.Name);
+                    await (executable as IRunnable).RunAsync(cancellationToken);
+                    await sendExecutableState(executable);
+                }
+                else
+                {
+                    Log.Error("Command {Command} and Executable {Executable} doesn't match", executionCommand, executable );
+                }
+                var executionStateSettings = new ExecutionStateSettings();
+                executionStateSettings.SaveExecutableState(executable);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Executable could't be executed");
+                await executionCompletedAsync(job, StatusState.Error, ex.Message);
             }
             
         }
 
-
-        async Task executionCompletedAsync(Job job, StatusState state, string message)
+        async Task executeExecutableUnitAsync(CommandExecuteUnit command, CancellationToken cancellationToken)
         {
-            job.StatusState = state;
-            if (state == StatusState.Success)
-            {
-                Log.Information("Job {jid} with excutable {eid} successfully executed", job.JobID, job.ExecutableID);
-            }
-            else if(state == StatusState.Warning)
-            {
-                Log.Warning(message);
-            }
-            else if(state == StatusState.Error)
-            {
-                Log.Error(message);
-                job.ExecutionState = ExecutionState.Stopped;
-            }
-            job.StatusMessage = message;
-            await OnCompleted(job);
-            
+
         }
+
+        async Task sendExecutableState(Executable executable)
+        {
+            var responseExecution = new ResponseExecution();
+            switch(executable.StatusState)
+            {
+                case StatusState.Success:
+                    responseExecution.StatusState = StatusState.Success;
+                    responseExecution.ExecutionState = ExecutionState.Done;
+                    Log.Information("Executable with id {id} executed successfully", executable.Id);
+                    break;
+                case StatusState.Warning:
+                    responseExecution.StatusState = StatusState.Warning;
+                    responseExecution.ExecutionState = ExecutionState.Done;
+                    responseExecution.Message = executable.StatusMessage;
+                    Log.Warning("Executable with id {id} executed with warning: {warning}", executable.Id, executable.StatusMessage);
+                    break;
+                case StatusState.Error:
+                    responseExecution.StatusState = StatusState.Error;
+                    responseExecution.ExecutionState = ExecutionState.Stopped;
+                    responseExecution.Message = executable.StatusMessage;
+                    Log.Error("Executable with id {id} executed with error: {warning}", executable.Id, executable.StatusMessage);
+                    break;
+            }
+            await eventDispatcher.Send<ResponseExecution, Task>(responseExecution);
+        }
+
+
     }
 }

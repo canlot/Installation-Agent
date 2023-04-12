@@ -1,5 +1,4 @@
-﻿using IniParser.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +11,7 @@ namespace Installation.Controller.Settings
         string SectionName { get; }
         string ExecutablesPath { get; }
         bool IsValid { get; }
-        void LoadSettings(IniData iniData);
+        void LoadSettings();
 
 
     }

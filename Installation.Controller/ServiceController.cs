@@ -3,6 +3,8 @@ using Installation.Controller.ExecutableControllers;
 using Installation.Controller.ExecutableFinders;
 using Installation.Controller.Settings;
 using Installation.Models;
+using Installation.Models.Settings;
+using Installation.Parser;
 using Serilog;
 using System;
 using System.Collections.Concurrent;
@@ -16,7 +18,8 @@ namespace Installation.Controller
     {
         private CancellationTokenSource cancellationTokenSource;
 
-        private GlobalSettings globalSettings = new GlobalSettings();
+        private SettingsContainer SettingsContainer;
+        
 
         public Dictionary<Guid, Executable> Executables = new Dictionary<Guid, Executable>();
 
@@ -30,6 +33,8 @@ namespace Installation.Controller
 
         private ConcurrentQueue<Job> jobsQueue;
 
+        private EventDispatcher eventDispatcher = new EventDispatcher();
+
         private Task communicatorTask;
         private Task executionTask;
         private Task finderTask;
@@ -38,15 +43,6 @@ namespace Installation.Controller
         public ServiceController()
         {
             cancellationTokenSource = new CancellationTokenSource();
-
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.Console()
-                .WriteTo.File(globalSettings.ServerLogsFilePath, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
-                .CreateLogger();
-
-
-            
         }
 
         public void Start()
@@ -54,16 +50,23 @@ namespace Installation.Controller
             Log.Information("------PROGRAM STARTED------");
             try
             {
-                globalSettings.LoadSettings();
-                globalSettings.ExecutablesSettings.Add(globalSettings.GetSettings<ScriptSettings>());
-                //finder.FindExecutables(Executables);
+                SettingsBuilder settingsBuilder = new SettingsBuilder();
+                SettingsContainer.GlobalSettings = settingsBuilder.GetSettings<GlobalSettings>();
+
             }
             catch (Exception ex)
             {
                 Log.Fatal(ex, "Could not load settings file or executables");
                 return;
             }
-            finder = new ExecutableFinder(globalSettings, Executables, cancellationTokenSource.Token);
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .WriteTo.File(SettingsContainer.GlobalSettings.ServerLogsFilePath, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
+                .CreateLogger();
+
+            finder = new ExecutableFinder(SettingsContainer, Executables, cancellationTokenSource.Token);
 
             finder.OnExecutableAddedOrModified += newExecutableAsync;
 
@@ -73,7 +76,7 @@ namespace Installation.Controller
 
             jobsQueue = new ConcurrentQueue<Job>();
 
-            executionController = new ExecutionController(Executables, jobsQueue);
+            executionController = new ExecutionController(eventDispatcher);
             executionController.OnCompleted += executionCompleted;
 
 

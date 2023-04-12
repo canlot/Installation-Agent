@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Installation.Models.Commands
 {
-    abstract public class CommandExecutableExecution : Command
+    public abstract class CommandExecuteExecutable : CommandExecute
     {
-        protected Guid executableID;
-        public Guid ExecutableID { get => executableID; set { executableID = value; } }
         abstract public ExecuteAction ExecuteAction { get; }
     }
 }

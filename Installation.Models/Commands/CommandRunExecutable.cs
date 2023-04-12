@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Installation.Models.Commands
 {
-    public class CommandRunExecutable : CommandExecutableExecution
+    public class CommandRunExecutable : CommandExecuteExecutable
     {
         public override ExecuteAction ExecuteAction { get => ExecuteAction.Run; }
 

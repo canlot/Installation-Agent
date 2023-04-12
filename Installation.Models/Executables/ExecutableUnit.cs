@@ -1,6 +1,8 @@
 ﻿using Installation.Executors;
+using Installation.Models.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -26,6 +28,17 @@ namespace Installation.Models
 			get { return executableId; }
 			set { executableId = value; }
 		}
+
+		private Dictionary<string, string> names;
+
+		public Dictionary<string, string> Names
+		{
+			get { return names; }
+			set { names = value; }
+		}
+
+		public string Name { get => Names.ReturnValueOrSubstringOrFirstValue(); }
+
 
 
 		private string executableFilePath;
