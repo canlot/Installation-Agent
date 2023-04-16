@@ -107,57 +107,7 @@ namespace Installation.Models
         {
             return !(a == b);
         }
-        protected void setExecutionStateFromExecutor(Executor executor, List<int> successfulReturnCodes) // if user defined return codes are present they will be used, otherwise standard return codes will be used
-        {
-            if (executor == null)
-                throw new ArgumentNullException(nameof(executor));
-            if (executor.SuccessfullReturnCodes == null || executor.SuccessfullReturnCodes.Count == 0)
-                throw new ArgumentException(nameof(executor.SuccessfullReturnCodes));
-
-            if (successfulReturnCodes == null || successfulReturnCodes.Count == 0)
-            {
-                if(executor.SuccessfullReturnCodes.Contains(executor.LastReturnCode))
-                {
-                    StatusState = StatusState.Success;
-                }
-                else
-                {
-                    StatusState = StatusState.Error;
-                    StatusMessage = executor.LastReturnMessage;
-                }
-                    
-            }
-            else
-            {
-                if(successfulReturnCodes.Contains(executor.LastReturnCode))
-                {
-                    StatusState = StatusState.Success;
-                }
-                else
-                {
-                    StatusState = StatusState.Error;
-                    StatusMessage = executor.LastReturnMessage;
-                }
-            }
-
-        }
-
-        protected bool getStateFromResult()
-        {
-            setStateToFalse();
-            switch (StatusState)
-            {
-                case StatusState.Success:
-                    return true;
-                case StatusState.Warning:
-                    return true;
-                case StatusState.Error:
-                    return false;
-                default:
-                    return false;
-            }
-        }
-        abstract protected void setStateToFalse();
+        
 
     }
 }

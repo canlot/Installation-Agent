@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Installation.Executors
 {
-    public interface IScriptExecutor
+    public interface IReinstallableExecutor
     {
-        Task RunAsync();
+        Task ReinstallAsync();
 
-        List<int> SuccessfullRunReturnCodes { get; }
+        List<int> SuccessfullReinstallationReturnCodes { get; }
     }
 }

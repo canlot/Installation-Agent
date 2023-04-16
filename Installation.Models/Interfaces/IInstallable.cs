@@ -9,7 +9,9 @@ namespace Installation.Models
 {
     public interface IInstallable
     {
-        bool Installed { get; set; }
-        Task InstallAsync(CancellationToken cancellationToken);
+        //bool Installed { get; set; }
+        //Task InstallAsync(CancellationToken cancellationToken);
+
+        List<ExecutableUnit> InstallableUnits { get; set; }
     }
 }

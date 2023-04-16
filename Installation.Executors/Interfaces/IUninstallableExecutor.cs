@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace Installation.Executors
 {
-    public interface IApplicationExecutor
+    public interface IUninstallableExecutor
     {
-        Task InstallAsync();
-        Task ReinstallAsync();
         Task UninstallAsync();
 
-        List<int> SuccessfullInstallationReturnCodes { get; }
-        List<int> SuccessfullReinstallationReturnCodes { get; }
         List<int> SuccessfullUninstallationReturnCodes { get; }
     }
 }

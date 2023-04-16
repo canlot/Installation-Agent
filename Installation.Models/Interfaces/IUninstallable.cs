@@ -9,7 +9,6 @@ namespace Installation.Models
 {
     public interface IUninstallable
     {
-        bool UnInstalled { get; set; }
-        Task UninstallAsync(CancellationToken cancellationToken);
+        List<ExecutableUnit> UninstallableUnits { get; set; }
     }
 }

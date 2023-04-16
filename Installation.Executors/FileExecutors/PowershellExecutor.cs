@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Installation.Executors
 {
-    public class PowershellExecutor : Executor, IScriptExecutor
+    public class PowershellExecutor : Executor, IRunnableExecutor
     {
         public PowershellExecutor(string executableFile, string arguments, string baseFolder, CancellationToken token)
             : base(executableFile, arguments, baseFolder, token)

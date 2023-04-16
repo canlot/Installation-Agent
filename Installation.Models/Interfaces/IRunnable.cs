@@ -10,8 +10,6 @@ namespace Installation.Models
 {
     public interface IRunnable
     {
-        bool Runned { get; set; }
-
-        Task RunAsync(CancellationToken cancellationToken);
+        List<ExecutableUnit> RunnableUnits { get; set; }
     }
 }

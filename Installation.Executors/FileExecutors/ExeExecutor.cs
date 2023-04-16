@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Installation.Executors
 {
-    public class ExeExecutor : Executor, IApplicationExecutor, IScriptExecutor
+    public class ExeExecutor : Executor, IInstallableExecutor, IReinstallableExecutor, IUninstallableExecutor, IRunnableExecutor
     {
         public ExeExecutor(string executableFile, string arguments, string baseFolder, CancellationToken token) 
             : base(executableFile, arguments, baseFolder, token)

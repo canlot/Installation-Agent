@@ -63,8 +63,10 @@
     <Compile Include="FileExecutors\ExeExecutor.cs" />
     <Compile Include="FileExecutors\MsiExecutor.cs" />
     <Compile Include="FileExecutors\PowershellExecutor.cs" />
-    <Compile Include="IApplicationExecutor.cs" />
-    <Compile Include="IScriptExecutor.cs" />
+    <Compile Include="Interfaces\IInstallableExecutor.cs" />
+    <Compile Include="Interfaces\IReinstallableExecutor.cs" />
+    <Compile Include="Interfaces\IRunnableExecutor.cs" />
+    <Compile Include="Interfaces\IUninstallableExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

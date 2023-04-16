@@ -1,5 +1,6 @@
 ﻿using Installation.Executors;
 using Installation.Models.Helpers;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 namespace Installation.Models
 {
 	
-    abstract public class ExecutableUnit
+    public class ExecutableUnit
     {
 		private Guid id;
 
@@ -37,9 +38,9 @@ namespace Installation.Models
 			set { names = value; }
 		}
 
-		public string Name { get => Names.ReturnValueOrSubstringOrFirstValue(); }
+		public string Name { get => Names.ReturnValueOrSubstringOrFirstValue(""); }
 
-
+		public ExecuteAction ExecuteAction { get; set; }
 
 		private string executableFilePath;
 
@@ -124,16 +125,109 @@ namespace Installation.Models
 		}
 
 
-		public abstract Task Execute(CancellationToken cancellationToken);
+		public async Task Execute(CancellationToken cancellationToken)
+		{
+            if (string.IsNullOrWhiteSpace(ExecutableFilePath))
+                throw new ArgumentNullException(nameof(ExecutableFilePath));
+
+            Log.Information("Reinstalling application: {name}, file: {file}, dir {dir}", ExecutableFilePath, ExecutableDirectory);
+
+
+            var executor = Executor.GetExecutor(ExecutableFilePath, ExecutableArguments, ExecutableDirectory, cancellationToken);
+            try
+            {
+
+                checkExecutor(executor);
+
+				switch(this.ExecuteAction)
+				{
+					case ExecuteAction.Install:
+						await (executor as IInstallableExecutor).InstallAsync();
+						break;
+					case ExecuteAction.Reinstall:
+						await (executor as IReinstallableExecutor).ReinstallAsync();
+						break;
+					case ExecuteAction.Uninstall:
+						await (executor as IUninstallableExecutor).UninstallAsync();
+                        break;
+					case ExecuteAction.Run:
+						await (executor as IRunnableExecutor).RunAsync();
+                        break;
+					default: throw new InvalidOperationException();
+				}
+
+                setExecutionStateFromExecutor(executor);
+
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                executor?.Dispose();
+            }
+        }
 
         protected void checkExecutor(Executor executor)
         {
             if (executor == null)
                 throw new NullReferenceException("No executor for this file type found");
-            if (!(executor is IApplicationExecutor))
-                throw new InvalidOperationException("This operation is not supported for this file type");
         }
 
+        private void setExecutionStateFromExecutor(Executor executor) // if user defined return codes are present they will be used, otherwise standard return codes will be used
+		{
+
+			if(trueIfContainsSuccessfullReturnCode(executor)) //if return code match any codes that are defined as successfull in the ExecutableUnit or Executor, the State will be Success
+			{
+				StatusState = StatusState.Success;
+			}
+			else
+			{
+				StatusState = StatusState.Error;
+				StatusMessage = executor.LastReturnMessage;
+			}
+
+		}
+
+		private bool trueIfContainsSuccessfullReturnCode(Executor executor)
+		{
+			bool codeContains = false;
+			if (executor is IInstallableExecutor)
+			{
+				codeContains = succesfullCodeContainsInCollection((executor as IInstallableExecutor).SuccessfullInstallationReturnCodes, SuccessfullReturnCodes);
+			}
+			else if (executor is IReinstallableExecutor)
+			{
+				codeContains = succesfullCodeContainsInCollection((executor as IReinstallableExecutor).SuccessfullReinstallationReturnCodes, SuccessfullReturnCodes);
+			}
+			else if (executor is IUninstallableExecutor)
+			{
+				codeContains = succesfullCodeContainsInCollection((executor as IUninstallableExecutor).SuccessfullUninstallationReturnCodes, SuccessfullReturnCodes);
+			}
+			else if (executor is IRunnableExecutor)
+			{
+				codeContains = succesfullCodeContainsInCollection((executor as IRunnableExecutor).SuccessfullRunReturnCodes, SuccessfullReturnCodes);
+			}
+
+			return codeContains;
+		}
+
+		private bool succesfullCodeContainsInCollection(params List<int>[] codeCollections)
+		{
+			foreach (var codeCollection in codeCollections)
+			{
+				if (codeCollection != null)
+				{
+					foreach(var code in codeCollection)
+					{
+						if(code == ReturnCode)
+							return true;
+					}
+				}
+			}
+			return false;
+		}
 
 
 

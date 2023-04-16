@@ -9,7 +9,6 @@ namespace Installation.Models
 {
     public interface IReinstallable
     {
-        bool ReInstalled { get; set; }
-        Task ReinstallAsync(CancellationToken cancellationToken);
+        List<ExecutableUnit> ReinstallableUnits { get; set; }
     }
 }

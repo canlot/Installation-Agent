@@ -15,9 +15,9 @@ namespace Installation.Models
         private string installFilePath;
         private string installArguments;
 
-        public List<ExecutableUnit> InstallUnits = new List<ExecutableUnit>();
-        public List<ExecutableUnit> UninstallUnits = new List<ExecutableUnit>();
-        public List<ExecutableUnit> ReinstallUnits = new List<ExecutableUnit>();
+        public List<ExecutableUnit> InstallableUnits { get; set; }
+        public List<ExecutableUnit> UninstallableUnits { get; set; }
+        public List<ExecutableUnit> ReinstallableUnits { get; set; }
         
 
         private bool installed;
@@ -28,7 +28,7 @@ namespace Installation.Models
         public bool ReInstalled { get => reinstalled; set { reinstalled = value; setSuccessfulRolloutState(); OnPropertyChanged("ReInstalled"); } }
         public bool UnInstalled { get => uninstalled; set { uninstalled = value; setSuccessfulRolloutState(); OnPropertyChanged("UnInstalled"); } }
 
-
+        
 
         protected override void setSuccessfulRolloutState()
         {
@@ -48,7 +48,7 @@ namespace Installation.Models
         {
             Log.Information("Installing application: {name}", Name);
 
-            foreach (var unit in InstallUnits)
+            foreach (var unit in InstallableUnits)
             {
                 
                 try
