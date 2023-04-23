@@ -77,7 +77,6 @@
     <Compile Include="Executables\ApplicationExecutable.cs" />
     <Compile Include="Executables\Executable.cs" />
     <Compile Include="Executables\ExecutableUnit.cs" />
-    <Compile Include="Executables\ExecutableUnitInstallable.cs" />
     <Compile Include="Executables\ScriptExecutable.cs" />
     <Compile Include="GlobalRepository.cs" />
     <Compile Include="Helpers\DictionaryHelper.cs" />
