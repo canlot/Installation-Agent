@@ -9,6 +9,7 @@ namespace Installation.Models
 {
     public interface IReinstallable
     {
+        bool ReInstalled { get; set; }
         List<ExecutableUnit> ReinstallableUnits { get; set; }
     }
 }

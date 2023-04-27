@@ -8,8 +8,6 @@ namespace Installation.Models.Commands
 {
     public class CommandExecuteUnit : CommandExecute
     {
-        protected Guid executableID;
-        public Guid ExecutableID { get => executableID; set { executableID = value; } }
 
         private Guid executableUnitID;
 
@@ -19,6 +17,5 @@ namespace Installation.Models.Commands
             set { executableUnitID = value; }
         }
 
-        public override ExecuteAction ExecuteAction => throw new NotImplementedException();
     }
 }

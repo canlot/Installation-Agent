@@ -82,10 +82,6 @@ namespace Installation.Controller.ExecutableControllers
                 Log.Error("Command {Command} and Executable {Executable} doesn't match", command, executable);
             }
         }
-        private void findAndReturn(Guid unitId, ConcurrentQueue<ExecutableUnit> queue, List<ExecutableUnit> executableUnits)
-        {
-
-        }
         private void addExecutableUnitToQueue(CommandExecuteUnit command)
         {
             var executable = eventDispatcher.Send<CommandGetExecutable, Executable>(new CommandGetExecutable
@@ -95,36 +91,40 @@ namespace Installation.Controller.ExecutableControllers
                 Log.Error("no executable with id {id} found", command.ExecutableID);
                 return;
             }
+            ExecutableUnit executableUnit = default(ExecutableUnit);
 
             if (executable is IInstallable)
             {
                 Log.Verbose("Add installable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
-                executableUnitQueue.Enqueue((executable as IInstallable).InstallableUnits
-                    .Find(x => x.Id == command.ExecutableUnitID));
+                executableUnit = (executable as IInstallable).InstallableUnits.Find(x => x.Id == command.ExecutableUnitID);
             }
             else if (executable is IReinstallable)
             {
                 Log.Verbose("Add reinstallable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
-                executableUnitQueue.Enqueue((executable as IReinstallable).ReinstallableUnits
-                    .Find(x => x.Id == command.ExecutableUnitID));
+                executableUnit = (executable as IReinstallable).ReinstallableUnits.Find(x => x.Id == command.ExecutableUnitID);
             }
             else if (executable is IUninstallable)
             {
                 Log.Verbose("Add uninstallable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
-                executableUnitQueue.Enqueue((executable as IUninstallable).UninstallableUnits
-                    .Find(x => x.Id == command.ExecutableUnitID));
+                executableUnit = (executable as IUninstallable).UninstallableUnits.Find(x => x.Id == command.ExecutableUnitID);
             }
             else if (executable is IRunnable)
             {
                 Log.Verbose("Add runnable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
-                executableUnitQueue.Enqueue((executable as IRunnable).RunnableUnits
-                    .Find(x => x.Id == command.ExecutableUnitID));
+                executableUnit = (executable as IRunnable).RunnableUnits.Find(x => x.Id == command.ExecutableUnitID);
             }
             else
             {
-                Log.Error("Command {Command} and Executable {Executable} doesn't match", command, executable);
+                Log.Error("Executable {executable} not valid", executable);
             }
-
+            if (executableUnit != default(ExecutableUnit))
+            {
+                executableUnitQueue.Enqueue(executableUnit);
+            }
+            else
+            {
+                Log.Error("No executable unit with id {id} found in executable with id {eid}", command.ExecutableUnitID, executable.Id);
+            }
 
         }
         public async Task RunControllerAsync(CancellationToken cancellationToken)
@@ -133,17 +133,18 @@ namespace Installation.Controller.ExecutableControllers
             {
                 if(cancellationToken.IsCancellationRequested)
                     return;
-                if(commandQueue.Count > 0)
+                if(executableUnitQueue.Count > 0)
                 {
-                    CommandExecute executionCommand;
-                    if(commandQueue.TryDequeue(out executionCommand))
+                    ExecutableUnit executableUnit;
+                    if(executableUnitQueue.TryDequeue(out executableUnit))
                     {
                         try
                         {
-                                             }
+                            await executeExecutableUnitAsync(executableUnit, cancellationToken);
+                        }
                         catch(Exception ex)
                         {
-                            Log.Error(ex, "Could't execute the command with this ID {id}", executionCommand.ExecutableID);
+                            Log.Error(ex, "Could't execute unit with this ID {id} with executableId {eid}", executableUnit.Id, executableUnit.ExecutableId);
                         }
                         
                     }
@@ -153,63 +154,12 @@ namespace Installation.Controller.ExecutableControllers
                 //await Task.Delay(500).ConfigureAwait(false);
             }
         }
-        private async Task ExecuteExecutableAsync(CommandExecuteExecutable executionCommand, CancellationToken cancellationToken)
+        
+
+        async Task executeExecutableUnitAsync(ExecutableUnit executableUnit, CancellationToken cancellationToken)
         {
-            var executable = eventDispatcher.Send<CommandGetExecutable, Executable>(new CommandGetExecutable
-            { ExecutableID = executionCommand.ExecutableID });
-
-            Log.Debug("Execute executable with executable id {id} and installation action {action}", executionCommand.ExecutableID, executionCommand.ExecuteAction );
-
-
-            if (executable == null)
-            {
-                Log.Debug("No executable with id: {eid}", executionCommand.ExecutableID);
-                return;
-            }
-            try
-            {
-                if(executionCommand is CommandInstallExecutable && executable is IInstallable)
-                {
-                    Log.Verbose("Install {id} with name {name}", executable.Id, executable.Name);
-                    await (executable as IInstallable).InstallAsync(cancellationToken);
-                    await sendExecutableState(executable);
-                }
-                else if(executionCommand is CommandReinstallExecutable && executable is IReinstallable)
-                {
-                    Log.Verbose("Reinstall {id} with name {name}", executable.Id, executable.Name);
-                    await (executable as IReinstallable).ReinstallAsync(cancellationToken);
-                    await sendExecutableState(executable);
-                }
-                else if(executionCommand is CommandUninstallExecutable && executable is IUninstallable)
-                {
-                    Log.Verbose("Uninstall {id} with name {name}", executable.Id, executable.Name);
-                    await (executable as IUninstallable).UninstallAsync(cancellationToken);
-                    await sendExecutableState(executable);
-                }
-                else if(executionCommand is CommandRunExecutable && executable is IRunnable)
-                {
-                    Log.Debug("RunAsync {id} with name {name}", executable.Id, executable.Name);
-                    await (executable as IRunnable).RunAsync(cancellationToken);
-                    await sendExecutableState(executable);
-                }
-                else
-                {
-                    Log.Error("Command {Command} and Executable {Executable} doesn't match", executionCommand, executable );
-                }
-                var executionStateSettings = new ExecutionStateSettings();
-                executionStateSettings.SaveExecutableState(executable);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Executable could't be executed");
-                await executionCompletedAsync(job, StatusState.Error, ex.Message);
-            }
+            await executableUnit.Execute(cancellationToken);
             
-        }
-
-        async Task executeExecutableUnitAsync(CommandExecuteUnit command, CancellationToken cancellationToken)
-        {
-
         }
 
         async Task sendExecutableState(Executable executable)
