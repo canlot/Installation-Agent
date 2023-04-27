@@ -127,7 +127,7 @@ namespace Installation.Controller.ExecutableControllers
             }
 
         }
-        public async Task RunControllerAsync(CancellationToken cancellationToken)
+        public async Task RunAsync(CancellationToken cancellationToken)
         {
             while(true)
             {

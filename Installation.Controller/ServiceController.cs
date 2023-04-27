@@ -18,26 +18,20 @@ namespace Installation.Controller
     {
         private CancellationTokenSource cancellationTokenSource;
 
-        private SettingsContainer SettingsContainer;
-        
-
-        public Dictionary<Guid, Executable> Executables = new Dictionary<Guid, Executable>();
-
-
-
-        private ExecutableFinder finder;
-
-
+        private SettingsContainer SettingsContainer = new SettingsContainer();
         private ServerCommunicator serverCommunicator;
-        private ExecutionController executionController;
 
-        private ConcurrentQueue<Job> jobsQueue;
+        //controllers
+        private ExecutionController executionController;
+        private ExecutableController executableController;
+
 
         private EventDispatcher eventDispatcher = new EventDispatcher();
 
         private Task communicatorTask;
         private Task executionTask;
-        private Task finderTask;
+        private Task executableTask;
+        
 
 
         public ServiceController()
@@ -66,23 +60,23 @@ namespace Installation.Controller
                 .WriteTo.File(SettingsContainer.GlobalSettings.ServerLogsFilePath, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
                 .CreateLogger();
 
-            finder = new ExecutableFinder(SettingsContainer, Executables, cancellationTokenSource.Token);
-
-            finder.OnExecutableAddedOrModified += newExecutableAsync;
+            
 
             serverCommunicator = new ServerCommunicator(cancellationTokenSource.Token);
-            serverCommunicator.OnJobReceived += newJob;
-            serverCommunicator.OnCommandReceived += newCommand;
+            //serverCommunicator.OnJobReceived += newJob;
+            //serverCommunicator.OnCommandReceived += newCommand;
 
-            jobsQueue = new ConcurrentQueue<Job>();
+            executableController = new ExecutableController(eventDispatcher, SettingsContainer);
 
             executionController = new ExecutionController(eventDispatcher);
-            executionController.OnCompleted += executionCompleted;
+            //executionController.OnCompleted += executionCompleted;
 
 
             communicatorTask = Task.Run(() => serverCommunicator.ListenAsync());
-            executionTask = Task.Run(() => executionController.RunControllerAsync(cancellationTokenSource.Token));
-            finderTask = Task.Run(() => finder.RunAsync());
+            executionTask = Task.Run(() => executionController.RunAsync(cancellationTokenSource.Token));
+            executableTask = Task.Run(() => executableController.RunAsync(cancellationTokenSource.Token));
+            
+            
 
         }
         public async Task Stop()
@@ -94,7 +88,8 @@ namespace Installation.Controller
             {
                 //communicatorTask will not be aborted with cancellationToken because it is not working.
                 await executionTask;
-                await finderTask;
+                await executableTask;
+                
             }
             catch (Exception ex)
             {
@@ -104,6 +99,7 @@ namespace Installation.Controller
             Log.CloseAndFlush();
 
         }
+        /*
         private async Task newJob(Job job)
         {
             Log.Debug("New job received with job id: {jid}", job.JobID);
@@ -135,11 +131,7 @@ namespace Installation.Controller
                 }
             }
         }
-        private async Task newExecutableAsync(Executable executable)
-        {
-            if(serverCommunicator.ClientConnected)
-                await serverCommunicator.SendExecutableAsync(executable);
-        }
+        */
 
     }
 }
