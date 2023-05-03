@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Installation.Controller.ExecutableFinders;
 using System.Threading;
 using Installation.Controller.Settings;
+using Installation.Models.Notify;
 
 namespace Installation.Controller.ExecutableControllers
 {
@@ -48,8 +49,10 @@ namespace Installation.Controller.ExecutableControllers
         }
         private async Task newExecutableAsync(Executable executable)
         {
-            if (serverCommunicator.ClientConnected)
-                await serverCommunicator.SendExecutableAsync(executable);
+            await eventDispatcher.Send<Notify<Executable>, Task>(new Notify<Executable>
+            {
+                Object = executable
+            });
         }
     }
 }

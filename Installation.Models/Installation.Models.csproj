@@ -89,6 +89,7 @@
     <Compile Include="Mappers\ApplicationExecutableMapper.cs" />
     <Compile Include="Mappers\ExecutableMapper.cs" />
     <Compile Include="Mappers\ScriptExecutableMapper.cs" />
+    <Compile Include="Notify\Notify.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Responses\Response.cs" />
     <Compile Include="Responses\ResponseExecution.cs" />
@@ -113,6 +114,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DTOs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
