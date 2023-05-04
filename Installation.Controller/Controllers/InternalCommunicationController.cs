@@ -25,5 +25,9 @@ namespace Installation.Controller.Communication
         {
             throw new NotImplementedException();
         }
+        public async Task RunAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

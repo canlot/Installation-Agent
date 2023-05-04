@@ -63,13 +63,10 @@ namespace Installation.Controller
             
 
             serverCommunicator = new ServerCommunicator(cancellationTokenSource.Token);
-            //serverCommunicator.OnJobReceived += newJob;
-            //serverCommunicator.OnCommandReceived += newCommand;
 
             executableController = new ExecutableController(eventDispatcher, SettingsContainer);
 
             executionController = new ExecutionController(eventDispatcher);
-            //executionController.OnCompleted += executionCompleted;
 
 
             communicatorTask = Task.Run(() => serverCommunicator.ListenAsync());
@@ -99,39 +96,6 @@ namespace Installation.Controller
             Log.CloseAndFlush();
 
         }
-        /*
-        private async Task newJob(Job job)
-        {
-            Log.Debug("New job received with job id: {jid}", job.JobID);
-            jobsQueue.Enqueue(job);
-        }
-        private async Task executionCompleted(Job job)
-        {
-            Log.Debug("send job with job id: {jid}", job.JobID);
-            await serverCommunicator.SendJobAsync(job).ConfigureAwait(false);
-        }
-        private async Task newCommand(Command command)
-        {
-            Log.Debug("Command received {command}", command);
-
-            try
-            {
-                finder.FindExecutables(Executables);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Could not find executables");
-            }
-
-            if (command == Command.SendExecutables)
-            {
-                foreach (var executable in Executables)
-                {
-                    await serverCommunicator.SendExecutableAsync(executable.Value);
-                }
-            }
-        }
-        */
-
+        
     }
 }
