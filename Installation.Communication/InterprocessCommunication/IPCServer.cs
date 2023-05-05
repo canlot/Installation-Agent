@@ -13,9 +13,39 @@ namespace Installation.Communication
     public class IPCServer : IPCBase
     {
         public bool ClientConnected { get; set; }
+        public Guid ConnectionId = new Guid();
+        private PipeSecurity pipeSecurity = new PipeSecurity();
         public IPCServer(string pipeName, CancellationToken cancellationToken, Func<string, Task> receivedData) : base(pipeName, cancellationToken, receivedData)
         {
             ClientConnected = false;
+            
+            pipeSecurity.AddAccessRule(new PipeAccessRule(new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null), PipeAccessRights.ReadWrite, AccessControlType.Allow));
+        }
+        public async Task ConnectAsync()
+        {
+            using (pipeStream = new NamedPipeServerStream(pipeName, PipeDirection.InOut, 254, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, 0, pipeSecurity))
+            {
+
+                try
+                {
+                    await (pipeStream as NamedPipeServerStream).WaitForConnectionAsync(cancellationToken);
+                    if (pipeStream != null)
+                    {
+                        if (pipeStream.IsConnected)
+                        {
+                            Log.Debug("Client connected to Pipe");
+                            ClientConnected = true;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug(ex, "Waiting for connections aborted (error expected)");
+                }
+
+                await ReadAsync();
+                ClientConnected = false;
+            }
         }
         public async Task ListenAsync()
         {
