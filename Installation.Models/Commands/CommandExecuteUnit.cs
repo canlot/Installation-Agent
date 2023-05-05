@@ -17,5 +17,6 @@ namespace Installation.Models.Commands
             set { executableUnitID = value; }
         }
 
+        public override bool IsPrivilegedCommand => false;
     }
 }

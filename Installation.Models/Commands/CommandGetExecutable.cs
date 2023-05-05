@@ -15,5 +15,6 @@ namespace Installation.Models
         private Guid executableID;
         public Guid ExecutableID { get => executableID; set { executableID = value;  } }
 
+        public override bool IsPrivilegedCommand => false;
     }
 }
