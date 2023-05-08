@@ -6,55 +6,55 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Installation.Models;
+using Installation.Models.Notify;
 using Serilog;
 
 namespace Installation.Communication
 {
-    public class ServerCommunicator : Communicator
+    public class ServerCommunicator
     {
         public bool ClientConnected { get; set; }
-        public ServerCommunicator(CancellationToken cancellationToken) : base(cancellationToken)
+        private bool isPrivileged;
+        private List<IPCServer> servers;
+
+        public delegate Task ObjectReceived(object obj);
+        public event ObjectReceived OnObjectReceived;
+        private string pipeName;
+
+        private CancellationToken cancellationToken;
+
+        private ObjectConverter converter;
+        public ServerCommunicator(CancellationToken cancellationToken, string pipeName, bool isPrivileged = false)
         {
             ClientConnected = false;
+            this.converter = new ObjectConverter();
+            this.pipeName = pipeName;
+            this.isPrivileged = isPrivileged;
+            this.cancellationToken = cancellationToken;
         }
         public async Task ListenAsync()
         {
-            while (true)
+            while(true)
             {
-                if (cancellationToken.IsCancellationRequested)
-                    break;
-                var pipeSecurity = new PipeSecurity();
-                pipeSecurity.AddAccessRule(new PipeAccessRule(new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null), PipeAccessRights.ReadWrite, AccessControlType.Allow));
-                
+                var server = new IPCServer(pipeName, cancellationToken, receiveData);
+                await server.ConnectAsync();
+                Task.Run(() => server.ListenAsync());
+                servers.Add(server);
 
-                using (pipeStream = new NamedPipeServerStream(pipeName, PipeDirection.InOut, 254, PipeTransmissionMode.Byte, PipeOptions.Asynchronous, 0, 0, pipeSecurity))
-                {
-                
-                        try
-                        {
-                            await (pipeStream as NamedPipeServerStream).WaitForConnectionAsync(cancellationToken);
-                            if (pipeStream != null)
-                            {
-                                if (pipeStream.IsConnected)
-                                {
-                                    Log.Debug("Client connected to Pipe");
-                                    ClientConnected = true;
-                                    
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.Debug(ex, "Waiting for connections aborted (error expected)");
-                        }
 
-                        await ReadAsync();
-                        ClientConnected = false;
-                }
             }
 
         }
 
+        private async Task receiveData(string data)
+        {
+            await OnObjectReceived(converter.ConvertToObject(data));
+        }
+        public async Task SendData<T>(Notify<T> notify)
+        {
+
+        }
 
     }
 }

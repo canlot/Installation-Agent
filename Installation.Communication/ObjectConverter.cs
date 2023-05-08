@@ -29,11 +29,20 @@ namespace Installation.Communication
             return messageText;
 
         }
+        public string ConvertToString(object jsonObject)
+        {
+            return serializeObject(jsonObject);
+
+        }
         public object ConvertToObject(byte[] data)
         {
             Log.Verbose("Using Encoding: {encoding}", encoding.EncodingName);
             string dataText = encoding.GetString(data);
             return deserializeObject(dataText);
+        }
+        public object ConvertToObject(string data)
+        {
+            return deserializeObject(data);
         }
         private string serializeObject(object jsonObject)
         {

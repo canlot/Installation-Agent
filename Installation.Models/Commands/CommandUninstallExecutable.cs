@@ -11,5 +11,7 @@ namespace Installation.Models.Commands
 
         public override ExecuteAction ExecuteAction { get => ExecuteAction.Uninstall; }
 
+        public override bool IsPrivilegedCommand => false;
+
     }
 }

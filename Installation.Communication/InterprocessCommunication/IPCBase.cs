@@ -15,7 +15,7 @@ namespace Installation.Communication
 
         protected CancellationToken cancellationToken;
         protected PipeStream pipeStream;
-        protected string pipeName = "pipe";
+        protected string pipeName;
 
         private Func<string, Task> ReceivedData;
         
@@ -69,13 +69,13 @@ namespace Installation.Communication
             await ReceivedData.Invoke(data);
         }
 
-        public async Task SendDataAsync(byte[] data)
+        public async Task SendDataAsync(string data)
         {
             if (!pipeStream.IsConnected)
             {
                 return;
             }
-            await pipeStream.WriteAsync(data, 0, data.Length, cancellationToken).ConfigureAwait(false);
+            await pipeStream.WriteAsync(convertToByte(data), 0, data.Length, cancellationToken).ConfigureAwait(false);
             await pipeStream.FlushAsync(cancellationToken).ConfigureAwait(false);
 
         }

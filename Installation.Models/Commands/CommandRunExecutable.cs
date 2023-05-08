@@ -10,5 +10,7 @@ namespace Installation.Models.Commands
     {
         public override ExecuteAction ExecuteAction { get => ExecuteAction.Run; }
 
+        public override bool IsPrivilegedCommand => false;
+
     }
 }

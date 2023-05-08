@@ -60,29 +60,9 @@ namespace Installation.Communication
             }
         }
 
-        private async Task sendDataAsync(byte[] data)
-        {
-            if (!pipeStream.IsConnected)
-            {
-                return;
-            }
-            await pipeStream.WriteAsync(data, 0, data.Length, cancellationToken).ConfigureAwait(false);
-            await pipeStream.FlushAsync(cancellationToken).ConfigureAwait(false);
-
-        }
-        public async Task SendCommandAsync(Command command)
+        public async Task SendAsync(object obj)
         {
             await sendDataAsync(convertToByte(serializeObject(command)));
-        }
-        public async Task SendJobAsync(Job job)
-        {
-            await sendDataAsync(convertToByte(serializeObject(job)));
-            Log.Debug("Job {id} sent", job.JobID);
-        }
-        public async Task SendExecutableAsync(Executable executable)
-        {
-            await sendDataAsync(convertToByte(serializeObject(executable)));
-            Log.Debug("Executable {id} sent", executable.Id);
         }
 
         private string serializeObject(object jsonObject)
@@ -113,15 +93,5 @@ namespace Installation.Communication
             return deserializedObject;
         }
 
-
-        private byte[] convertToByte(string text)
-        {
-            byte[] messageText = Encoding.UTF8.GetBytes(text);
-            byte[] messageSize = BitConverter.GetBytes(messageText.Length);
-            byte[] message = new byte[messageSize.Length + messageText.Length];
-            messageSize.CopyTo(message, 0);
-            messageText.CopyTo(message, messageSize.Length);
-            return message;
-        }
     }
 }
