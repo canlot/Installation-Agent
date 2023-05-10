@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO.Pipes;
+using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
@@ -39,7 +40,7 @@ namespace Installation.Communication
             while(true)
             {
                 var server = new IPCServer(pipeName, cancellationToken, receiveData);
-                await server.ConnectAsync();
+                Task.Run(() => server.ConnectAsync());
                 Task.Run(() => server.ListenAsync());
                 servers.Add(server);
 
@@ -58,10 +59,15 @@ namespace Installation.Communication
                 return;
             if(notify.EndpointId.IsBroadcast())
             {
+                Task.Run(() =>
                 servers.ForEach((server) =>
                 {
                     server.SendDataAsync(converter.ConvertToString(notify));
-                });
+                }));
+            }
+            else
+            {
+                var server = servers.First(x => x.ConnectionId == notify.EndpointId);
             }
 
         }
