@@ -7,27 +7,39 @@ using Installation.Controller.Settings;
 using Installation.Models;
 using Installation.Models.Interfaces;
 using Installation.Models.Notify;
+using Installation.Communication;
+using System.Threading;
 
 namespace Installation.Controller.Communication
 {
     public class InternalCommunicationController : IObjectReceiver<Notify<Executable>, Task>
     {
         private EventDispatcher eventDispatcher;
-        SettingsContainer settingsContainer;
+        private SettingsContainer settingsContainer;
 
+        private ServerCommunicator privilegedCommunicator;
+        private ServerCommunicator unprivilegedCommunicator;
         public InternalCommunicationController(EventDispatcher eventDispatcher, SettingsContainer settingsContainer)
         {
             this.eventDispatcher = eventDispatcher;
             this.settingsContainer = settingsContainer;
+            
         }
 
         public async Task Receive(Notify<Executable> rObject)
         {
             throw new NotImplementedException();
         }
-        public async Task RunAsync()
+        public async Task RunAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            privilegedCommunicator = new ServerCommunicator(cancellationToken, "InstallationAgentPrivileged", true);
+            privilegedCommunicator.OnObjectReceived += ReceiveObjectFromClient;
+            unprivilegedCommunicator = new ServerCommunicator(cancellationToken, "InstallationAgent");
+            await Task.WhenAll(privilegedCommunicator.ListenAsync(), unprivilegedCommunicator.ListenAsync());
+        }
+        public async Task ReceiveObjectFromClient(object obj)
+        {
+
         }
     }
 }

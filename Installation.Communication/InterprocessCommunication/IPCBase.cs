@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,10 +17,11 @@ namespace Installation.Communication
         protected CancellationToken cancellationToken;
         protected PipeStream pipeStream;
         protected string pipeName;
+        public Guid endpointId = new Guid();
 
-        private Func<string, Task> ReceivedData;
+        private Func<string, Guid, Task> ReceivedData;
         
-        public IPCBase(string pipeName, CancellationToken cancellationToken, Func<string, Task> receivedData)
+        public IPCBase(string pipeName, CancellationToken cancellationToken, Func<string, Guid, Task> receivedData)
         {
             this.cancellationToken = cancellationToken;
             this.pipeName = pipeName;
@@ -66,7 +68,7 @@ namespace Installation.Communication
         {
             Log.Debug("Data received");
 
-            await ReceivedData.Invoke(data);
+            await ReceivedData?.Invoke(data, endpointId);
         }
 
         public async Task SendDataAsync(string data)

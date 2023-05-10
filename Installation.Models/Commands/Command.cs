@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using Installation.Models.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -17,9 +18,9 @@ namespace Installation.Models
         {
             
         }
-        protected Guid? endpointId;
+        protected Guid endpointId = new Guid().Empty();
 
-        public Guid? EndpointId
+        public Guid EndpointId
         {
             get { return endpointId; }
             set { endpointId = value; }

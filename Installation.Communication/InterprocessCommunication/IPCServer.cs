@@ -13,11 +13,11 @@ namespace Installation.Communication
     public class IPCServer : IPCBase
     {
         public bool ClientConnected { get; set; }
-        public Guid ConnectionId = new Guid();
         private PipeSecurity pipeSecurity = new PipeSecurity();
         public IPCServer(string pipeName, CancellationToken cancellationToken, 
-            Func<string, Task> receivedData, bool privilegedCommunication = false) : base(pipeName, cancellationToken, receivedData)
+            Func<string, Guid, Task> receivedData, bool privilegedCommunication = false) : base(pipeName, cancellationToken, receivedData)
         {
+
             ClientConnected = false;
             
             if(privilegedCommunication) 

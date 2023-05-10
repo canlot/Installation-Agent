@@ -40,18 +40,30 @@ namespace Installation.Communication
             while(true)
             {
                 var server = new IPCServer(pipeName, cancellationToken, receiveData);
-                Task.Run(() => server.ConnectAsync());
+                await server.ConnectAsync();
                 Task.Run(() => server.ListenAsync());
                 servers.Add(server);
-
 
             }
 
         }
 
-        private async Task receiveData(string data)
+        private async Task receiveData(string data, Guid endpointId)
         {
-            await OnObjectReceived(converter.ConvertToObject(data));
+            var dataObject = converter.ConvertToObject(data);
+            if(dataObject is Command)
+            {
+                var command = (Command)dataObject;
+                command.EndpointId = endpointId;
+                if (command.IsPrivilegedCommand)
+                    if (isPrivileged)
+                        await OnObjectReceived(command);
+                    else
+                        return;
+                else
+                    await OnObjectReceived(command);
+
+            }
         }
         public async Task SendData<T>(Notify<T> notify)
         {
@@ -76,7 +88,7 @@ namespace Installation.Communication
             }
             else
             {
-                var server = servers.First(x => x.ConnectionId == endpointId);
+                var server = servers.First(x => x.endpointId == endpointId);
                 Task.Run(() => server?.SendDataAsync(converter.ConvertToString(obj)));
             }
         }
