@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Installation.Models;
+using Installation.Models.Helpers;
 using Installation.Models.Notify;
 using Serilog;
 
@@ -52,6 +53,19 @@ namespace Installation.Communication
             await OnObjectReceived(converter.ConvertToObject(data));
         }
         public async Task SendData<T>(Notify<T> notify)
+        {
+            if(notify == null || notify.EndpointId.NullOrEmpty())
+                return;
+            if(notify.EndpointId.IsBroadcast())
+            {
+                servers.ForEach((server) =>
+                {
+                    server.SendDataAsync(converter.ConvertToString(notify));
+                });
+            }
+
+        }
+        public async Task SendData(Command command)
         {
 
         }

@@ -80,6 +80,7 @@
     <Compile Include="Executables\ScriptExecutable.cs" />
     <Compile Include="GlobalRepository.cs" />
     <Compile Include="Helpers\DictionaryHelper.cs" />
+    <Compile Include="Helpers\GuidHelper.cs" />
     <Compile Include="Interfaces\IInstallable.cs" />
     <Compile Include="Interfaces\IObjectReceiver.cs" />
     <Compile Include="Interfaces\IReinstallable.cs" />
