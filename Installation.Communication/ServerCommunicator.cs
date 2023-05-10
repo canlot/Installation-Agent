@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO.Pipes;
+using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
@@ -39,7 +40,7 @@ namespace Installation.Communication
             while(true)
             {
                 var server = new IPCServer(pipeName, cancellationToken, receiveData);
-                await server.ConnectAsync();
+                Task.Run(() => server.ConnectAsync());
                 Task.Run(() => server.ListenAsync());
                 servers.Add(server);
 
@@ -54,20 +55,30 @@ namespace Installation.Communication
         }
         public async Task SendData<T>(Notify<T> notify)
         {
-            if(notify == null || notify.EndpointId.NullOrEmpty())
-                return;
-            if(notify.EndpointId.IsBroadcast())
-            {
-                servers.ForEach((server) =>
-                {
-                    server.SendDataAsync(converter.ConvertToString(notify));
-                });
-            }
+            await sendData(notify, notify.EndpointId);
 
         }
         public async Task SendData(Command command)
         {
-
+            await sendData(command, command.EndpointId);
+        }
+        private async Task sendData(object obj, Guid endpointId)
+        {
+            if (obj == null || endpointId.NullOrEmpty())
+                return;
+            if (endpointId.IsBroadcast())
+            {
+                Task.Run(() =>
+                servers.ForEach((server) =>
+                {
+                    server.SendDataAsync(converter.ConvertToString(obj));
+                }));
+            }
+            else
+            {
+                var server = servers.First(x => x.ConnectionId == endpointId);
+                Task.Run(() => server?.SendDataAsync(converter.ConvertToString(obj)));
+            }
         }
 
     }
