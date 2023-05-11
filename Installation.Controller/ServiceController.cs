@@ -1,4 +1,5 @@
 ﻿using Installation.Communication;
+using Installation.Controller.Communication;
 using Installation.Controller.ExecutableControllers;
 using Installation.Controller.ExecutableFinders;
 using Installation.Controller.Settings;
@@ -19,11 +20,12 @@ namespace Installation.Controller
         private CancellationTokenSource cancellationTokenSource;
 
         private SettingsContainer SettingsContainer = new SettingsContainer();
-        private ServerCommunicator serverCommunicator;
+        
 
         //controllers
         private ExecutionController executionController;
         private ExecutableController executableController;
+        private InternalCommunicationController internalCommunicationController;
 
 
         private EventDispatcher eventDispatcher = new EventDispatcher();
@@ -39,37 +41,50 @@ namespace Installation.Controller
             cancellationTokenSource = new CancellationTokenSource();
         }
 
-        public void Start()
+        public void Start(bool service=true)
         {
-            Log.Information("------PROGRAM STARTED------");
-            try
+            if(!service) 
             {
-                SettingsBuilder settingsBuilder = new SettingsBuilder();
-                SettingsContainer.GlobalSettings = settingsBuilder.GetSettings<GlobalSettings>();
-
-            }
-            catch (Exception ex)
-            {
-                Log.Fatal(ex, "Could not load settings file or executables");
-                return;
-            }
-
-            Log.Logger = new LoggerConfiguration()
+                Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Console()
+                .CreateLogger();
+                Log.Information("------PROGRAM STARTED------");
+            }
+            else
+            {
+                Log.Information("------PROGRAM STARTED------");
+                try
+                {
+                    SettingsBuilder settingsBuilder = new SettingsBuilder();
+                    SettingsContainer.GlobalSettings = settingsBuilder.GetSettings<GlobalSettings>();
+
+                }
+                catch (Exception ex)
+                {
+                    Log.Fatal(ex, "Could not load settings file or executables");
+                    return;
+                }
+                Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
                 .WriteTo.File(SettingsContainer.GlobalSettings.ServerLogsFilePath, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
                 .CreateLogger();
+            }
+            
 
             
 
-            serverCommunicator = new ServerCommunicator(cancellationTokenSource.Token);
+            
+
+
+            internalCommunicationController = new InternalCommunicationController(eventDispatcher, SettingsContainer);
 
             executableController = new ExecutableController(eventDispatcher, SettingsContainer);
 
             executionController = new ExecutionController(eventDispatcher);
 
 
-            communicatorTask = Task.Run(() => serverCommunicator.ListenAsync());
+            communicatorTask = Task.Run(() => internalCommunicationController.RunAsync(cancellationTokenSource.Token));
             executionTask = Task.Run(() => executionController.RunAsync(cancellationTokenSource.Token));
             executableTask = Task.Run(() => executableController.RunAsync(cancellationTokenSource.Token));
             

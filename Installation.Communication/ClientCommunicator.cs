@@ -14,32 +14,34 @@ namespace Installation.Communication
         public event ClientConnected OnClientConnected;
         public event ClientDisconnected OnClientDisconnected;
 
-        public ClientCommunicator(CancellationToken cancellationToken) : base(cancellationToken)
-        {
+        private IPCClient client;
 
+        public ClientCommunicator(string pipeName, CancellationToken cancellationToken)
+        {
+            client = new IPCClient(pipeName, cancellationToken, receiveDataAsync);
+            client.OnClientDisconnected += onClientDisconnectedAsync;
+            client.OnClientConnected += onClientConnectedAsync;
         }
 
         public async Task ConnectAsync()
         {
-            while (true)
-            {
-                if (cancellationToken.IsCancellationRequested)
-                    break;
-                using (pipeStream = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous))
-                {
-                    try
-                    {
-                        await (pipeStream as NamedPipeClientStream).ConnectAsync(cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
+            await client.ConnectAsync();
+        }
+        public async Task ListenAsync()
+        {
+            await client?.ListenAsync();
+        }
+        public async Task receiveDataAsync(string data, Guid endpointId)
+        {
 
-                    }
-                    await OnClientConnected();
-                    await ReadAsync();
-                    await OnClientDisconnected();
-                }
-            }
+        }
+        private async Task onClientDisconnectedAsync()
+        {
+
+        }
+        private async Task onClientConnectedAsync()
+        {
+
         }
     }
 }

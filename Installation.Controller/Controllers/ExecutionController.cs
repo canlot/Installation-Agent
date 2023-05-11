@@ -30,6 +30,8 @@ namespace Installation.Controller.ExecutableControllers
         {
             this.eventDispatcher = eventDispatcher;
             this.eventDispatcher.RegisterReceiver<CommandExecute>(this);
+            executableUnitQueue = new ConcurrentQueue<ExecutableUnit>();
+            commandQueue = new ConcurrentQueue<CommandExecute>();
         }
 
         public void Receive(CommandExecute command)

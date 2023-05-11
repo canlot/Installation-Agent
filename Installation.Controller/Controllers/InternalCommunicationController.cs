@@ -9,6 +9,7 @@ using Installation.Models.Interfaces;
 using Installation.Models.Notify;
 using Installation.Communication;
 using System.Threading;
+using Installation.Models.Commands;
 
 namespace Installation.Controller.Communication
 {
@@ -35,11 +36,17 @@ namespace Installation.Controller.Communication
             privilegedCommunicator = new ServerCommunicator(cancellationToken, "InstallationAgentPrivileged", true);
             privilegedCommunicator.OnObjectReceived += ReceiveObjectFromClient;
             unprivilegedCommunicator = new ServerCommunicator(cancellationToken, "InstallationAgent");
+            unprivilegedCommunicator.OnObjectReceived += ReceiveObjectFromClient;
             await Task.WhenAll(privilegedCommunicator.ListenAsync(), unprivilegedCommunicator.ListenAsync());
         }
         public async Task ReceiveObjectFromClient(object obj)
         {
-
+            if (obj == null)
+                return;
+            if(obj is CommandExecute)
+            {
+                eventDispatcher.Send(obj as CommandExecute);
+            }
         }
     }
 }

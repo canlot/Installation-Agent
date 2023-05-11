@@ -14,7 +14,7 @@ namespace Installation.Communication
         public event ClientConnected OnClientConnected;
         public event ClientDisconnected OnClientDisconnected;
 
-        public IPCClient(string pipeName, CancellationToken cancellationToken, Func<string, Task> receivedData) : base(pipeName, cancellationToken, receivedData)
+        public IPCClient(string pipeName, CancellationToken cancellationToken, Func<string, Guid, Task> receivedData) : base(pipeName, cancellationToken, receivedData)
         {
 
         }
@@ -36,10 +36,13 @@ namespace Installation.Communication
 
                     }
                     await OnClientConnected();
-                    await ReadAsync();
-                    await OnClientDisconnected();
                 }
             }
+        }
+        public async Task ListenAsync()
+        {
+            await ReadAsync();
+            await OnClientDisconnected();
         }
     }
 }
