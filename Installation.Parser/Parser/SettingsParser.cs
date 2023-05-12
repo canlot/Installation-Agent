@@ -47,18 +47,16 @@ namespace Installation.Parser
 
         public T GetValue<T>(string paramName)
         {
-            var param = matchEntry(paramName);
-            T value;
             try
             {
-                value = (T)Convert.ChangeType(param, typeof(T));
+                var param = matchEntry(paramName);
+                return convertValue<T>(param, paramName);
             }
-            catch
+            catch 
             {
-                Log.Debug("could't convert {param} to type {type}", param, typeof(T));
-                throw new SettingException(paramName);
+                throw;
             }
-            return value;
+            
         }
 
         public T GetValue<T>(string paramName, T defaultValue)
@@ -67,6 +65,7 @@ namespace Installation.Parser
             try
             {
                 param = matchEntry(paramName);
+                return convertValue<T>(param, paramName);
             }
             catch(SettingException ex)
             {
@@ -75,12 +74,24 @@ namespace Installation.Parser
             catch (Exception ex)
             {
                 Log.Error(ex.Message, ex);
+                Log.Debug("The value was misformed");
                 throw new SettingException(paramName);
             }
             
-            return GetValue<T>(param);
         }
 
+        private T convertValue<T>(string value, string paramName)
+        {
+            try
+            {
+                return  (T)Convert.ChangeType(value, typeof(T));
+            }
+            catch
+            {
+                Log.Debug("could't convert {param} to type {type}", value, typeof(T));
+                throw new SettingException(paramName);
+            }
+        }
 
         private string matchEntry(string entry)
         {

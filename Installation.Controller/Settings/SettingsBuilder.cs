@@ -13,7 +13,7 @@ namespace Installation.Models.Settings
         {
             T settings = new T();
             settings.LoadSettings();
-            return new T();
+            return settings;
         }
     }
 }

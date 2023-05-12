@@ -51,24 +51,26 @@ namespace Installation.Controller
                 .CreateLogger();
                 Log.Information("------PROGRAM STARTED------");
             }
-            else
-            {
-                Log.Information("------PROGRAM STARTED------");
-                try
-                {
-                    SettingsBuilder settingsBuilder = new SettingsBuilder();
-                    SettingsContainer.GlobalSettings = settingsBuilder.GetSettings<GlobalSettings>();
 
-                }
-                catch (Exception ex)
-                {
-                    Log.Fatal(ex, "Could not load settings file or executables");
-                    return;
-                }
+            try
+            {
+                SettingsBuilder settingsBuilder = new SettingsBuilder();
+                SettingsContainer.GlobalSettings = settingsBuilder.GetSettings<GlobalSettings>();
+
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Could not load settings file or executables");
+                return;
+            }
+
+            if(service)
+            {
                 Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.File(SettingsContainer.GlobalSettings.ServerLogsFilePath, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
                 .CreateLogger();
+                Log.Information("------PROGRAM STARTED------");
             }
             
 

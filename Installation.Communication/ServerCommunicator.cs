@@ -18,7 +18,7 @@ namespace Installation.Communication
     {
         public bool ClientConnected { get; set; }
         private bool isPrivileged;
-        private List<IPCServer> servers;
+        private List<IPCServer> servers = new List<IPCServer>();
 
         public delegate Task ObjectReceived(object obj);
         public event ObjectReceived OnObjectReceived;
