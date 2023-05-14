@@ -70,6 +70,8 @@
     <Compile Include="ExecutableFinders\ExecutableFileInfo.cs" />
     <Compile Include="ExecutableFinders\ExecutableFinder.cs" />
     <Compile Include="ExecutableFinders\ExecutableStorageProvider.cs" />
+    <Compile Include="ExecutableRepository.cs" />
+    <Compile Include="IObjectReceiver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Receiver.cs" />
     <Compile Include="ServiceController.cs" />

@@ -11,6 +11,6 @@ namespace Installation.Models
     public interface IRunnable
     {
         bool Runned { get; set; }
-        List<ExecutableUnit> RunnableUnits { get; set; }
+        IEnumerable<ExecutableUnit> RunnableUnits { get; }
     }
 }

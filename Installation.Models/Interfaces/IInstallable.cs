@@ -12,6 +12,6 @@ namespace Installation.Models
         bool Installed { get; set; }
         //Task InstallAsync(CancellationToken cancellationToken);
 
-        List<ExecutableUnit> InstallableUnits { get; set; }
+        IEnumerable<ExecutableUnit> InstallableUnits { get; }
     }
 }

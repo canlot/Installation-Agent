@@ -71,18 +71,11 @@ namespace Installation.Controller
                 .WriteTo.File(SettingsContainer.GlobalSettings.ServerLogsFilePath, rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
                 .CreateLogger();
                 Log.Information("------PROGRAM STARTED------");
-            }
-            
-
-            
-
-            
+            }                                          
 
 
             internalCommunicationController = new InternalCommunicationController(eventDispatcher, SettingsContainer);
-
             executableController = new ExecutableController(eventDispatcher, SettingsContainer);
-
             executionController = new ExecutionController(eventDispatcher);
 
 
@@ -101,6 +94,7 @@ namespace Installation.Controller
             try
             {
                 //communicatorTask will not be aborted with cancellationToken because it is not working.
+                await communicatorTask;
                 await executionTask;
                 await executableTask;
                 

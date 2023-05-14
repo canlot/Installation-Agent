@@ -124,6 +124,15 @@ namespace Installation.Models
 			set { statusState = value; }
 		}
 
+		private int index;
+
+		public int Index
+		{
+			get { return index; }
+			set { index = value; }
+		}
+
+
 
 		public async Task Execute(CancellationToken cancellationToken)
 		{

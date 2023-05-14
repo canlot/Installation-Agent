@@ -1,4 +1,5 @@
 ﻿using Installation.Executors;
+using Installation.Models.Interfaces;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -9,26 +10,98 @@ using System.Threading.Tasks;
 
 namespace Installation.Models
 {
-    [Executable("App")]
-    public class ApplicationExecutable : Executable, IInstallable, IReinstallable, IUninstallable
+    public class ApplicationExecutable : IExecutable, IInstallable, IReinstallable, IUninstallable
     {
+        private List<ExecutableUnit> installableUnits = new List<ExecutableUnit>();
+        public IEnumerable<ExecutableUnit> InstallableUnits
+        {
+            get
+            {
+                int index = 1;
+                foreach (var unit in installableUnits)
+                {
+                    if(index == unit.Index)
+                    {
+                        index++;
+                        yield return unit;
+                    }
+                }
+            }
+        }
+        private List<ExecutableUnit> uninstallableUnits = new List<ExecutableUnit>();
+        public IEnumerable<ExecutableUnit> UninstallableUnits
+        {
+            get
+            {
+                int index = 1;
+                foreach (var unit in uninstallableUnits)
+                {
+                    if (index == unit.Index)
+                    {
+                        index++;
+                        yield return unit;
+                    }
+                }
+            }
+        }
+        private List<ExecutableUnit> reinstallableUnits = new List<ExecutableUnit>();
+        public IEnumerable<ExecutableUnit> ReinstallableUnits
+        {
+            get
+            {
+                int index = 1;
+                foreach (var unit in reinstallableUnits)
+                {
+                    if (index == unit.Index)
+                    {
+                        index++;
+                        yield return unit;
+                    }
+                }
+            }
+        }
 
-        public List<ExecutableUnit> InstallableUnits { get; set; }
-        public List<ExecutableUnit> UninstallableUnits { get; set; }
-        public List<ExecutableUnit> ReinstallableUnits { get; set; }
+
+
+        public ApplicationExecutable()
+        {
+        }
         
 
         private bool installed;
         private bool reinstalled;
         private bool uninstalled;
         
-        public bool Installed { get => installed; set { installed = value; setSuccessfulRolloutState(); OnPropertyChanged("Installed");  } }
-        public bool ReInstalled { get => reinstalled; set { reinstalled = value; setSuccessfulRolloutState(); OnPropertyChanged("ReInstalled"); } }
-        public bool UnInstalled { get => uninstalled; set { uninstalled = value; setSuccessfulRolloutState(); OnPropertyChanged("UnInstalled"); } }
+        public bool Installed { get => installed; set { installed = value; setSuccessfulRolloutState(); } }
+        public bool ReInstalled { get => reinstalled; set { reinstalled = value; setSuccessfulRolloutState();  } }
+        public bool UnInstalled { get => uninstalled; set { uninstalled = value; setSuccessfulRolloutState();  } }
 
-        
+        private string version;
+        public string Version { get => version; set => version = value; }
 
-        protected override void setSuccessfulRolloutState()
+        private Dictionary<string, string> versionDescriptions;
+        public Dictionary<string, string> VersionDescriptions { get => versionDescriptions; set => versionDescriptions = value; }
+
+        private string currentDirectory;
+        public string CurrentDirectory { get => currentDirectory; set => currentDirectory = value; }
+
+        // state variables -------------
+
+        private bool currentlyExecuting;
+        public bool CurrentlyExecuting { get => currentlyExecuting; set => currentlyExecuting = value; }
+
+        private StatusState statusState;
+        public StatusState StatusState { get => statusState; set => statusState = value; }
+
+        public string statusMessage;
+        public string StatusMessage { get => statusMessage; set => statusMessage = value; }
+
+        protected bool successfulRollout;
+        public bool SuccessfulRollout { get => successfulRollout; set => successfulRollout = value; }
+
+        //----------------------------------
+
+        protected void setSuccessfulRolloutState()
         {
             if ((Installed || ReInstalled) && !UnInstalled)
                 successfulRollout = true;
