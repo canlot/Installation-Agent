@@ -44,7 +44,7 @@ namespace Installation.Controller.ExecutableControllers
 
             executionWaiting.Set();
         }
-        private void enqueueList(ConcurrentQueue<ExecutableUnit> queue, List<ExecutableUnit> list)
+        private void enqueueList(ConcurrentQueue<ExecutableUnit> queue, IEnumerable<ExecutableUnit> list)
         {
             foreach(var item in list)
                 queue.Enqueue(item);
@@ -98,22 +98,22 @@ namespace Installation.Controller.ExecutableControllers
             if (executable is IInstallable)
             {
                 Log.Verbose("Add installable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
-                executableUnit = (executable as IInstallable).InstallableUnits.Find(x => x.Id == command.ExecutableUnitID);
+                executableUnit = (executable as IInstallable).InstallableUnits.First(x => x.Id == command.ExecutableUnitID);
             }
             else if (executable is IReinstallable)
             {
                 Log.Verbose("Add reinstallable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
-                executableUnit = (executable as IReinstallable).ReinstallableUnits.Find(x => x.Id == command.ExecutableUnitID);
+                executableUnit = (executable as IReinstallable).ReinstallableUnits.First(x => x.Id == command.ExecutableUnitID);
             }
             else if (executable is IUninstallable)
             {
                 Log.Verbose("Add uninstallable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
-                executableUnit = (executable as IUninstallable).UninstallableUnits.Find(x => x.Id == command.ExecutableUnitID);
+                executableUnit = (executable as IUninstallable).UninstallableUnits.First(x => x.Id == command.ExecutableUnitID);
             }
             else if (executable is IRunnable)
             {
                 Log.Verbose("Add runnable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
-                executableUnit = (executable as IRunnable).RunnableUnits.Find(x => x.Id == command.ExecutableUnitID);
+                executableUnit = (executable as IRunnable).RunnableUnits.First(x => x.Id == command.ExecutableUnitID);
             }
             else
             {

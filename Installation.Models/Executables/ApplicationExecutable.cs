@@ -18,12 +18,15 @@ namespace Installation.Models
             get
             {
                 int index = 1;
-                foreach (var unit in installableUnits)
+                while(index <= installableUnits.Count)
                 {
-                    if(index == unit.Index)
+                    foreach (var unit in installableUnits)
                     {
-                        index++;
-                        yield return unit;
+                        if (index == unit.Index)
+                        {
+                            index++;
+                            yield return unit;
+                        }
                     }
                 }
             }
@@ -34,28 +37,35 @@ namespace Installation.Models
             get
             {
                 int index = 1;
-                foreach (var unit in uninstallableUnits)
+                while(index <= uninstallableUnits.Count)
                 {
-                    if (index == unit.Index)
+                    foreach (var unit in uninstallableUnits)
                     {
-                        index++;
-                        yield return unit;
+                        if (index == unit.Index)
+                        {
+                            index++;
+                            yield return unit;
+                        }
                     }
                 }
+                
             }
         }
         private List<ExecutableUnit> reinstallableUnits = new List<ExecutableUnit>();
         public IEnumerable<ExecutableUnit> ReinstallableUnits
         {
             get
-            {
+            { 
                 int index = 1;
-                foreach (var unit in reinstallableUnits)
+                while(index <= reinstallableUnits.Count)
                 {
-                    if (index == unit.Index)
+                    foreach (var unit in reinstallableUnits)
                     {
-                        index++;
-                        yield return unit;
+                        if (index == unit.Index)
+                        {
+                            index++;
+                            yield return unit;
+                        }
                     }
                 }
             }
@@ -76,8 +86,8 @@ namespace Installation.Models
         public bool ReInstalled { get => reinstalled; set { reinstalled = value; setSuccessfulRolloutState();  } }
         public bool UnInstalled { get => uninstalled; set { uninstalled = value; setSuccessfulRolloutState();  } }
 
-        private string version;
-        public string Version { get => version; set => version = value; }
+        private Version version;
+        public Version Version { get => version; set => version = value; }
 
         private Dictionary<string, string> versionDescriptions;
         public Dictionary<string, string> VersionDescriptions { get => versionDescriptions; set => versionDescriptions = value; }

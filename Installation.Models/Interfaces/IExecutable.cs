@@ -9,7 +9,7 @@ namespace Installation.Models.Interfaces
 {
     public interface IExecutable
     {
-        string Version { get; }
+        Version Version { get; }
         Dictionary<string, string> VersionDescriptions { get; }
         StatusState StatusState { get; }
 
