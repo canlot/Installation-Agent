@@ -17,6 +17,10 @@ namespace Installation.Controller
         {
             executables.Add(executable);
         }
+        public void AddExecutableVersion(IExecutable executableVersion)
+        {
+
+        }
         public Executable GetExecutable(Guid id)
         {
             return executables.FirstOrDefault(x => x.Id == id);
@@ -56,13 +60,37 @@ namespace Installation.Controller
             }
             return null;
         }
-        public IExecutable GetExecutable(string executableName, Version version = null)
+        public IExecutable GetExecutableVersion(string executableName, Version version = null)
         {
-
+            foreach (var executable in executables)
+            {
+                if (executable.Name == executableName)
+                {
+                    if (version == null)
+                        return GetNewestVersionExecutable(executable);
+                    foreach (var executableVersion in executable.Executables)
+                    {
+                        if (executableVersion.Version == version)
+                            return executableVersion;
+                    }
+                }
+            }
+            return null;
         }
-        public IExecutable GetExecutable(Guid id) 
+        public IExecutable GetExecutableVersion(Guid id, Version version = null)
         {
-
+            foreach(var executable in executables)
+            {
+                if(executable.Id == id)
+                {
+                    foreach (var executableVersion in executable.Executables)
+                    {
+                        if (executableVersion.Version == version)
+                            return executableVersion;
+                    }
+                }
+            }
+            return null;
         }
         private ExecutableUnit getExecutableUnitInList(IEnumerable<ExecutableUnit> units, Guid UnitId)
         {
@@ -73,9 +101,31 @@ namespace Installation.Controller
             }
             return null;
         }
-        public ExecutableUnit GetNewestVersionExecutable(Guid executableId, Version version)
+        public IExecutable GetNewestVersionExecutable(Guid executableId)
         {
-            throw new NotImplementedException();
+            foreach( var executable in executables)
+            {
+                if(executable.Id == executableId)
+                {
+                    return GetNewestVersionExecutable(executable);
+                }
+            }
+            return null;
+        }
+        public IExecutable GetNewestVersionExecutable(Executable executable)
+        {
+            IExecutable temp = null;
+
+            if (executable.Executables.Count == 0)
+                return null;
+            temp = executable.Executables[0];
+            foreach (var executableVersion in executable.Executables)
+            {
+
+                if (temp.Version < executableVersion.Version)
+                    temp = executableVersion;
+            }
+            return temp;
         }
 
     }
