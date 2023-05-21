@@ -13,7 +13,7 @@ namespace Installation.Models
 
     public class ExecutableBase
     {
-        public List<IExecutable> Executables { get; set; }
+        public List<Executable> Executables { get; set; }
 
         private string name;
         

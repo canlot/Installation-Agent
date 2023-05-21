@@ -77,13 +77,13 @@
     <Compile Include="Commands\JobCommand.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Executables\ApplicationExecutable.cs" />
+    <Compile Include="Executables\Executable.cs" />
     <Compile Include="Executables\ExecutableBase.cs" />
     <Compile Include="Executables\ExecutableUnit.cs" />
     <Compile Include="Executables\ScriptExecutable.cs" />
     <Compile Include="GlobalRepository.cs" />
     <Compile Include="Helpers\DictionaryHelper.cs" />
     <Compile Include="Helpers\GuidHelper.cs" />
-    <Compile Include="Interfaces\IExecutable.cs" />
     <Compile Include="Interfaces\IExternal.cs" />
     <Compile Include="Interfaces\IInstallable.cs" />
     <Compile Include="Interfaces\IReinstallable.cs" />
