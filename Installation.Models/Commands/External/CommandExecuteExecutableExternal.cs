@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Installation.Models.Commands
 {
-    public abstract class CommandExecuteExecutable : CommandExecute
+    public abstract class CommandExecuteExecutableExternal : CommandExecuteExternal
     {
         abstract public ExecuteAction ExecuteAction { get; }
     }

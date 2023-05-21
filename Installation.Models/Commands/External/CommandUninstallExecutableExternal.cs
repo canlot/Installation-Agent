@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Installation.Models.Commands
 {
-    public class CommandUninstallExecutable : CommandExecuteExecutable
+    public class CommandUninstallExecutableExternal : CommandExecuteExecutableExternal
     {
 
         public override ExecuteAction ExecuteAction { get => ExecuteAction.Uninstall; }

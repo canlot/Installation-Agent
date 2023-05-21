@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Installation.Models.Commands
 {
-    public class CommandReinstallExecutable : CommandExecuteExecutable
+    public class CommandRunExecutableExternal : CommandExecuteExecutableExternal
     {
-        public override ExecuteAction ExecuteAction { get => ExecuteAction.Reinstall; }
+        public override ExecuteAction ExecuteAction { get => ExecuteAction.Run; }
 
         public override bool IsPrivilegedCommand => false;
 

@@ -15,7 +15,7 @@ using System.Dynamic;
 
 namespace Installation.Controller.ExecutableControllers
 {
-    public class ExecutionController :  IObjectReceiver<CommandExecute>
+    public class ExecutionController :  IObjectReceiver<CommandExecuteExternal>
     {
         public delegate Task ExecutionCompleted(Job job);
         public event ExecutionCompleted OnCompleted;
@@ -23,24 +23,24 @@ namespace Installation.Controller.ExecutableControllers
 
         private ManualResetEventSlim executionWaiting = new ManualResetEventSlim(false);
         private EventDispatcher eventDispatcher;
-        private ConcurrentQueue<CommandExecute> commandQueue;
+        private ConcurrentQueue<CommandExecuteExternal> commandQueue;
         private ConcurrentQueue<ExecutableUnit> executableUnitQueue;
 
         public ExecutionController(EventDispatcher eventDispatcher)
         {
             this.eventDispatcher = eventDispatcher;
-            this.eventDispatcher.RegisterReceiver<CommandExecute>(this);
+            this.eventDispatcher.RegisterReceiver<CommandExecuteExternal>(this);
             executableUnitQueue = new ConcurrentQueue<ExecutableUnit>();
-            commandQueue = new ConcurrentQueue<CommandExecute>();
+            commandQueue = new ConcurrentQueue<CommandExecuteExternal>();
         }
 
-        public void Receive(CommandExecute command)
+        public void Receive(CommandExecuteExternal command)
         {
             commandQueue.Enqueue(command);
-            if (command is CommandExecute)
-                addExecutableToQueue(command as CommandExecuteExecutable);
-            else if (command is CommandExecuteUnit)
-                addExecutableUnitToQueue(command as CommandExecuteUnit);
+            if (command is CommandExecuteExternal)
+                addExecutableToQueue(command as CommandExecuteExecutableExternal);
+            else if (command is CommandExecuteUnitExternal)
+                addExecutableUnitToQueue(command as CommandExecuteUnitExternal);
 
             executionWaiting.Set();
         }
@@ -49,7 +49,7 @@ namespace Installation.Controller.ExecutableControllers
             foreach(var item in list)
                 queue.Enqueue(item);
         }
-        private void addExecutableToQueue(CommandExecuteExecutable command)
+        private void addExecutableToQueue(CommandExecuteExecutableExternal command)
         {
             var executable = eventDispatcher.Send<CommandGetExecutable, Executable>(new CommandGetExecutable
             { ExecutableID = command.ExecutableID });
@@ -60,22 +60,22 @@ namespace Installation.Controller.ExecutableControllers
                 return;
             }
 
-            if (command is CommandInstallExecutable && executable is IInstallable)
+            if (command is CommandInstallExecutableExternal && executable is IInstallable)
             {
                 Log.Verbose("Add installable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
                 enqueueList(this.executableUnitQueue, (executable as IInstallable).InstallableUnits);
             }
-            else if (command is CommandReinstallExecutable && executable is IReinstallable)
+            else if (command is CommandReinstallExecutableExternal && executable is IReinstallable)
             {
                 Log.Verbose("Add reinstallable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
                 enqueueList(this.executableUnitQueue, (executable as IReinstallable).ReinstallableUnits);
             }
-            else if (command is CommandUninstallExecutable && executable is IUninstallable)
+            else if (command is CommandUninstallExecutableExternal && executable is IUninstallable)
             {
                 Log.Verbose("Add uninstallable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
                 enqueueList(this.executableUnitQueue, (executable as IUninstallable).UninstallableUnits);
             }
-            else if (command is CommandRunExecutable && executable is IRunnable)
+            else if (command is CommandRunExecutableExternal && executable is IRunnable)
             {
                 Log.Verbose("Add runnable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
                 enqueueList(this.executableUnitQueue, (executable as IRunnable).RunnableUnits);
@@ -85,7 +85,7 @@ namespace Installation.Controller.ExecutableControllers
                 Log.Error("Command {Command} and Executable {Executable} doesn't match", command, executable);
             }
         }
-        private void addExecutableUnitToQueue(CommandExecuteUnit command)
+        private void addExecutableUnitToQueue(CommandExecuteUnitExternal command)
         {
             var executable = eventDispatcher.Send<CommandGetExecutable, Executable>(new CommandGetExecutable
             { ExecutableID = command.ExecutableID });

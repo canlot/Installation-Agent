@@ -43,9 +43,9 @@ namespace Installation.Controller.Communication
         {
             if (obj == null)
                 return;
-            if(obj is CommandExecute)
+            if(obj is CommandExecuteExternal)
             {
-                eventDispatcher.Send(obj as CommandExecute);
+                eventDispatcher.Send(obj as CommandExecuteExternal);
             }
         }
     }

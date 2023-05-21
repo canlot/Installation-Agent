@@ -82,6 +82,7 @@
     <Compile Include="Helpers\DictionaryHelper.cs" />
     <Compile Include="Helpers\GuidHelper.cs" />
     <Compile Include="Interfaces\IExecutable.cs" />
+    <Compile Include="Interfaces\IExternal.cs" />
     <Compile Include="Interfaces\IInstallable.cs" />
     <Compile Include="Interfaces\IReinstallable.cs" />
     <Compile Include="Interfaces\IRunnable.cs" />

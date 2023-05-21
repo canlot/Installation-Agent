@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Installation.Models.Commands
 {
-    public class CommandExecuteUnit : CommandExecute
+    public class CommandExecuteUnitExternal : CommandExecuteExternal
     {
 
         private Guid executableUnitID;
