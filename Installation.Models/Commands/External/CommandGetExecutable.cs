@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Installation.Models.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Installation.Models
 {
-    public class CommandGetExecutable : Command
+    public class CommandGetExecutableExternal : Command, IExternal
     {
-        public CommandGetExecutable()
+        public CommandGetExecutableExternal()
         {
         }
 
@@ -23,5 +24,9 @@ namespace Installation.Models
             set { version = value; }
         }
 
+
+        public bool IsPrivilegedCommand => false;
+
+        public Guid EndpointId { get; set ; }
     }
 }

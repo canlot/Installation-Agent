@@ -67,6 +67,7 @@
     <Compile Include="Commands\External\CommandExecuteExternal.cs" />
     <Compile Include="Commands\External\CommandExecuteExecutableExternal.cs" />
     <Compile Include="Commands\External\CommandExecuteUnitExternal.cs" />
+    <Compile Include="Commands\External\CommandGetExecutable.cs" />
     <Compile Include="Commands\Internal\CommandGetExecutable.cs" />
     <Compile Include="Commands\External\CommandInstallExecutableExternal.cs" />
     <Compile Include="Commands\External\CommandReinstallExecutableExternal.cs" />

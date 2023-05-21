@@ -165,7 +165,7 @@ namespace Installation.Controller.ExecutableControllers
             
         }
 
-        async Task sendExecutableState(ExecutableBase executable)
+        async Task sendExecutableState(IExecutable executable)
         {
             var responseExecution = new ResponseExecution();
             switch(executable.StatusState)

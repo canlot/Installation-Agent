@@ -13,7 +13,7 @@ using Installation.Models.Commands;
 
 namespace Installation.Controller.Communication
 {
-    public class InternalCommunicationController : IObjectReceiver<Notify<ExecutableBase>, Task>
+    public class InternalCommunicationController : IObjectReceiver<Notify<IExecutable>, Task>
     {
         private EventDispatcher eventDispatcher;
         private SettingsContainer settingsContainer;
@@ -27,7 +27,7 @@ namespace Installation.Controller.Communication
             
         }
 
-        public async Task Receive(Notify<ExecutableBase> rObject)
+        public async Task Receive(Notify<IExecutable> rObject)
         {
             throw new NotImplementedException();
         }

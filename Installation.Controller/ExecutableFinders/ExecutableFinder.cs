@@ -116,7 +116,7 @@ namespace Installation.Controller.ExecutableFinders
             {
                 if (!existingExecutable.CurrentlyExecuting)
                 {
-                    existingExecutable.ExecutableDirectory = newExecutable.ExecutableDirectory;
+                    existingExecutable.CurrentDirectory = newExecutable.CurrentDirectory;
                 }
             }
         }

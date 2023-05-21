@@ -26,11 +26,16 @@ namespace Installation.Controller.ExecutableControllers
             this.eventDispatcher = eventDispatcher;
             this.settingsContainer = settingsContainer;
             eventDispatcher.RegisterReceiver<CommandGetExecutable, ExecutableBase>(this);
+            eventDispatcher.RegisterReceiver<CommandGetExecutableExternal, ExecutableBase>(this);
 
             
         }
         
         public ExecutableBase Receive(CommandGetExecutable command)
+        {
+            throw new NotImplementedException();
+        }
+        public ExecutableBase Receive(CommandGetExecutableExternal command)
         {
             throw new NotImplementedException();
         }

@@ -56,7 +56,7 @@ namespace Installation.Controller.ExecutableFinders
                 }
                 if (executable != null && filePath != null && fileHash != null)
                 {
-                    executable.ExecutableDirectory = directory;
+                    executable.CurrentDirectory = directory;
                     yield return (executable, filePath, fileHash);
                 }    
                 else
