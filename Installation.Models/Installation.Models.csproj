@@ -72,6 +72,7 @@
     <Compile Include="Commands\External\CommandReinstallExecutableExternal.cs" />
     <Compile Include="Commands\External\CommandRunExecutableExternal.cs" />
     <Compile Include="Commands\External\CommandUninstallExecutableExternal.cs" />
+    <Compile Include="Commands\Internal\CommandGetExecutableUnit.cs" />
     <Compile Include="Commands\JobCommand.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Executables\ApplicationExecutable.cs" />
