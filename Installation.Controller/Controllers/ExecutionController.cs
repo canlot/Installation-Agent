@@ -53,6 +53,7 @@ namespace Installation.Controller.ExecutableControllers
         {
             var executable = eventDispatcher.Send<CommandGetExecutable, Executable>(new CommandGetExecutable
             { ExecutableID = command.ExecutableID });
+
             if (executable == null)
             {
                 Log.Error("no executable with id {id} found", command.ExecutableID);
@@ -98,22 +99,22 @@ namespace Installation.Controller.ExecutableControllers
             if (executable is IInstallable)
             {
                 Log.Verbose("Add installable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
-                executableUnit = (executable as IInstallable).InstallableUnits.First(x => x.Id == command.ExecutableUnitID);
+                executableUnit = (executable as IInstallable).InstallableUnits.FirstOrDefault(x => x.Id == command.ExecutableUnitID);
             }
             else if (executable is IReinstallable)
             {
                 Log.Verbose("Add reinstallable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
-                executableUnit = (executable as IReinstallable).ReinstallableUnits.First(x => x.Id == command.ExecutableUnitID);
+                executableUnit = (executable as IReinstallable).ReinstallableUnits.FirstOrDefault(x => x.Id == command.ExecutableUnitID);
             }
             else if (executable is IUninstallable)
             {
                 Log.Verbose("Add uninstallable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
-                executableUnit = (executable as IUninstallable).UninstallableUnits.First(x => x.Id == command.ExecutableUnitID);
+                executableUnit = (executable as IUninstallable).UninstallableUnits.FirstOrDefault(x => x.Id == command.ExecutableUnitID);
             }
             else if (executable is IRunnable)
             {
                 Log.Verbose("Add runnable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
-                executableUnit = (executable as IRunnable).RunnableUnits.First(x => x.Id == command.ExecutableUnitID);
+                executableUnit = (executable as IRunnable).RunnableUnits.FirstOrDefault(x => x.Id == command.ExecutableUnitID);
             }
             else
             {

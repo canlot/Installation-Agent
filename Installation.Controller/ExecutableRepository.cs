@@ -15,6 +15,8 @@ namespace Installation.Controller
 
         public void AddExecutable(Executable executable)
         {
+            var existingExecutable = executables.FirstOrDefault(x => x.Id == executable.Id);
+
             executables.Add(executable);
         }
         public void AddExecutableVersion(IExecutable executableVersion)

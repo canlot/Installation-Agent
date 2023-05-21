@@ -10,5 +10,8 @@ namespace Installation.Models.Commands
     {
         protected Guid executableID;
         public Guid ExecutableID { get => executableID; set { executableID = value; } }
+
+        protected Version version;
+        public Version Version { get => version; set {  version = value; } }
     }
 }
