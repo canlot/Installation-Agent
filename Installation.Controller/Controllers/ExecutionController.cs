@@ -51,8 +51,8 @@ namespace Installation.Controller.ExecutableControllers
         }
         private void addExecutableToQueue(CommandExecuteExecutableExternal command)
         {
-            var executable = eventDispatcher.Send<CommandGetExecutable, ExecutableBase>(new CommandGetExecutable
-            { ExecutableID = command.ExecutableID });
+            var executable = eventDispatcher.Send<CommandGetExecutable, IExecutable>(new CommandGetExecutable
+            { ExecutableID = command.ExecutableID, Version = command.Version });
 
             if (executable == null)
             {
@@ -87,8 +87,8 @@ namespace Installation.Controller.ExecutableControllers
         }
         private void addExecutableUnitToQueue(CommandExecuteUnitExternal command)
         {
-            var executable = eventDispatcher.Send<CommandGetExecutable, ExecutableBase>(new CommandGetExecutable
-            { ExecutableID = command.ExecutableID });
+            var executable = eventDispatcher.Send<CommandGetExecutable, IExecutable>(new CommandGetExecutable
+            { ExecutableID = command.ExecutableID, Version = command.Version });
             if(executable == null)
             {
                 Log.Error("no executable with id {id} found", command.ExecutableID);
@@ -99,22 +99,22 @@ namespace Installation.Controller.ExecutableControllers
             if (executable is IInstallable)
             {
                 Log.Verbose("Add installable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
-                executableUnit = (executable as IInstallable).InstallableUnits.FirstOrDefault(x => x.Id == command.ExecutableUnitID);
+                executableUnit = (executable as IInstallable).InstallableUnits.FirstOrDefault(x => x.Id == command.ExecutableUnitId);
             }
             else if (executable is IReinstallable)
             {
                 Log.Verbose("Add reinstallable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
-                executableUnit = (executable as IReinstallable).ReinstallableUnits.FirstOrDefault(x => x.Id == command.ExecutableUnitID);
+                executableUnit = (executable as IReinstallable).ReinstallableUnits.FirstOrDefault(x => x.Id == command.ExecutableUnitId);
             }
             else if (executable is IUninstallable)
             {
                 Log.Verbose("Add uninstallable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
-                executableUnit = (executable as IUninstallable).UninstallableUnits.FirstOrDefault(x => x.Id == command.ExecutableUnitID);
+                executableUnit = (executable as IUninstallable).UninstallableUnits.FirstOrDefault(x => x.Id == command.ExecutableUnitId);
             }
             else if (executable is IRunnable)
             {
                 Log.Verbose("Add runnable units from executable {id} with name {name} to executable queue", executable.Id, executable.Name);
-                executableUnit = (executable as IRunnable).RunnableUnits.FirstOrDefault(x => x.Id == command.ExecutableUnitID);
+                executableUnit = (executable as IRunnable).RunnableUnits.FirstOrDefault(x => x.Id == command.ExecutableUnitId);
             }
             else
             {
@@ -126,7 +126,7 @@ namespace Installation.Controller.ExecutableControllers
             }
             else
             {
-                Log.Error("No executable unit with id {id} found in executable with id {eid}", command.ExecutableUnitID, executable.Id);
+                Log.Error("No executable unit with id {id} found in executable with id {eid}", command.ExecutableUnitId, executable.Id);
             }
 
         }

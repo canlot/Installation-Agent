@@ -10,6 +10,8 @@ namespace Installation.Models.Interfaces
     public interface IExecutable
     {
         ExecutableBase ExecutableBase { get; set; }
+        Guid Id { get; }
+        string Name { get; }
         Version Version { get; }
         Dictionary<string, string> VersionDescriptions { get; }
         StatusState StatusState { get; }

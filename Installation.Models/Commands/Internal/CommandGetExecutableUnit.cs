@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Installation.Models.Commands
+namespace Installation.Models.Commands.Internal
 {
-    public class CommandExecuteUnitExternal : CommandExecuteExternal
+    public class CommandGetExecutableUnit : Command
     {
-
         private Guid executableUnitId;
 
         public Guid ExecutableUnitId
@@ -20,6 +19,5 @@ namespace Installation.Models.Commands
         public Version ExecutableVersion { get; set; }
 
         public Guid ExecutableId { get; set; }
-        public override bool IsPrivilegedCommand => false;
     }
 }

@@ -112,6 +112,9 @@ namespace Installation.Models
         private ExecutableBase executableBase;
         public ExecutableBase ExecutableBase { get => executableBase; set => executableBase = value; }
 
+        public Guid Id { get => executableBase.Id; }
+        public string Name { get => executableBase.Name; }
+
         //----------------------------------
 
         protected void setSuccessfulRolloutState()
