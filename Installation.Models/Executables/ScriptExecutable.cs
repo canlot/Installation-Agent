@@ -10,7 +10,7 @@ using Serilog;
 
 namespace Installation.Models
 {
-    public class ScriptExecutable : Executable, IRunnable
+    public class ScriptExecutable : ExecutableBase, IRunnable
     {
         public string RunFilePath { get; set; }
         private bool runned;

@@ -24,7 +24,7 @@ namespace Installation.Storage.StateStorage
             stateStorageProvider = new ExecutableStateRegistryStorageProvider();
         }
 
-        public void LoadExecutableState(Executable executable)
+        public void LoadExecutableState(ExecutableBase executable)
         {
             if (executable is IInstallable)
                 (executable as IInstallable).Installed = stateStorageProvider.GetStateValue(installedKey, executable.Id.ToString());
@@ -36,7 +36,7 @@ namespace Installation.Storage.StateStorage
                 (executable as IUninstallable).UnInstalled = stateStorageProvider.GetStateValue(uninstalledKey, executable.Id.ToString());
         }
 
-        public void SaveExecutableState(Executable executable)
+        public void SaveExecutableState(ExecutableBase executable)
         {
             if (executable is IInstallable)
                 stateStorageProvider.SaveStateValue(installedKey, executable.Id.ToString(), (executable as IInstallable).Installed);

@@ -16,7 +16,7 @@ namespace Installation_Agent
         {
             if(value == null)
                 return null;
-            if(value is Executable)
+            if(value is ExecutableBase)
             {
                 if(value is ApplicationExecutable)
                 {

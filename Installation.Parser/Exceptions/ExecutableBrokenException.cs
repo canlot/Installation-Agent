@@ -11,7 +11,7 @@ namespace Installation.Parser.Exceptions
     {
         public ExecutableBrokenException(string settingsFilePath) : base()
         {
-            Log.Error("Executable settings file is broken {settingsFilePath}",settingsFilePath);
+            Log.Error("ExecutableBase settings file is broken {settingsFilePath}",settingsFilePath);
         }
     }
 }

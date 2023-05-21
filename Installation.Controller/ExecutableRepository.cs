@@ -11,9 +11,9 @@ namespace Installation.Controller
 {
     public class ExecutableRepository
     {
-        private ConcurrentBag<Executable> executables = new ConcurrentBag<Executable>();
+        private ConcurrentBag<ExecutableBase> executables = new ConcurrentBag<ExecutableBase>();
 
-        public void AddExecutable(Executable executable)
+        public void AddExecutable(ExecutableBase executable)
         {
             var existingExecutable = executables.FirstOrDefault(x => x.Id == executable.Id);
 
@@ -23,7 +23,7 @@ namespace Installation.Controller
         {
 
         }
-        public Executable GetExecutable(Guid id)
+        public ExecutableBase GetExecutable(Guid id)
         {
             return executables.FirstOrDefault(x => x.Id == id);
         }
@@ -114,7 +114,7 @@ namespace Installation.Controller
             }
             return null;
         }
-        public IExecutable GetNewestVersionExecutable(Executable executable)
+        public IExecutable GetNewestVersionExecutable(ExecutableBase executable)
         {
             IExecutable temp = null;
 

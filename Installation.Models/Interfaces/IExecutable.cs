@@ -9,6 +9,7 @@ namespace Installation.Models.Interfaces
 {
     public interface IExecutable
     {
+        ExecutableBase ExecutableBase { get; set; }
         Version Version { get; }
         Dictionary<string, string> VersionDescriptions { get; }
         StatusState StatusState { get; }

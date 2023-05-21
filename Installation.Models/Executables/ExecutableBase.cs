@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Installation.Models
 {
 
-    public class Executable
+    public class ExecutableBase
     {
         public List<IExecutable> Executables { get; set; }
 
@@ -63,7 +63,7 @@ namespace Installation.Models
         
 
 
-        public Executable()
+        public ExecutableBase()
         {
 
         }
@@ -76,9 +76,9 @@ namespace Installation.Models
         {
             if(obj == null)
                 return false;
-            if (obj is Executable)
+            if (obj is ExecutableBase)
             {
-                if (this.id.Equals((obj as Executable).Id)) 
+                if (this.id.Equals((obj as ExecutableBase).Id)) 
                     return true;
                 else 
                     return false;
@@ -88,7 +88,7 @@ namespace Installation.Models
             
         }
 
-        public static bool operator ==(Executable a, Executable b)
+        public static bool operator ==(ExecutableBase a, ExecutableBase b)
         {
             if(ReferenceEquals(a, b)) return true;
             if(ReferenceEquals(b, null)) return false;
@@ -96,7 +96,7 @@ namespace Installation.Models
             if (a.Id == b.Id) return true;
             else return false;
         }
-        public static bool operator !=(Executable a, Executable b)
+        public static bool operator !=(ExecutableBase a, ExecutableBase b)
         {
             return !(a == b);
         }

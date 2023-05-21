@@ -23,7 +23,7 @@ namespace Installation.Parser
 			this.fileParseHelper = new ParseHelper(settingsFilePath);
         }
 
-		public Executable ParseObject() 
+		public ExecutableBase ParseObject() 
 		{
 			Log.Debug("Start to parse following executable file: {file}", settingsFilePath);
 
@@ -84,7 +84,7 @@ namespace Installation.Parser
 
 		}
 
-		private void setProperty(PropertyInfo property, Executable executable, string settingValue)
+		private void setProperty(PropertyInfo property, ExecutableBase executable, string settingValue)
         {
 			
 			if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
@@ -114,7 +114,7 @@ namespace Installation.Parser
 			List<T> list = new List<T>();
 			return list;
         }
-		private void setPropertyList(PropertyInfo property, Executable executable, string settingValue, Type type)
+		private void setPropertyList(PropertyInfo property, ExecutableBase executable, string settingValue, Type type)
         {
 			Type genericListType = typeof(List<>).MakeGenericType(type);
 			var list = (IList)Activator.CreateInstance(genericListType);
@@ -131,7 +131,7 @@ namespace Installation.Parser
 				list.Add(value);
 			}
         }
-		private void setPropertySingle(PropertyInfo property, Executable executable, string settingValue)
+		private void setPropertySingle(PropertyInfo property, ExecutableBase executable, string settingValue)
         {
 			if (property.PropertyType.IsEnum)
 			{
@@ -151,19 +151,19 @@ namespace Installation.Parser
 			}
 		}
 
-		private Executable getExecutableObject(string name)
+		private ExecutableBase getExecutableObject(string name)
 		{
-			foreach (Type type in Assembly.GetAssembly(typeof(Executable)).GetTypes())
+			foreach (Type type in Assembly.GetAssembly(typeof(ExecutableBase)).GetTypes())
 			{
-				if (type.IsSubclassOf(typeof(Executable)))
+				if (type.IsSubclassOf(typeof(ExecutableBase)))
 				{
 					ExecutableAttribute executableAttribute = (ExecutableAttribute)Attribute.GetCustomAttribute(type, typeof(ExecutableAttribute));
 					if (executableAttribute != null)
 					{
 						if (executableAttribute.ExecutableName == name)
-							return (Executable)Activator.CreateInstance(type);
+							return (ExecutableBase)Activator.CreateInstance(type);
 						else
-							Log.Verbose("Executable type: {type} does not match with type: {name} from setting file", executableAttribute.ExecutableName, name);
+							Log.Verbose("ExecutableBase type: {type} does not match with type: {name} from setting file", executableAttribute.ExecutableName, name);
 					}
 				}
 			}

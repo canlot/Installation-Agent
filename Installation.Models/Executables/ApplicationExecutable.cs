@@ -109,6 +109,9 @@ namespace Installation.Models
         protected bool successfulRollout;
         public bool SuccessfulRollout { get => successfulRollout; set => successfulRollout = value; }
 
+        private ExecutableBase executableBase;
+        public ExecutableBase ExecutableBase { get => executableBase; set => executableBase = value; }
+
         //----------------------------------
 
         protected void setSuccessfulRolloutState()

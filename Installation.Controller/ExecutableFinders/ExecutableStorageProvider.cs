@@ -21,13 +21,13 @@ namespace Installation.Controller.ExecutableFinders
             this.executablePath = executablePath;
             this.executableSettingsFileName = applicationSettingsFileName;
         }
-        public IEnumerable<(Executable executable, string filePath, string fileHash)> GetExecutables()
+        public IEnumerable<(ExecutableBase executable, string filePath, string fileHash)> GetExecutables()
         {
             foreach (var directory in getDirectoriesInExecutablePath(executablePath))
             {
                 string fileHash = null;
                 string filePath = directory + @"\" + executableSettingsFileName;
-                Executable executable = executable = null; //sets the executable to null because last executable could get different directory
+                ExecutableBase executable = executable = null; //sets the executable to null because last executable could get different directory
                 try
                 {
                     if(searchForSettingFile(directory))

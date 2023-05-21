@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Installation.Models;
 using Installation.Models.Helpers;
+using Installation.Models.Interfaces;
 using Installation.Models.Notify;
 using Serilog;
 
@@ -51,9 +52,9 @@ namespace Installation.Communication
         private async Task receiveData(string data, Guid endpointId)
         {
             var dataObject = converter.ConvertToObject(data);
-            if(dataObject is Command)
+            if(dataObject is Command && dataObject is IExternal)
             {
-                var command = (Command)dataObject;
+                var command = (IExternal)dataObject;
                 command.EndpointId = endpointId;
                 if (command.IsPrivilegedCommand)
                     if (isPrivileged)
@@ -70,7 +71,7 @@ namespace Installation.Communication
             await sendData(notify, notify.EndpointId);
 
         }
-        public async Task SendData(Command command)
+        public async Task SendData(IExternal command)
         {
             await sendData(command, command.EndpointId);
         }

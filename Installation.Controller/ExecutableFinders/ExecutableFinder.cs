@@ -14,13 +14,13 @@ namespace Installation.Controller.ExecutableFinders
 {
     class ExecutableFinder
     {
-        public delegate Task ExecutableAddedOrModified(Executable executable);
+        public delegate Task ExecutableAddedOrModified(ExecutableBase executable);
 
         public event ExecutableAddedOrModified OnExecutableAddedOrModified;
 
         private SettingsContainer settingsContainer;
         private Dictionary<Guid, ExecutableFileInfo> executableFileInformation = new Dictionary<Guid, ExecutableFileInfo>();
-        private Dictionary<Guid, Executable> executables;
+        private Dictionary<Guid, ExecutableBase> executables;
         private CancellationToken cancellationToken;
 
         public int RefreshCycleCounter = 0; //for every Run the counter will be incremented 
@@ -28,7 +28,7 @@ namespace Installation.Controller.ExecutableFinders
 
         //private bool firstRun = true;
 
-        public ExecutableFinder(SettingsContainer settings, Dictionary<Guid, Executable> executables, CancellationToken cancellationToken)
+        public ExecutableFinder(SettingsContainer settings, Dictionary<Guid, ExecutableBase> executables, CancellationToken cancellationToken)
         {
             this.settingsContainer = settings;
             this.executables = executables;
@@ -79,9 +79,9 @@ namespace Installation.Controller.ExecutableFinders
             }
         }
 
-        private async Task handleFileInformation(Executable givenExecutable, ExecutableFileInfo existingFileInformation, (string filePath, string fileHash) givenFileInformation)
+        private async Task handleFileInformation(ExecutableBase givenExecutable, ExecutableFileInfo existingFileInformation, (string filePath, string fileHash) givenFileInformation)
         {
-            Executable currentExecutable = executables[givenExecutable.Id];
+            ExecutableBase currentExecutable = executables[givenExecutable.Id];
             if (existingFileInformation == null)
                 return; // this case should not exist, but if it will than this information will be deleted at the end
             
@@ -110,7 +110,7 @@ namespace Installation.Controller.ExecutableFinders
             existingFileInformation.FileHash = givenFileInformation.fileHash;
         }
 
-        private void changeDirectory(Executable existingExecutable, Executable newExecutable)
+        private void changeDirectory(ExecutableBase existingExecutable, ExecutableBase newExecutable)
         {
             if (existingExecutable.Id == newExecutable.Id)
             {
@@ -121,7 +121,7 @@ namespace Installation.Controller.ExecutableFinders
             }
         }
 
-        private void mappingExecutable(Executable existingExecutable, Executable newExecutable)
+        private void mappingExecutable(ExecutableBase existingExecutable, ExecutableBase newExecutable)
         {
             if(existingExecutable.Id == newExecutable.Id)
             {
@@ -132,22 +132,22 @@ namespace Installation.Controller.ExecutableFinders
             }
         }
 
-        private void addExecutable(Executable executable)
+        private void addExecutable(ExecutableBase executable)
         {
             if (executables.ContainsKey(executable.Id))
             {
-                Log.Error("Executable {name} with the id {id} already exist, executable not added", executable.Name, executable.Id);
+                Log.Error("ExecutableBase {name} with the id {id} already exist, executable not added", executable.Name, executable.Id);
             }
             else
             {
                 ExecutionStateSettings executionStateSettings = new ExecutionStateSettings();
                 executionStateSettings.LoadExecutableState(executable);
                 executables.Add(executable.Id, executable);
-                Log.Debug("Executable added {@executable}", executable);
+                Log.Debug("ExecutableBase added {@executable}", executable);
             }
         }
 
-        public void FindExecutables(Dictionary<Guid, Executable> executables)
+        public void FindExecutables(Dictionary<Guid, ExecutableBase> executables)
         {
             Log.Verbose("Searching for Executables");
 
@@ -159,14 +159,14 @@ namespace Installation.Controller.ExecutableFinders
             {
                 if (executables.ContainsKey(executableBundle.executable.Id))
                 {
-                    Log.Error("Executable {name} with the id {id} already exist, executable not added", executableBundle.executable.Name, executableBundle.executable.Id);
+                    Log.Error("ExecutableBase {name} with the id {id} already exist, executable not added", executableBundle.executable.Name, executableBundle.executable.Id);
                 }
                 else
                 {
                     ExecutionStateSettings executionStateSettings = new ExecutionStateSettings();
                     executionStateSettings.LoadExecutableState(executableBundle.executable);
                     executables.Add(executableBundle.executable.Id, executableBundle.executable);
-                    Log.Debug("Executable added {@executable}", executableBundle.executable);
+                    Log.Debug("ExecutableBase added {@executable}", executableBundle.executable);
                 }
             }
         }

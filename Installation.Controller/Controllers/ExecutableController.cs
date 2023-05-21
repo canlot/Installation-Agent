@@ -13,24 +13,24 @@ using Installation.Models.Notify;
 
 namespace Installation.Controller.ExecutableControllers
 {
-    public class ExecutableController : IObjectReceiver<CommandGetExecutable, Executable>
+    public class ExecutableController : IObjectReceiver<CommandGetExecutable, ExecutableBase>
     {
         private EventDispatcher eventDispatcher;
         private ExecutableFinder finder;
         private Task finderTask;
         private SettingsContainer settingsContainer;
 
-        public Dictionary<Guid, Executable> Executables = new Dictionary<Guid, Executable>();
+        public Dictionary<Guid, ExecutableBase> Executables = new Dictionary<Guid, ExecutableBase>();
         public ExecutableController(EventDispatcher eventDispatcher, SettingsContainer settingsContainer)
         {
             this.eventDispatcher = eventDispatcher;
             this.settingsContainer = settingsContainer;
-            eventDispatcher.RegisterReceiver<CommandGetExecutable, Executable>(this);
+            eventDispatcher.RegisterReceiver<CommandGetExecutable, ExecutableBase>(this);
 
             
         }
         
-        public Executable Receive(CommandGetExecutable command)
+        public ExecutableBase Receive(CommandGetExecutable command)
         {
             throw new NotImplementedException();
         }
@@ -47,9 +47,9 @@ namespace Installation.Controller.ExecutableControllers
                 await finderTask;
             }
         }
-        private async Task newExecutableAsync(Executable executable)
+        private async Task newExecutableAsync(ExecutableBase executable)
         {
-            await eventDispatcher.Send<Notify<Executable>, Task>(new Notify<Executable>
+            await eventDispatcher.Send<Notify<ExecutableBase>, Task>(new Notify<ExecutableBase>
             {
                 Object = executable
             });

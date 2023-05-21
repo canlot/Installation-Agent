@@ -16,7 +16,7 @@ namespace Installation_Agent.Controller
 {
     public class ViewController : INotifyPropertyChanged
     {
-        public ObservableCollection<Executable> Executables = new ObservableCollection<Executable>();
+        public ObservableCollection<ExecutableBase> Executables = new ObservableCollection<ExecutableBase>();
         public CollectionViewSource ExecutablesViewSource { get; set; } = new CollectionViewSource();
         public ICollectionView ExecutableCollection { get; set; }
         
@@ -81,7 +81,7 @@ namespace Installation_Agent.Controller
         {
             if(item == null)
                 return false;
-            Executable executable = item as Executable;
+            ExecutableBase executable = item as ExecutableBase;
             return executable.Name.ToLower().Contains(SearchText.ToLower());
         }
 
@@ -128,7 +128,7 @@ namespace Installation_Agent.Controller
             }
         }
 
-        private void setState(Executable executable, ExecuteAction action, bool state)
+        private void setState(ExecutableBase executable, ExecuteAction action, bool state)
         {
             if(executable is ApplicationExecutable)
             {
@@ -156,9 +156,9 @@ namespace Installation_Agent.Controller
             
         }
 
-        private async Task newExecutableReceivedAsync(Executable executable)
+        private async Task newExecutableReceivedAsync(ExecutableBase executable)
         {
-            Log.Debug("Executable received {id}", executable.Id);
+            Log.Debug("ExecutableBase received {id}", executable.Id);
             if (executable != null)
             {
                 if (!Executables.Contains(executable))
@@ -171,11 +171,11 @@ namespace Installation_Agent.Controller
         {
             
         }
-        private void mapExecutable(Executable executable)
+        private void mapExecutable(ExecutableBase executable)
         {
             
         }
-        public async Task RunJob(Executable executable)
+        public async Task RunJob(ExecutableBase executable)
         {
             var job = new Job()
             {
@@ -185,7 +185,7 @@ namespace Installation_Agent.Controller
             }.WithNewGuiD();
             await clientCommunicator.SendJobAsync(job);
         }
-        public async Task InstallApplication(Executable executable)
+        public async Task InstallApplication(ExecutableBase executable)
         {
             var job = new Job()
             {
@@ -195,7 +195,7 @@ namespace Installation_Agent.Controller
             }.WithNewGuiD();
             await clientCommunicator.SendJobAsync(job);
         }
-        public async Task ReinstallApplication(Executable executable)
+        public async Task ReinstallApplication(ExecutableBase executable)
         {
             var job = new Job()
             {
@@ -205,7 +205,7 @@ namespace Installation_Agent.Controller
             }.WithNewGuiD();
             await clientCommunicator.SendJobAsync(job);
         }
-        public async Task UninstallApplication(Executable executable)
+        public async Task UninstallApplication(ExecutableBase executable)
         {
             var job = new Job()
             {

@@ -51,7 +51,7 @@ namespace Installation.Controller.ExecutableControllers
         }
         private void addExecutableToQueue(CommandExecuteExecutableExternal command)
         {
-            var executable = eventDispatcher.Send<CommandGetExecutable, Executable>(new CommandGetExecutable
+            var executable = eventDispatcher.Send<CommandGetExecutable, ExecutableBase>(new CommandGetExecutable
             { ExecutableID = command.ExecutableID });
 
             if (executable == null)
@@ -82,12 +82,12 @@ namespace Installation.Controller.ExecutableControllers
             }
             else
             {
-                Log.Error("Command {Command} and Executable {Executable} doesn't match", command, executable);
+                Log.Error("Command {Command} and ExecutableBase {ExecutableBase} doesn't match", command, executable);
             }
         }
         private void addExecutableUnitToQueue(CommandExecuteUnitExternal command)
         {
-            var executable = eventDispatcher.Send<CommandGetExecutable, Executable>(new CommandGetExecutable
+            var executable = eventDispatcher.Send<CommandGetExecutable, ExecutableBase>(new CommandGetExecutable
             { ExecutableID = command.ExecutableID });
             if(executable == null)
             {
@@ -118,7 +118,7 @@ namespace Installation.Controller.ExecutableControllers
             }
             else
             {
-                Log.Error("Executable {executable} not valid", executable);
+                Log.Error("ExecutableBase {executable} not valid", executable);
             }
             if (executableUnit != default(ExecutableUnit))
             {
@@ -165,7 +165,7 @@ namespace Installation.Controller.ExecutableControllers
             
         }
 
-        async Task sendExecutableState(Executable executable)
+        async Task sendExecutableState(ExecutableBase executable)
         {
             var responseExecution = new ResponseExecution();
             switch(executable.StatusState)
@@ -173,19 +173,19 @@ namespace Installation.Controller.ExecutableControllers
                 case StatusState.Success:
                     responseExecution.StatusState = StatusState.Success;
                     responseExecution.ExecutionState = ExecutionState.Done;
-                    Log.Information("Executable with id {id} executed successfully", executable.Id);
+                    Log.Information("ExecutableBase with id {id} executed successfully", executable.Id);
                     break;
                 case StatusState.Warning:
                     responseExecution.StatusState = StatusState.Warning;
                     responseExecution.ExecutionState = ExecutionState.Done;
                     responseExecution.Message = executable.StatusMessage;
-                    Log.Warning("Executable with id {id} executed with warning: {warning}", executable.Id, executable.StatusMessage);
+                    Log.Warning("ExecutableBase with id {id} executed with warning: {warning}", executable.Id, executable.StatusMessage);
                     break;
                 case StatusState.Error:
                     responseExecution.StatusState = StatusState.Error;
                     responseExecution.ExecutionState = ExecutionState.Stopped;
                     responseExecution.Message = executable.StatusMessage;
-                    Log.Error("Executable with id {id} executed with error: {warning}", executable.Id, executable.StatusMessage);
+                    Log.Error("ExecutableBase with id {id} executed with error: {warning}", executable.Id, executable.StatusMessage);
                     break;
             }
             await eventDispatcher.Send<ResponseExecution, Task>(responseExecution);

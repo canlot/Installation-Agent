@@ -9,6 +9,6 @@ namespace Installation.Models.Interfaces
     public interface IExternal
     {
         bool IsPrivilegedCommand { get; }
-        Guid EndpointId { get; }
+        Guid EndpointId { get; set; }
     }
 }
