@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using Installation.Models;
 using Installation.Parser.Exceptions;
 using Installation.Parser.Helpers;
+using Newtonsoft.Json;
 using Serilog;
 
 namespace Installation.Parser
@@ -27,62 +29,14 @@ namespace Installation.Parser
 		{
 			Log.Debug("Start to parse following executable file: {file}", settingsFilePath);
 
-			string executableTypeName = getExecutableTypeName();
-			if (executableTypeName == null)
-				throw new ExecutableBrokenException(settingsFilePath);
-			var executable = getExecutableObject(executableTypeName);
-			if (executable == null)
-				throw new ExecutableBrokenException(settingsFilePath);
-
-			foreach (var property in executable.GetType().GetProperties())
-			{
-				ExecutableSettingAttribute att = (ExecutableSettingAttribute)Attribute.GetCustomAttribute(property, typeof(ExecutableSettingAttribute));
-				//Log.Verbose(property.Name);
-				if (att != null)
-				{
-					string propertyName;
-					if (att.ConfigName != null) // if custom Name is not specified in the executable, then it takes the variable name
-						propertyName = att.ConfigName;
-					else
-						propertyName = property.Name;
 
 
-					string executableAttributeName = getExecutableNameAttribute(property.DeclaringType); // get from which type this attribute come from
+            return JsonConvert.DeserializeObject<ExecutableBase>(File.ReadAllText(settingsFilePath), new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All
+            });
 
-					string settingValue;
-					if (string.IsNullOrEmpty(executableAttributeName)) // when its come from base executable type
-                    {
-						settingValue = fileParseHelper.GetSetting(propertyName);
-                    }
-					else // when its come frome inhereted types
-                    {
-						settingValue = fileParseHelper.GetSetting(propertyName, executableAttributeName);
-                    }
-
-					if(string.IsNullOrEmpty(settingValue)) // checks if value got from file is empty
-                    {
-						if (att.DefaultValue != null)
-							settingValue = att.DefaultValue;
-						else
-						{
-							if (att.Mandatory)
-							{
-								Log.Error("setting {setting} is mandatory", propertyName);
-								throw new ExecutableBrokenException(settingsFilePath);
-							}
-						}
-					}
-					else
-                    {
-						setProperty(property, executable, settingValue);
-					}
-
-				}
-			}
-			Log.Debug("File: {file} successfully parsed", settingsFilePath);
-			return executable;
-
-		}
+        }
 
 		private void setProperty(PropertyInfo property, ExecutableBase executable, string settingValue)
         {
