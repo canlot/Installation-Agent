@@ -109,7 +109,7 @@ namespace Installation_Agent
                 {
                     ApplicationExecutable applicationExecutable = (ApplicationExecutable)ListBoxJobs.SelectedItem;
                     applicationExecutable.CurrentlyExecuting = true;
-                    await viewController.InstallApplication(applicationExecutable);
+                    //await viewController.InstallApplication(applicationExecutable);
                 }
             }
         }
@@ -122,7 +122,7 @@ namespace Installation_Agent
                 {
                     ApplicationExecutable applicationExecutable = (ApplicationExecutable)ListBoxJobs.SelectedItem;
                     applicationExecutable.CurrentlyExecuting = true;
-                    await viewController.ReinstallApplication(applicationExecutable);
+                    //await viewController.ReinstallApplication(applicationExecutable);
                 }
             }
         }
@@ -135,7 +135,7 @@ namespace Installation_Agent
                 {
                     ApplicationExecutable applicationExecutable = (ApplicationExecutable)ListBoxJobs.SelectedItem;
                     applicationExecutable.CurrentlyExecuting = true;
-                    await viewController.UninstallApplication(applicationExecutable);
+                    //await viewController.UninstallApplication(applicationExecutable);
                 }
             }
             

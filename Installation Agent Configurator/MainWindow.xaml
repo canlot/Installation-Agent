@@ -3,12 +3,58 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Installation_Agent_Configurator"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+    <Grid Background="#FFF2F2F2" Margin="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <Grid Name="InnerGrid" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="0" />
+            </Grid.ColumnDefinitions>
+            <ui:NavigationView Grid.Row="0" PaneDisplayMode="Left" ui:IsBackButtonVisible="Collapsed" ui:IsPaneToggleButtonVisible="False">
+                <ui:NavigationView.AutoSuggestBox>
+                    <ui:AutoSuggestBox x:Name="AutoSuggestBoxSearchExecutables" PlaceholderText="Search" QueryIcon="Find" >
+
+                    </ui:AutoSuggestBox>
+                </ui:NavigationView.AutoSuggestBox>
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem Content="Apps"/>
+                    <ui:NavigationViewItem Content="Scripts"/>
+                    <ui:NavigationViewItem Content="Das wird ein langer Text weil ich es gerne so hätte."/>
+                </ui:NavigationView.MenuItems>
+            </ui:NavigationView>
+
+            <ListBox  Grid.Column="1" IsSynchronizedWithCurrentItem="True">
+
+            </ListBox>
+            <Border Grid.Column="2" CornerRadius="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Border Padding="25" Background="#FFEAEAEA" Margin="10" CornerRadius="5">
+
+                    </Border>
+                    <Grid Grid.Row="1" >
+                        <Border Padding="25" Background="#FFEAEAEA" Margin="10" CornerRadius="5">
+
+
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+        <StatusBar Grid.Row="1">
+            <Label Content="Service: " HorizontalAlignment="Center" FontFamily="Bahnschrift"/>
+        </StatusBar>
+
     </Grid>
 </Window>
