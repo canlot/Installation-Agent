@@ -8,6 +8,9 @@
  - multiple languages will be supported
  - an executable (software/script) can be split to multiple execution steps that can have different behaviour like execute in system or user context and many more
  - will be supporting multiple UIs that runs on different user session like terminal server
+ - Powershell support
+ - multiple versions of one application will be grouped
+ - categories
 
 
 ### V1 ###
