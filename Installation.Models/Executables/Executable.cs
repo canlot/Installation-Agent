@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Installation.Models
 {
-    public class Executable
+    public abstract class Executable
     {
         private ExecutableBase executableBase;
         public ExecutableBase ExecutableBase { get => executableBase; set => executableBase = value; }
@@ -25,7 +25,15 @@ namespace Installation.Models
         public bool SuccessfulRollout { get => successfulRollout; set => successfulRollout = value; }
 
         private bool currentlyExecuting;
-        public bool CurrentlyExecuting { get => currentlyExecuting; set => currentlyExecuting = value; }
+        public bool CurrentlyExecuting
+        {
+            get => currentlyExecuting;
+            set
+            {
+                currentlyExecuting = value;
+                ExecutableBase.CurrentlyExecuting = value;
+            }
+        }
         private string currentDirectory;
         public string CurrentDirectory { get => currentDirectory; set => currentDirectory = value; }
     }

@@ -51,7 +51,7 @@ namespace Installation.Controller.ExecutableControllers
         }
         private void addExecutableToQueue(CommandExecuteExecutableExternal command)
         {
-            var executable = eventDispatcher.Send<CommandGetExecutable, IExecutable>(new CommandGetExecutable
+            var executable = eventDispatcher.Send<CommandGetExecutable, Executable>(new CommandGetExecutable
             { ExecutableID = command.ExecutableID, Version = command.Version });
 
             if (executable == null)
@@ -87,7 +87,7 @@ namespace Installation.Controller.ExecutableControllers
         }
         private void addExecutableUnitToQueue(CommandExecuteUnitExternal command)
         {
-            var executable = eventDispatcher.Send<CommandGetExecutable, IExecutable>(new CommandGetExecutable
+            var executable = eventDispatcher.Send<CommandGetExecutable, Executable>(new CommandGetExecutable
             { ExecutableID = command.ExecutableID, Version = command.Version });
             if(executable == null)
             {
@@ -165,7 +165,7 @@ namespace Installation.Controller.ExecutableControllers
             
         }
 
-        async Task sendExecutableState(IExecutable executable)
+        async Task sendExecutableState(Executable executable)
         {
             var responseExecution = new ResponseExecution();
             switch(executable.StatusState)

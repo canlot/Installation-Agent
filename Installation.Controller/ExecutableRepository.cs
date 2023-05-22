@@ -25,7 +25,7 @@ namespace Installation.Controller
 
             }
         }
-        public void AddExecutableVersion(IExecutable executableVersion)
+        public void AddExecutableVersion(Executable executableVersion)
         {
 
         }
@@ -68,7 +68,7 @@ namespace Installation.Controller
             }
             return null;
         }
-        public IExecutable GetExecutableVersion(string executableName, Version version = null)
+        public Executable GetExecutableVersion(string executableName, Version version = null)
         {
             foreach (var executable in executables)
             {
@@ -85,7 +85,7 @@ namespace Installation.Controller
             }
             return null;
         }
-        public IExecutable GetExecutableVersion(Guid id, Version version = null)
+        public Executable GetExecutableVersion(Guid id, Version version = null)
         {
             foreach(var executable in executables)
             {
@@ -109,7 +109,7 @@ namespace Installation.Controller
             }
             return null;
         }
-        public IExecutable GetNewestVersionExecutable(Guid executableId)
+        public Executable GetNewestVersionExecutable(Guid executableId)
         {
             foreach( var executable in executables)
             {
@@ -120,9 +120,9 @@ namespace Installation.Controller
             }
             return null;
         }
-        public IExecutable GetNewestVersionExecutable(ExecutableBase executable)
+        public Executable GetNewestVersionExecutable(ExecutableBase executable)
         {
-            IExecutable temp = null;
+            Executable temp = null;
 
             if (executable.Executables.Count == 0)
                 return null;

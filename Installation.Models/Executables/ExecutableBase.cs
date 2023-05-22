@@ -33,6 +33,8 @@ namespace Installation.Models
         public string Name { get => name; set => name = value; }
 
         
+        public bool CurrentlyExecuting { get; set; }
+
 
         public Dictionary<string, string> Descriptions { get => descriptions; set => descriptions = value; }
 

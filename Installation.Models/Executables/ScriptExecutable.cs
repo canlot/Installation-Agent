@@ -10,16 +10,37 @@ using Serilog;
 
 namespace Installation.Models
 {
-    public class ScriptExecutable : ExecutableBase, IRunnable
+    public class ScriptExecutable : Executable, IRunnable
     {
         public string RunFilePath { get; set; }
         private bool runned;
-        public bool Runned { get => runned; set { runned = value; setSuccessfulRolloutState(); OnPropertyChanged("Runned"); } }
+        public bool Runned { get => runned; set { runned = value; setSuccessfulRolloutState(); } }
 
 
-        public List<ExecutableUnit> RunnableUnits { get; set; }
 
-        protected override void setSuccessfulRolloutState()
+        private List<ExecutableUnit> runnableUnits = new List<ExecutableUnit>();
+
+        public IEnumerable<ExecutableUnit> RunnableUnits
+        {
+            get
+            {
+                int index = 1;
+                while (index <= runnableUnits.Count)
+                {
+                    foreach (var unit in runnableUnits)
+                    {
+                        if (index == unit.Index)
+                        {
+                            index++;
+                            yield return unit;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        protected void setSuccessfulRolloutState()
         {
             if (runned)
                 successfulRollout = true;
