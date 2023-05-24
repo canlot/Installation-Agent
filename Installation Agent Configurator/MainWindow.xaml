@@ -15,8 +15,8 @@
         <Grid Name="InnerGrid" Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="6*"/>
-                <ColumnDefinition Width="6*" />
+                <ColumnDefinition Width="*" MaxWidth="500"/>
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
             <ui:NavigationView Grid.Row="0" PaneDisplayMode="Left" ui:IsBackButtonVisible="Collapsed" ui:IsPaneToggleButtonVisible="True">
                 <ui:NavigationView.AutoSuggestBox>
@@ -33,17 +33,17 @@
             <ListBox  Grid.Column="1" IsSynchronizedWithCurrentItem="True">
 
             </ListBox>
-            <Border Grid.Column="2">
+            <Border Grid.Column="2" Margin="5">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="50"/>
                     </Grid.RowDefinitions>
-                    <Border Background="#FFEAEAEA" >
-                        
+                    <Border Background="#FFEAEAEA" Grid.Row="0">
+                        <Label Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center">Media Player</Label>
                     </Border>
-                    <Border Grid.Row="1" Background="#FFEAEAEA"  >
+                    <Border Grid.Row="1"   >
                         <TabControl
                             x:Name="TabView4"
                             SelectedIndex="0"
@@ -75,9 +75,15 @@
                         </TabControl>
                     </Border>
                     <Grid Grid.Row="2" >
-                        <Border Padding="10" Background="#FFEAEAEA">
-
-
+                        <Border  >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Content="Save" Grid.Column="0" Width="auto" HorizontalAlignment="Stretch" Margin="5"/>
+                                <Button Content="Abort" Grid.Column="1" Width="auto" HorizontalAlignment="Stretch" Margin="5"/>
+                            </Grid>
                         </Border>
                     </Grid>
                 </Grid>
