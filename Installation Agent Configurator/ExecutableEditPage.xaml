@@ -1,0 +1,56 @@
+﻿<Page x:Class="Installation_Agent_Configurator.ExecutableEditPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:ui="http://schemas.modernwpf.com/2019"
+      xmlns:local="clr-namespace:Installation_Agent_Configurator"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ExecutableEditPage">
+
+    <Grid Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Background="{DynamicResource SystemControlHighlightListAccentLowBrush}" HorizontalAlignment="Stretch">
+                    <Label HorizontalAlignment="Stretch" Margin="10,0,0,0" VerticalAlignment="Center">Media Player</Label>
+                </Border>
+                <ui:CommandBar Grid.Column="1" HorizontalAlignment="Stretch">
+                    <ui:AppBarButton Icon="Save" Label="Save"/>
+                    <ui:AppBarButton Icon="Cancel" Label="Cancel"/>
+                </ui:CommandBar>
+            </Grid>
+        </Border>
+        <Border Grid.Row="1">
+            
+        </Border>
+        <Border Grid.Row="2">
+            <TabControl
+                            x:Name="TabView4"
+                            SelectedIndex="0"
+                            MinWidth="4"
+                            MinHeight="0">
+                <TabControl.Items>
+                    <TabItem Header="Common Informations">
+                    </TabItem>
+                    <TabItem Header="Installable Jobs">
+                    </TabItem>
+                    <TabItem Header="Reinstallable Jobs">
+                    </TabItem>
+                    <TabItem Header="Uninstallable Jobs">
+                    </TabItem>
+
+                </TabControl.Items>
+            </TabControl>
+        </Border>
+    </Grid>
+</Page>
