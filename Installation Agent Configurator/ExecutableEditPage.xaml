@@ -25,8 +25,8 @@
                     <Label HorizontalAlignment="Stretch" Margin="10,0,0,0" VerticalAlignment="Center">Media Player</Label>
                 </Border>
                 <ui:CommandBar Grid.Column="1" HorizontalAlignment="Stretch">
-                    <ui:AppBarButton Icon="Save" Label="Save"/>
-                    <ui:AppBarButton Icon="Cancel" Label="Cancel"/>
+                    <ui:AppBarButton Icon="Save" Label="Save" Background="{DynamicResource SystemControlBackgroundAccentBrush}"/>
+                    <ui:AppBarButton Icon="Cancel" Label="Cancel" />
                 </ui:CommandBar>
             </Grid>
         </Border>
