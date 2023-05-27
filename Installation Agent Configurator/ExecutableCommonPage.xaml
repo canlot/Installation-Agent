@@ -13,31 +13,43 @@
             <Setter Property="Margin" Value="20"/>
         </Style>
     </Page.Resources>
-    <Grid Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
-        <ScrollViewer>
-            <StackPanel>
-                <Border Background="{DynamicResource SystemControlBackgroundBaseLowBrush}" >
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Label>Language: </Label>
-                        <ComboBox VerticalAlignment="Center" IsEditable="True" Margin="20">
-                            <ComboBoxItem>de-DE</ComboBoxItem>
-                            <ComboBoxItem>en-US</ComboBoxItem>
-                        </ComboBox>
-                    </StackPanel>
-                </Border>
-                <ui:GridView>
+    <ScrollViewer Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
+        <StackPanel>
+            <Border Background="{DynamicResource SystemControlBackgroundBaseLowBrush}" >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Label>Language:</Label>
+                    <ComboBox VerticalAlignment="Center" IsEditable="True" Margin="20">
+                        <ComboBoxItem>de-DE</ComboBoxItem>
+                        <ComboBoxItem>en-US</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+            </Border>
+            <WrapPanel>
+                <StackPanel Margin="10" Orientation="Vertical" >
                     <Label>Name</Label>
                     <TextBox></TextBox>
-                </ui:GridView>
-                <ui:GridView>
                     <Label>Version</Label>
                     <TextBox></TextBox>
-                </ui:GridView>
-                <ui:GridView>
                     <Label>Publisher</Label>
                     <TextBox></TextBox>
-                </ui:GridView>
-            </StackPanel>
-        </ScrollViewer>
-    </Grid>
+                </StackPanel>
+                <StackPanel Margin="10" Orientation="Vertical" >
+                    <Label>Name</Label>     
+                    <TextBox></TextBox>
+                    <Label>Version</Label>
+                    <TextBox></TextBox>
+                    <Label>Publisher</Label>
+                    <TextBox></TextBox>
+                </StackPanel>
+                <StackPanel Margin="10" Orientation="Vertical" >
+                    <Label>Name</Label>
+                    <TextBox></TextBox>
+                    <Label>Version</Label>
+                    <TextBox></TextBox>
+                    <Label>Publisher</Label>
+                    <TextBox></TextBox>
+                </StackPanel>
+            </WrapPanel>
+        </StackPanel>
+    </ScrollViewer>
 </Page>
