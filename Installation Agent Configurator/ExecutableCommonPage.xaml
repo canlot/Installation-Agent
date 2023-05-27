@@ -10,7 +10,7 @@
       Title="ExecutableCommonPage">
     <Page.Resources>
         <Style TargetType="Label">
-            <Setter Property="Margin" Value="20"/>
+            <Setter Property="Margin" Value="0"/>
         </Style>
     </Page.Resources>
     <ScrollViewer Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
@@ -24,31 +24,17 @@
                     </ComboBox>
                 </StackPanel>
             </Border>
-            <WrapPanel>
-                <StackPanel Margin="10" Orientation="Vertical" >
-                    <Label>Name</Label>
-                    <TextBox></TextBox>
-                    <Label>Version</Label>
-                    <TextBox></TextBox>
-                    <Label>Publisher</Label>
-                    <TextBox></TextBox>
-                </StackPanel>
-                <StackPanel Margin="10" Orientation="Vertical" >
-                    <Label>Name</Label>     
-                    <TextBox></TextBox>
-                    <Label>Version</Label>
-                    <TextBox></TextBox>
-                    <Label>Publisher</Label>
-                    <TextBox></TextBox>
-                </StackPanel>
-                <StackPanel Margin="10" Orientation="Vertical" >
-                    <Label>Name</Label>
-                    <TextBox></TextBox>
-                    <Label>Version</Label>
-                    <TextBox></TextBox>
-                    <Label>Publisher</Label>
-                    <TextBox></TextBox>
-                </StackPanel>
+            <WrapPanel Margin="10">
+                <GroupBox Header="Executable Informations">
+                    <StackPanel Orientation="Vertical" >
+                        <Label>Name</Label>
+                        <TextBox></TextBox>
+                        <Label>Version</Label>
+                        <TextBox></TextBox>
+                        <Label>Publisher</Label>
+                        <TextBox></TextBox>
+                    </StackPanel>
+                </GroupBox>
             </WrapPanel>
         </StackPanel>
     </ScrollViewer>
