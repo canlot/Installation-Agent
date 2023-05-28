@@ -17,22 +17,33 @@
         <StackPanel>
             <Border Background="{DynamicResource SystemControlBackgroundBaseLowBrush}" >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Label>Language:</Label>
-                    <ComboBox VerticalAlignment="Center" IsEditable="True" Margin="20">
+                    <Label VerticalAlignment="Center">Version</Label>
+                    <TextBox VerticalAlignment="Center" Margin="20" Width="100"></TextBox>
+                    
+                    <Label VerticalAlignment="Center">Language</Label>
+                    <ComboBox VerticalAlignment="Center" IsEditable="True" Margin="20" Width="100">
                         <ComboBoxItem>de-DE</ComboBoxItem>
                         <ComboBoxItem>en-US</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
             </Border>
-            <WrapPanel Margin="10">
+            <WrapPanel Margin="10" >
                 <GroupBox Header="Executable Informations">
                     <StackPanel Orientation="Vertical" >
                         <Label>Name</Label>
-                        <TextBox></TextBox>
-                        <Label>Version</Label>
-                        <TextBox></TextBox>
+                        <TextBox Width="500" HorizontalAlignment="Left"></TextBox>
+                        <Label>Category</Label>
+                        <ComboBox Width="500" HorizontalAlignment="Left" IsEditable="True" >
+                            <ComboBoxItem>Apps</ComboBoxItem>
+                            <ComboBoxItem>Scripts</ComboBoxItem>
+                        </ComboBox>
                         <Label>Publisher</Label>
-                        <TextBox></TextBox>
+                        <TextBox Width="500" HorizontalAlignment="Left"></TextBox>
+                        <Label>Icon</Label>
+                        <Image></Image>
+                        <Button>Search</Button>
+                        <Label>Description</Label>
+                        <RichTextBox Width="500" Height="100" HorizontalAlignment="Left"></RichTextBox>
                     </StackPanel>
                 </GroupBox>
             </WrapPanel>
