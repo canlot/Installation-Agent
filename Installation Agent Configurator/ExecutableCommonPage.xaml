@@ -13,7 +13,7 @@
             <Setter Property="Margin" Value="0"/>
         </Style>
     </Page.Resources>
-    <ScrollViewer Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
+    <ScrollViewer >
         <StackPanel>
             <Border Background="{DynamicResource SystemControlBackgroundBaseLowBrush}" >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -27,8 +27,8 @@
                     </ComboBox>
                 </StackPanel>
             </Border>
-            <WrapPanel Margin="10" >
-                <GroupBox Header="Executable Informations">
+            <WrapPanel >
+                <GroupBox Header="Executable Informations" Padding="10" Margin="10" Background="{DynamicResource SystemControlBackgroundAltMediumHighBrush}">
                     <StackPanel Orientation="Vertical" >
                         <Label>Name</Label>
                         <TextBox Width="500" HorizontalAlignment="Left"></TextBox>

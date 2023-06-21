@@ -25,7 +25,8 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <Border Grid.Column="0" >
                                 <Grid>
@@ -43,7 +44,8 @@
                                     </ListBox>
                                 </Grid>
                             </Border>
-                            <Border Grid.Column="1">
+                        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
+                        <Border Grid.Column="2">
                                 <Frame Source="/ExecutableEditPage.xaml"/>
                             </Border>
                         </Grid>

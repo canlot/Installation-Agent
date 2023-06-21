@@ -12,19 +12,12 @@
     <Grid Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto" />
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <Border Grid.Row="0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <Border Grid.Column="0" Background="{DynamicResource SystemControlHighlightListAccentLowBrush}" HorizontalAlignment="Stretch">
-                    <Label HorizontalAlignment="Stretch" Margin="10,0,0,0" VerticalAlignment="Center">Media Player</Label>
-                </Border>
-                <ui:CommandBar Grid.Column="1" HorizontalAlignment="Stretch" Background="{DynamicResource SystemControlBackgroundBaseLowBrush}" >
+        <Border Grid.Row="0" Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <ui:CommandBar HorizontalAlignment="Stretch"  >
                     <ui:AppBarElementContainer VerticalContentAlignment="Center" >
                         <Label Margin="20,0,20,0">
                             Version:
@@ -40,30 +33,47 @@
                     <ui:AppBarButton Icon="Add" Label="New Version" />
                     <ui:AppBarButton Icon="Cancel" Label="Delete Version" />
                 </ui:CommandBar>
-            </Grid>
+            </StackPanel>
         </Border>
         <Border Grid.Row="1">
-            
-        </Border>
-        <Border Grid.Row="2">
-            <TabControl
-                            x:Name="TabView4"
-                            SelectedIndex="0"
-                            MinWidth="4"
-                            MinHeight="0">
-                <TabControl.Items>
-                    <TabItem Header="Common Informations">
-                        <Frame Source="/ExecutableCommonPage.xaml"/>
-                    </TabItem>
-                    <TabItem Header="Installable Jobs">
-                    </TabItem>
-                    <TabItem Header="Reinstallable Jobs">
-                    </TabItem>
-                    <TabItem Header="Uninstallable Jobs">
-                    </TabItem>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" Height="50">
+                    <Border Grid.Column="0" Background="{DynamicResource SystemControlHighlightListAccentLowBrush}" HorizontalAlignment="Stretch">
+                        <Label HorizontalAlignment="Stretch" Margin="10,0,0,0" VerticalAlignment="Center">Media Player</Label>
+                    </Border>
+                </Border>
+                <Border Grid.Row="1" Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}">
+                    <TabControl
+                                x:Name="TabView4"
+                                SelectedIndex="0"
+                                MinWidth="4"
+                                MinHeight="0">
+                        <TabControl.Items>
+                            <TabItem Header="Common Informations">
+                                <Frame Source="/ExecutableCommonPage.xaml"/>
+                            </TabItem>
+                            <TabItem Header="Installable Jobs">
+                                <Frame Source="/InstallableEditPage.xaml"/>
+                            </TabItem>
+                            <TabItem Header="Reinstallable Jobs">
+                            </TabItem>
+                            <TabItem Header="Uninstallable Jobs">
+                            </TabItem>
 
-                </TabControl.Items>
-            </TabControl>
+                        </TabControl.Items>
+                    </TabControl>
+                </Border>
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Margin="5">Save</Button>
+                <Button Margin="5">Abort</Button>
+            </StackPanel>
         </Border>
     </Grid>
 </Page>

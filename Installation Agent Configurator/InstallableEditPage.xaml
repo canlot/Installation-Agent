@@ -3,12 +3,48 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:ui="http://schemas.modernwpf.com/2019"
       xmlns:local="clr-namespace:Installation_Agent_Configurator"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="InstallableEditPage">
 
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <DataGrid Grid.Column="0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Order"/>
+                <DataGridTextColumn Header="Name" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Border Grid.Column="1" Margin="10">
+            <GroupBox Header="Executable">
+                <StackPanel Orientation="Vertical">
+                    <Label>Name</Label>
+                    <TextBox></TextBox>
+                    <Label>Executable file</Label>
+                    <Button>Search</Button>
+                    <Label>Executable arguments</Label>
+                    <TextBox></TextBox>
+                    <Label>Successfull return codes</Label>
+                    <TextBox></TextBox>
+                    <Label>Execute context</Label>
+                    <ui:RadioButtons MaxColumns="2">
+                        <RadioButton>Machine</RadioButton>
+                        <RadioButton>User</RadioButton>
+                    </ui:RadioButtons>
+                    <Label>Execution requiered</Label>
+                    <CheckBox></CheckBox>
+                    <Label>Abort after seconds</Label>
+                    <ui:NumberBox></ui:NumberBox>
+                    <Label>Number of retries before failed</Label>
+                    <ui:NumberBox></ui:NumberBox>
+                    
+                </StackPanel>
+            </GroupBox>
+        </Border>
     </Grid>
 </Page>
