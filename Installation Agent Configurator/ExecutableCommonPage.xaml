@@ -13,40 +13,41 @@
             <Setter Property="Margin" Value="0"/>
         </Style>
     </Page.Resources>
-    <ScrollViewer >
-        <StackPanel>
-            <Border Background="{DynamicResource SystemControlBackgroundBaseLowBrush}" >
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Label VerticalAlignment="Center">Version</Label>
-                    <TextBox VerticalAlignment="Center" Margin="20" Width="100"></TextBox>
-                    
-                    <Label VerticalAlignment="Center">Language</Label>
-                    <ComboBox VerticalAlignment="Center" IsEditable="True" Margin="20" Width="100">
-                        <ComboBoxItem>de-DE</ComboBoxItem>
-                        <ComboBoxItem>en-US</ComboBoxItem>
-                    </ComboBox>
-                </StackPanel>
-            </Border>
-            <WrapPanel >
-                <GroupBox Header="Executable Informations" Padding="10" Margin="10" Background="{DynamicResource SystemControlBackgroundAltMediumHighBrush}">
-                    <StackPanel Orientation="Vertical" >
-                        <Label>Name</Label>
-                        <TextBox Width="500" HorizontalAlignment="Left"></TextBox>
-                        <Label>Category</Label>
-                        <ComboBox Width="500" HorizontalAlignment="Left" IsEditable="True" >
-                            <ComboBoxItem>Apps</ComboBoxItem>
-                            <ComboBoxItem>Scripts</ComboBoxItem>
+    <Border HorizontalAlignment="Stretch" Background="{DynamicResource SystemControlBackgroundAltMediumHighBrush}" VerticalAlignment="Stretch" >
+        <ScrollViewer >
+            <StackPanel VerticalAlignment="Stretch">
+                <Border Background="{DynamicResource SystemControlBackgroundBaseLowBrush}" >
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                        <Label VerticalAlignment="Center">Language</Label>
+                        <ComboBox VerticalAlignment="Center" IsEditable="True" Margin="10" Width="100">
+                            <ComboBoxItem>de-DE</ComboBoxItem>
+                            <ComboBoxItem>en-US</ComboBoxItem>
                         </ComboBox>
-                        <Label>Publisher</Label>
-                        <TextBox Width="500" HorizontalAlignment="Left"></TextBox>
-                        <Label>Icon</Label>
-                        <Image></Image>
-                        <Button>Search</Button>
-                        <Label>Description</Label>
-                        <RichTextBox Width="500" Height="100" HorizontalAlignment="Left"></RichTextBox>
                     </StackPanel>
-                </GroupBox>
-            </WrapPanel>
-        </StackPanel>
-    </ScrollViewer>
+                </Border>
+                <Border >
+                        <GroupBox Header="Executable Informations" Padding="10" Margin="20" >
+                            <StackPanel Orientation="Vertical" MaxWidth="500">
+                                <Label>Name</Label>
+                                <TextBox  HorizontalAlignment="Stretch"></TextBox>
+                                <Label>Category</Label>
+                                <ComboBox  HorizontalAlignment="Stretch" IsEditable="True" >
+                                    <ComboBoxItem>Apps</ComboBoxItem>
+                                    <ComboBoxItem>Scripts</ComboBoxItem>
+                                </ComboBox>
+                                <Label>Publisher</Label>
+                                <TextBox HorizontalAlignment="Stretch"></TextBox>
+                                <Label>Icon</Label>
+                                <Image></Image>
+                                <Button>Search</Button>
+                                <Label>Description</Label>
+                                <RichTextBox  Height="100" HorizontalAlignment="Stretch"></RichTextBox>
+                            </StackPanel>
+                        </GroupBox>
+                    </Border>
+                
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
 </Page>

@@ -21,36 +21,37 @@
                     <ui:NavigationViewItem Content="Deployment" Icon="Upload"/>
                 </ui:NavigationView.MenuItems>
                 <Border  >
-                    <ScrollViewer>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="3*" MinWidth="800"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" >
                         <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <Border Grid.Column="0" >
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                    <ui:CommandBar Grid.Row="0" HorizontalAlignment="Stretch">
-                                        <ui:AppBarButton Icon="Add" Label="New"/>
-                                        <ui:AppBarButton Icon="Delete" Label="Delete"/>
-                                    </ui:CommandBar>
-                                    <ListBox Grid.Row="1" IsSynchronizedWithCurrentItem="True">
-                                        <ListBoxItem>Hallo</ListBoxItem>
-                                        <ListBoxItem>Test</ListBoxItem>
-                                    </ListBox>
-                                </Grid>
-                            </Border>
-                        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
-                        <Border Grid.Column="2">
-                                <Frame Source="/ExecutableEditPage.xaml"/>
-                            </Border>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <ui:CommandBar Grid.Row="0" HorizontalAlignment="Stretch">
+                                <ui:AppBarButton Icon="Add" Label="New"/>
+                                <ui:AppBarButton Icon="Delete" Label="Delete"/>
+                            </ui:CommandBar>
+                            <ScrollViewer Grid.Row="1">
+                                <ListBox  IsSynchronizedWithCurrentItem="True">
+                                    <ListBoxItem>Hallo</ListBoxItem>
+                                    <ListBoxItem>Test</ListBoxItem>
+                                </ListBox>
+                            </ScrollViewer>
                         </Grid>
-                    </ScrollViewer>
-                </Border>
+                    </Border>
+                    <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
+                    <Border Grid.Column="2">
+                        <Frame Source="/ExecutableEditPage.xaml"/>
+                    </Border>
+                </Grid>
+            </Border>
             </ui:NavigationView>
 
             

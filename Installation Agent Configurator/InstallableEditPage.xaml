@@ -12,14 +12,17 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <DataGrid Grid.Column="0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Order"/>
                 <DataGridTextColumn Header="Name" />
             </DataGrid.Columns>
+            <DataGrid.Items>
+                
+            </DataGrid.Items>
         </DataGrid>
+        <!--
         <Border Grid.Column="1" Margin="10">
             <GroupBox Header="Executable">
                 <StackPanel Orientation="Vertical">
@@ -46,5 +49,6 @@
                 </StackPanel>
             </GroupBox>
         </Border>
+        -->
     </Grid>
 </Page>

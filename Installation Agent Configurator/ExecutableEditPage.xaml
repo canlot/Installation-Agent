@@ -15,26 +15,6 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <ui:CommandBar HorizontalAlignment="Stretch"  >
-                    <ui:AppBarElementContainer VerticalContentAlignment="Center" >
-                        <Label Margin="20,0,20,0">
-                            Version:
-                        </Label>
-                    </ui:AppBarElementContainer>
-                    <ui:AppBarElementContainer VerticalContentAlignment="Stretch">
-                        <ComboBox VerticalAlignment="Stretch" >
-                            <ComboBoxItem>1.5</ComboBoxItem>
-                            <ComboBoxItem>2.0</ComboBoxItem>
-                        </ComboBox>
-                    </ui:AppBarElementContainer>
-                    <ui:AppBarSeparator></ui:AppBarSeparator>
-                    <ui:AppBarButton Icon="Add" Label="New Version" />
-                    <ui:AppBarButton Icon="Cancel" Label="Delete Version" />
-                </ui:CommandBar>
-            </StackPanel>
-        </Border>
         <Border Grid.Row="1">
             <Grid>
                 <Grid.RowDefinitions>
@@ -43,35 +23,72 @@
                 </Grid.RowDefinitions>
                 <Border Grid.Row="0" Height="50">
                     <Border Grid.Column="0" Background="{DynamicResource SystemControlHighlightListAccentLowBrush}" HorizontalAlignment="Stretch">
-                        <Label HorizontalAlignment="Stretch" Margin="10,0,0,0" VerticalAlignment="Center">Media Player</Label>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" HorizontalAlignment="Stretch" Margin="10,0,0,0" VerticalAlignment="Center">Media Player</Label>
+                            <Border Grid.Column="1" Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <ui:CommandBar HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                                        <ui:AppBarElementContainer VerticalContentAlignment="Center" >
+                                            <Label Margin="20,0,20,0">
+                                                Version:
+                                            </Label>
+                                        </ui:AppBarElementContainer>
+                                        <ui:AppBarElementContainer VerticalContentAlignment="Stretch">
+                                            <ComboBox VerticalAlignment="Stretch" >
+                                                <ComboBoxItem>1.5</ComboBoxItem>
+                                                <ComboBoxItem>2.0</ComboBoxItem>
+                                            </ComboBox>
+                                        </ui:AppBarElementContainer>
+                                        <ui:AppBarSeparator></ui:AppBarSeparator>
+                                        <ui:AppBarButton Icon="Add" Label="New Version" />
+                                        <ui:AppBarButton Icon="Cancel" Label="Delete Version" />
+                                    </ui:CommandBar>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        
+                        
                     </Border>
                 </Border>
                 <Border Grid.Row="1" Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}">
-                    <TabControl
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" BorderThickness="1" >
+                            <TabControl
                                 x:Name="TabView4"
                                 SelectedIndex="0"
                                 MinWidth="4"
                                 MinHeight="0">
-                        <TabControl.Items>
-                            <TabItem Header="Common Informations">
-                                <Frame Source="/ExecutableCommonPage.xaml"/>
-                            </TabItem>
-                            <TabItem Header="Installable Jobs">
-                                <Frame Source="/InstallableEditPage.xaml"/>
-                            </TabItem>
-                            <TabItem Header="Reinstallable Jobs">
-                            </TabItem>
-                            <TabItem Header="Uninstallable Jobs">
-                            </TabItem>
+                                <TabControl.Items>
+                                    <TabItem Header="Installable Jobs">
+                                        <Frame Source="/InstallableEditPage.xaml"/>
+                                    </TabItem>
+                                    <TabItem Header="Reinstallable Jobs">
+                                    </TabItem>
+                                    <TabItem Header="Uninstallable Jobs">
+                                    </TabItem>
 
-                        </TabControl.Items>
-                    </TabControl>
+                                </TabControl.Items>
+                            </TabControl>
+                        </Border>
+                        <Border Grid.Column="1" BorderThickness="1" >
+                            <Frame Source="/ExecutableCommonPage.xaml"/>
+                        </Border>
+                    </Grid>
+                    
                 </Border>
             </Grid>
         </Border>
         <Border Grid.Row="2" >
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Margin="5">Save</Button>
+                <Button Background="{DynamicResource SystemControlHighlightListAccentLowBrush}" Margin="5">Save</Button>
                 <Button Margin="5">Abort</Button>
             </StackPanel>
         </Border>
