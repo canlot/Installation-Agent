@@ -45,7 +45,7 @@
                                         </ui:AppBarElementContainer>
                                         <ui:AppBarSeparator></ui:AppBarSeparator>
                                         <ui:AppBarButton Icon="Add" Label="New Version" />
-                                        <ui:AppBarButton Icon="Cancel" Label="Delete Version" />
+                                        <ui:AppBarButton Icon="Delete" Label="Delete Version" />
                                     </ui:CommandBar>
                                 </StackPanel>
                             </Border>

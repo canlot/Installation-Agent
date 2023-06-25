@@ -16,11 +16,11 @@
     <Border HorizontalAlignment="Stretch" Background="{DynamicResource SystemControlBackgroundAltMediumHighBrush}" VerticalAlignment="Stretch" >
         <ScrollViewer >
             <StackPanel VerticalAlignment="Stretch">
-                <Border Background="{DynamicResource SystemControlBackgroundBaseLowBrush}" >
+                <Border Background="{DynamicResource SystemControlPageBackgroundChromeMediumLowBrush}" >
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 
                         <Label VerticalAlignment="Center">Language</Label>
-                        <ComboBox VerticalAlignment="Center" IsEditable="True" Margin="10" Width="100">
+                        <ComboBox VerticalAlignment="Center" IsEditable="True" Margin="5" Width="100">
                             <ComboBoxItem>de-DE</ComboBoxItem>
                             <ComboBoxItem>en-US</ComboBoxItem>
                         </ComboBox>
