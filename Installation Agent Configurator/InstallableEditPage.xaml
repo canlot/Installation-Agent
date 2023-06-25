@@ -16,6 +16,7 @@
         </Grid.RowDefinitions>
         <ui:CommandBar HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0" Margin="5">
             <ui:AppBarButton Icon="Add" Label="New Unit" />
+            <ui:AppBarButton Icon="Copy" Label="Copy Unit"/>
             <ui:AppBarButton Icon="Delete" Label="Delete Unit" />
         </ui:CommandBar>
         <DataGrid Grid.Row="1">
