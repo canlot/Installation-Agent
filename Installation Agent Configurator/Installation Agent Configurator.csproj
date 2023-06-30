@@ -59,11 +59,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="ExecutableCommonControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ExecutableCommonPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ExecutableEditControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ExecutableEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InstallableEditControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -79,15 +91,25 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExecutableCommonControl.xaml.cs">
+      <DependentUpon>ExecutableCommonControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ExecutableCommonPage.xaml.cs">
       <DependentUpon>ExecutableCommonPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExecutableEditControl.xaml.cs">
+      <DependentUpon>ExecutableEditControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ExecutableEditPage.xaml.cs">
       <DependentUpon>ExecutableEditPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="InstallableEditControl.xaml.cs">
+      <DependentUpon>InstallableEditControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="InstallableEditPage.xaml.cs">
       <DependentUpon>InstallableEditPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -133,6 +155,16 @@
     <PackageReference Include="System.Runtime.WindowsRuntime.UI.Xaml">
       <Version>4.7.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Installation.Models\Installation.Models.csproj">
+      <Project>{cc707c57-86e0-47eb-b86c-06a0ad5a772a}</Project>
+      <Name>Installation.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Installation.Parser\Installation.Parser.csproj">
+      <Project>{62f8d1e0-3e02-4f31-a71d-7501e3d8ca20}</Project>
+      <Name>Installation.Parser</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

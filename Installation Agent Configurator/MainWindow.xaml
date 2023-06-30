@@ -3,14 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:ui="http://schemas.modernwpf.com/2019" 
+        xmlns:local="clr-namespace:Installation_Agent_Configurator"
+        xmlns:models="clr-namespace:Installation.Models;assembly=Installation.Models"
         ui:WindowHelper.UseModernWindowStyle="True"
         mc:Ignorable="d"
         Title="MainWindow" Height="584" Width="1164">
+    <Window.DataContext>
+        <local:MainViewModel x:Name="viewModel"/>
+    </Window.DataContext>
     <Grid Background="{DynamicResource ApplicationPageBackgroundThemeBrush}" Margin="0">
-        
-        
-            <ui:NavigationView  ui:IsBackButtonVisible="Collapsed" ui:IsPaneToggleButtonVisible="True">
+        <ui:NavigationView  ui:IsBackButtonVisible="Collapsed" ui:IsPaneToggleButtonVisible="True">
                 <ui:NavigationView.AutoSuggestBox>
                     <ui:AutoSuggestBox x:Name="AutoSuggestBoxSearchExecutables" PlaceholderText="Search" QueryIcon="Find" >
 
@@ -39,16 +42,19 @@
                                 <ui:AppBarButton Icon="Delete" Label="Delete"/>
                             </ui:CommandBar>
                             <ScrollViewer Grid.Row="1">
-                                <ListBox  IsSynchronizedWithCurrentItem="True">
-                                    <ListBoxItem>Hallo</ListBoxItem>
-                                    <ListBoxItem>Test</ListBoxItem>
+                                <ListBox x:Name="ExecutableListBox" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding Executables}">
+                                    <ListBox.Resources>
+                                        <DataTemplate DataType="{x:Type models:ExecutableBase}">
+                                            <Label FontSize="20" Margin="5" VerticalAlignment="Center" FontFamily="Bahnschrift" Content="{Binding Name}"/>
+                                        </DataTemplate>
+                                    </ListBox.Resources>
                                 </ListBox>
                             </ScrollViewer>
                         </Grid>
                     </Border>
                     <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
                     <Border Grid.Column="2">
-                        <Frame Source="/ExecutableEditPage.xaml"/>
+                        <local:ExecutableEditControl/>
                     </Border>
                 </Grid>
             </Border>

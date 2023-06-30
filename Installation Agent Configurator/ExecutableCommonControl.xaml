@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="Installation_Agent_Configurator.ExecutableCommonControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Installation_Agent_Configurator"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="0"/>
+        </Style>
+    </UserControl.Resources>
+    <Border HorizontalAlignment="Stretch" Background="{DynamicResource SystemControlBackgroundAltMediumHighBrush}" VerticalAlignment="Stretch" >
+        <ScrollViewer >
+            <StackPanel VerticalAlignment="Stretch">
+                <Border Background="{DynamicResource SystemControlPageBackgroundChromeMediumLowBrush}" >
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                        <Label VerticalAlignment="Center">Language</Label>
+                        <ComboBox VerticalAlignment="Center" IsEditable="True" Margin="5" Width="100">
+                            <ComboBoxItem>de-DE</ComboBoxItem>
+                            <ComboBoxItem>en-US</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+                <Border >
+                    <GroupBox Header="Executable Informations" Padding="10" Margin="20" >
+                        <StackPanel Orientation="Vertical" MaxWidth="500">
+                            <Label>Name</Label>
+                            <TextBox  HorizontalAlignment="Stretch" Text="{Binding Executables/Name}" />
+                            <Label>Category</Label>
+                            <ComboBox  HorizontalAlignment="Stretch" IsEditable="True" >
+                                <ComboBoxItem>Apps</ComboBoxItem>
+                                <ComboBoxItem>Scripts</ComboBoxItem>
+                            </ComboBox>
+                            <Label>Publisher</Label>
+                            <TextBox HorizontalAlignment="Stretch"></TextBox>
+                            <Label>Icon</Label>
+                            <Image></Image>
+                            <Button>Search</Button>
+                            <Label>Description</Label>
+                            <RichTextBox  Height="100" HorizontalAlignment="Stretch"></RichTextBox>
+                        </StackPanel>
+                    </GroupBox>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</UserControl>
