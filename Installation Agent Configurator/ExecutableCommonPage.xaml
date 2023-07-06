@@ -26,7 +26,7 @@
                         </ComboBox>
                     </StackPanel>
                 </Border>
-                <Border >
+                <Border>
                         <GroupBox Header="Executable Informations" Padding="10" Margin="20" >
                             <StackPanel Orientation="Vertical" MaxWidth="500">
                                 <Label>Name</Label>

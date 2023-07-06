@@ -28,9 +28,9 @@
                     <GroupBox Header="Executable Informations" Padding="10" Margin="20" >
                         <StackPanel Orientation="Vertical" MaxWidth="500">
                             <Label>Name</Label>
-                            <TextBox  HorizontalAlignment="Stretch" Text="{Binding Executables/Name}" />
+                            <TextBox  HorizontalAlignment="Stretch" Text="{Binding Executables/Name, Mode=OneWay}" />
                             <Label>Category</Label>
-                            <ComboBox  HorizontalAlignment="Stretch" IsEditable="True" >
+                            <ComboBox ItemsSource="{Binding Executables/Categories}" HorizontalAlignment="Stretch" IsEditable="True" >
                                 <ComboBoxItem>Apps</ComboBoxItem>
                                 <ComboBoxItem>Scripts</ComboBoxItem>
                             </ComboBox>
